@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗马帝国教会逼迫时间线 (81–313 AD) | The Timeline of Christian Persecution in the Roman Empire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-parchment: #faf6ee;
+            --card-bg: #fffdf9;
+            --ink-primary: #2b2623;
+            --ink-secondary: #574f4a;
+            --accent-crimson: #7c1d1d;
+            --accent-gold: #b8860b;
+            --border-subtle: #e6dec8;
+        }
+
+        body {
+            background-color: var(--bg-parchment);
+            color: var(--ink-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-image: radial-gradient(#e8dfc8 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+        }
+
+        .font-serif-title {
+            font-family: 'Cinzel', 'Noto Serif SC', Georgia, serif;
+        }
+
+        /* Timeline central spine line */
+        .timeline-spine {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 3px;
+            background: linear-gradient(to bottom, #d4af37, #b8860b, #7c1d1d, #b8860b);
+            border-radius: 999px;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-spine {
+                left: 36px;
+            }
+        }
+
+        /* Smooth transitions for filtering and collapsing */
+        .timeline-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-item.hidden-item {
+            display: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3ede0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7bca1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a39576;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-200 selection:text-amber-950">
+
+    <!-- Header Section -->
+    <header class="border-b border-[#e2d7be] bg-[#f5efe2]/90 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#b8860b] mb-1">
+                        <span>早期教会史专题图表</span>
+                        <span>•</span>
+                        <span>Early Church History</span>
+                    </div>
+                    <h1 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#7c1d1d] tracking-tight">
+                        罗马帝国教会逼迫时间线 <span class="text-[#2b2623] font-normal text-xl sm:text-2xl">(81–313 AD)</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-0.5 font-medium">
+                        The Timeline of Christian Persecution in the Roman Empire: From Domitian to Diocletian
+                    </p>
+                </div>
+
+                <!-- Summary Stats Badge -->
+                <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-4 py-2.5 shadow-sm self-start md:self-auto">
+                    <div class="text-center pr-3 border-r border-[#e6dec8]">
+                        <div class="text-lg font-bold text-[#7c1d1d]" id="visibleCount">16</div>
+                        <div class="text-[11px] text-[#574f4a]">显示节点</div>
+                    </div>
+                    <div class="text-xs text-[#574f4a] leading-snug">
+                        <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
+                        地方零星高压 → 帝国全面清剿
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Interactive Control Panel & Heat Scale Legend -->
+        <section class="bg-[#fffdf9] border border-[#e6dec8] rounded-2xl p-5 sm:p-6 mb-10 shadow-sm">
+            <!-- Heat-Scale Legend -->
+            <div class="mb-6 pb-5 border-b border-[#efe8d8]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-[#574f4a]">
+                        逼迫烈度光谱图例 | Persecution Intensity Heat-Scale
+                    </span>
+                    <span class="text-xs text-[#786e67]">
+                        点击下方按钮筛选不同烈度的历史时期
+                    </span>
+                </div>
+                
+                <!-- Gradient Bar -->
+                <div class="h-3 w-full rounded-full overflow-hidden flex shadow-inner mb-2.5">
+                    <div class="w-1/4 bg-[#6b8e78]" title="Peaceful / Tolerant"></div>
+                    <div class="w-1/4 bg-[#d97706]" title="Sporadic / Judicial"></div>
+                    <div class="w-1/4 bg-[#c2410c]" title="Systematic / Targeted"></div>
+                    <div class="w-1/4 bg-[#881337]" title="Empire-Wide Great Persecution"></div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#6b8e78] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">和平/宽容 <span class="text-[#786e67] block sm:inline text-[11px]">Peaceful</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#d97706] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">地方/司法 <span class="text-[#786e67] block sm:inline text-[11px]">Sporadic / Judicial</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#c2410c] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">系统/针对 <span class="text-[#786e67] block sm:inline text-[11px]">Systematic / Targeted</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#881337] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">帝国全面大逼迫 <span class="text-[#786e67] block sm:inline text-[11px]">Empire-Wide</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons & Toggle -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <!-- Severity Filters -->
+                <div class="flex flex-wrap gap-2" id="filterGroup">
+                    <button data-filter="all" class="filter-btn active px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#2b2623] text-[#faf6ee] shadow-sm cursor-pointer">
+                        全部显示 All
+                    </button>
+                    <button data-filter="peaceful" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#6b8e78]"></span>
+                        和平/宽容 Peaceful
+                    </button>
+                    <button data-filter="sporadic" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#d97706]"></span>
+                        地方性/司法应对 Sporadic / Judicial
+                    </button>
+                    <button data-filter="systematic" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#c2410c]"></span>
+                        系统性/针对性逼迫 Systematic / Targeted
+                    </button>
+                    <button data-filter="empire" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#881337]"></span>
+                        帝国全面大逼迫 Empire-Wide
+                    </button>
+                </div>
+
+                <!-- Toggle Peaceful Emperors Switch -->
+                <div class="flex items-center justify-between lg:justify-end gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-[#efe8d8]">
+                    <label for="togglePeaceful" class="text-xs font-medium text-[#574f4a] cursor-pointer select-none">
+                        折叠无重大逼迫皇帝 <span class="text-[#8a7f77]">(Collapse Peaceful)</span>
+                    </label>
+                    <button id="togglePeaceful" role="switch" aria-checked="false" class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#d6ccb4] transition-colors duration-200 ease-in-out focus:outline-none">
+                        <span id="toggleKnob" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Root Container -->
+        <div id="timelineContainer" class="space-y-12">
+            <!-- Populated dynamically via JavaScript -->
+        </div>
+
+        <!-- Scholarly Footer Note -->
+        <footer class="mt-16 pt-6 border-t border-[#e2d7be] text-center text-xs text-[#6e645e] space-y-1.5">
+            <p class="font-medium text-[#2b2623]">历史编纂说明 | Historical & Editorial Note</p>
+            <p>所有人名均采用中文维基百科与历史学界公信译名，并附注拉丁/英文标准拼写。年代均为公元（AD）。</p>
+            <p>Interactive Timeline generated for Early Church History & Revelation Historical Context Study.</p>
+        </footer>
+    </main>
+
+    <script>
+        /**
+         * Structured dataset of Roman Imperial Eras and Emperors (81–313 AD)
+         * Every historical figure and martyr name strictly follows bilingual formatting: "中文公信译名 (English Name)"
+         */
+        const timelineEras = [
+            {
+                eraId: "flavian",
+                eraTitleZh: "一、弗拉维王朝（末代）",
+                eraTitleEn: "Flavian Dynasty (81–96)",
+                eraSpan: "81–96 AD",
+                eraSummary: "《启示录》成书背景时期：帝国崇拜强化，地方性高压初现。",
+                events: [
+                    {
+                        id: "domitian",
+                        emperors: "图密善 (Domitian)",
+                        reign: "81–96 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "地方性零星高压",
+                        severityLabelEn: "Sporadic / Local Pressure",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "强化“主与神”(Dominus et Deus) 皇帝崇拜，要求地方官员与民众向皇帝塑像献祭效忠。",
+                            "放逐使徒约翰 (Apostle John) 至拔摩海岛（《启示录》写作背景）；在罗马处决表亲弗拉维·克莱门斯 (Flavius Clemens) 等同情信仰的贵族。"
+                        ],
+                        martyrs: "使徒约翰 (Apostle John，被流放)、弗拉维·克莱门斯 (Flavius Clemens)"
+                    }
+                ]
+            },
+            {
+                eraId: "five-good-emperors",
+                eraTitleZh: "二、五贤帝时期",
+                eraTitleEn: "Nerva–Antonine Dynasty / Five Good Emperors (96–180)",
+                eraSpan: "96–180 AD",
+                eraSummary: "确立“不主动搜捕、具名告发则处决”的司法原则；后期因天灾瘟疫引发地方暴民逼迫升温。",
+                events: [
+                    {
+                        id: "nerva",
+                        emperors: "涅尔瓦 (Nerva)",
+                        reign: "96–98 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 无大规模逼迫",
+                        severityLabelEn: "Peaceful / No Major Persecution",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "推翻图密善 (Domitian) 暴政，废除告密制度，赦免部分此前因“不敬神”或犹太习俗罪名被流放者。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "trajan",
+                        emperors: "图拉真 (Trajan)",
+                        reign: "98–117 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "司法消极应对",
+                        severityLabelEn: "Sporadic / Judicial Precedent",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "约112年回复俾推尼总督小普林尼 (Pliny the Younger)：确立“不主动搜捕、具名告发则处决、献祭即赦免”的帝国司法基准，严禁受理匿名信。"
+                        ],
+                        martyrs: "安提阿主教伊格那丢 (Ignatius of Antioch，约107年押解罗马殉道)、耶路撒冷主教西面 (Simeon of Jerusalem)"
+                    },
+                    {
+                        id: "hadrian",
+                        emperors: "哈德良 (Hadrian)",
+                        reign: "117–138 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "司法消极应对",
+                        severityLabelEn: "Sporadic / Judicial Order",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "致信亚细亚总督，重申审理基督徒必须走正规法庭程序并提出实质违法证据，严禁暴民私刑与无端骚扰。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "antoninus-pius",
+                        emperors: "安敦宁·毕尤 (Antoninus Pius)",
+                        reign: "138–161 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "地方暴民触发",
+                        severityLabelEn: "Sporadic / Mob-Driven",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，民众常怒吼要求处决拒拜神明的基督徒。"
+                        ],
+                        martyrs: "士每拿主教坡旅甲 (Polycarp，约155年在竞技场被火焚殉道)"
+                    },
+                    {
+                        id: "marcus-aurelius",
+                        emperors: "马可·奥勒留 (Marcus Aurelius)",
+                        reign: "161–180 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "地方逼迫急剧升温",
+                        severityLabelEn: "Intensified Local Persecution",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "安东尼瘟疫与蛮族入侵引发社会恐慌与民众迁怒，皇帝本人亦从斯多葛哲学立场厌恶基督徒的殉道精神。",
+                            "177年高卢爆发惨烈的里昂与维埃纳大逼迫，地方当局动用酷刑大规模处决信徒。"
+                        ],
+                        martyrs: "护教士游斯丁 (Justin Martyr，约165年斩首)、里昂主教坡提努斯 (Pothinus)、女奴布兰迪娜 (Blandina)"
+                    }
+                ]
+            },
+            {
+                eraId: "severan",
+                eraTitleZh: "三、安敦尼末代至塞维鲁王朝",
+                eraTitleEn: "Commodus to Severan Dynasty (180–235)",
+                eraSpan: "180–235 AD",
+                eraSummary: "逼迫出现首次“针对改宗与教理传播”的精准打击；王朝后期则迎来难得的宽容期。",
+                events: [
+                    {
+                        id: "commodus",
+                        emperors: "康茂德 (Commodus)",
+                        reign: "180–192 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 相对平静",
+                        severityLabelEn: "Peaceful / Relative Calm",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "宠妃玛西亚 (Marcia) 同情基督徒，通过罗马主教维克托一世 (Victor I) 取得名单，释放了一批被发配撒丁岛矿山的信徒。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "pertinax-julianus",
+                        emperors: "佩蒂纳克斯 (Pertinax) & 尤利安努斯 (Didius Julianus)",
+                        reign: "193 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 无逼迫记录",
+                        severityLabelEn: "Peaceful / No Record",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "“五帝之年”内战频仍，两位皇帝在位均仅数月，无针对教会的逼迫记录。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "septimius-severus",
+                        emperors: "塞普蒂米乌斯·塞维鲁 (Septimius Severus)",
+                        reign: "193–211 AD",
+                        severityCategory: "systematic",
+                        severityLabelZh: "系统性 / 针对性限制扩张",
+                        severityLabelEn: "Systematic / Anti-Conversion",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "约202年颁布诏书，严禁帝国公民改宗基督教与犹太教，旨在切断信仰传播源头，重点打击初信慕道友与亚历山大教理学院。"
+                        ],
+                        martyrs: "北非迦太基的佩尔佩图阿 (Perpetua) 与费利西塔斯 (Felicitas)（203年殉道）、神学家俄利根 (Origen) 之父列奥尼达斯 (Leonidas)"
+                    },
+                    {
+                        id: "later-severans",
+                        emperors: "卡拉卡拉 (Caracalla) [211–217]、马克里努斯 (Macrinus) [217–218]、埃拉伽巴路斯 (Elagabalus) [218–222]、亚历山大·塞维鲁 (Severus Alexander) [222–235]",
+                        reign: "211–235 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 整体宽容",
+                        severityLabelEn: "Peaceful / Broad Toleration",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "塞维鲁王朝后期整体对宗教采取包容态度，尤以亚历山大·塞维鲁 (Severus Alexander) 对基督教最为友善，帝国境内基本无官方逼迫。"
+                        ],
+                        martyrs: null
+                    }
+                ]
+            },
+            {
+                eraId: "third-century-crisis",
+                eraTitleZh: "四、三世纪危机时期",
+                eraTitleEn: "Crisis of the Third Century (235–284)",
+                eraSpan: "235–284 AD",
+                eraSummary: "帝国深陷内忧外患，首次发动全帝国范围、国家机器主动出击的“全民献祭”大逼迫。",
+                events: [
+                    {
+                        id: "maximinus-thrax",
+                        emperors: "马克西米努斯·色雷克斯 (Maximinus Thrax)",
+                        reign: "235–238 AD",
+                        severityCategory: "systematic",
+                        severityLabelZh: "系统性 / 针对教会领袖",
+                        severityLabelEn: "Systematic / Clergy Targeted",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "推翻前任宽容政策，首次下令专门逮捕并处决教会神职领袖（“斩首行动”），试图瓦解教会组织体系。"
+                        ],
+                        martyrs: "罗马主教彭谦 (Pontian) 与对立主教希坡律陀 (Hippolytus)（均被流放撒丁岛矿山致死）"
+                    },
+                    {
+                        id: "gordians-philip",
+                        emperors: "戈尔迪安一世/二世/三世 (Gordian I/II/III) [238–244] & 阿拉伯人菲利普 (Philip the Arab) [244–249]",
+                        reign: "238–249 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 基本和平",
+                        severityLabelEn: "Peaceful / Relative Peace",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "教会享受十余年平静发展期；阿拉伯人菲利普 (Philip the Arab) 甚至被早期教会史家传言暗中同情基督教。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "decius",
+                        emperors: "德西乌斯 (Decius)",
+                        reign: "249–251 AD",
+                        severityCategory: "empire",
+                        severityLabelZh: "帝国全面大逼迫",
+                        severityLabelEn: "Empire-Wide Great Persecution",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "250年颁布“全民献祭令”：国家机器首次主动出击，强制所有公民向罗马神明献祭并领取官方“献祭证书”(libellus)，拒不执行者酷刑处死。",
+                            "引发教会内部关于如何接纳妥协“背道者”(Lapsi) 的重大神学争论。"
+                        ],
+                        martyrs: "罗马主教法比安 (Fabian)"
+                    },
+                    {
+                        id: "gallus-aemilianus",
+                        emperors: "加卢斯 (Trebonianus Gallus) [251–253] & 埃米利阿努斯 (Aemilianus) [253]",
+                        reign: "251–253 AD",
+                        severityCategory: "sporadic",
+                        severityLabelZh: "地方性 / 零星余波",
+                        severityLabelEn: "Sporadic / Aftermath",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "西普里安瘟疫爆发期间，加卢斯 (Trebonianus Gallus) 短暂恢复向阿波罗神献祭的命令，流放罗马主教哥尼流 (Cornelius)。"
+                        ],
+                        martyrs: null
+                    },
+                    {
+                        id: "valerian",
+                        emperors: "瓦勒良 (Valerian)",
+                        reign: "253–260 AD",
+                        severityCategory: "empire",
+                        severityLabelZh: "帝国全面大逼迫",
+                        severityLabelEn: "Empire-Wide Great Persecution",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "257–258年连发两道严厉敕令：禁止基督徒聚会及进入地下墓窟；下令立即处决所有拒绝献祭的主教、长老与执事；没收基督徒元老院议员与骑士阶层财产。"
+                        ],
+                        martyrs: "迦太基主教居普良 (Cyprian)、罗马主教西斯笃二世 (Sixtus II)、执事老楞佐 (Lawrence)"
+                    },
+                    {
+                        id: "gallienus-to-carinus",
+                        emperors: "加里恩努斯 (Gallienus) 至 卡里努斯 (Carinus) 等诸帝",
+                        reign: "260–284 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 四十年“小和平时期”",
+                        severityLabelEn: "Peaceful / Little Peace of the Church",
+                        isPeaceful: true,
+                        decreesAndEvents: [
+                            "260年加里恩努斯 (Gallienus) 颁布宽容令，归还教会财产，开启长达约40年的“小和平时期”（仅奥勒良 Aurelian 275年临终前曾拟定逼迫令但未及实施）。"
+                        ],
+                        martyrs: null
+                    }
+                ]
+            },
+            {
+                eraId: "tetrarchy",
+                eraTitleZh: "五、四帝共治时期与逼迫终结",
+                eraTitleEn: "Tetrarchy & End of Persecution (284–313)",
+                eraSpan: "284–313 AD",
+                eraSummary: "罗马帝国史上最惨烈的终极镇压，最终以帝国公开认输并颁布《米兰敕令》告终。",
+                events: [
+                    {
+                        id: "diocletian",
+                        emperors: "戴克里先 (Diocletian) [284–305，逼迫持续至311]",
+                        reign: "284–311 AD",
+                        severityCategory: "empire",
+                        severityLabelZh: "帝国全面大逼迫",
+                        severityLabelEn: "Empire-Wide Great Persecution",
+                        isPeaceful: false,
+                        decreesAndEvents: [
+                            "303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山）。"
+                        ],
+                        martyrs: "尼科米底亚及帝国各地无数殉道者（史称“大逼迫” Great Persecution）"
+                    },
+                    {
+                        id: "edicts-of-toleration",
+                        emperors: "宽容敕令与逼迫终结：伽列里乌斯 (Galerius)、君士坦丁一世 (Constantine I) & 李锡尼 (Licinius)",
+                        reign: "311–313 AD",
+                        severityCategory: "peaceful",
+                        severityLabelZh: "和平 / 逼迫彻底终结",
+                        severityLabelEn: "Peaceful / End of Persecution",
+                        isPeaceful: false, // Keep visible even when collapsing peaceful emperors, as it marks the climax/end
+                        decreesAndEvents: [
+                            "311年伽列里乌斯 (Galerius) 病危颁布《塞尔迪卡宽容敕令》(Edict of Serdica) 承认镇压失败并停火。",
+                            "313年君士坦丁一世 (Constantine I) 与李锡尼 (Licinius) 联合颁布《米兰敕令》(Edict of Milan)，确立宗教信仰自由并归还教产，持续两百五十年的大逼迫彻底结束。"
+                        ],
+                        martyrs: null
+                    }
+                ]
+            }
+        ];
+
+        // Visual styling map for each severity tier
+        const severityStyles = {
+            peaceful: {
+                dotBg: "bg-[#6b8e78]",
+                dotRing: "ring-[#6b8e78]/25",
+                badgeBg: "bg-[#eef4f0]",
+                badgeText: "text-[#365341]",
+                badgeBorder: "border-[#c6dacd]",
+                cardBorder: "border-[#e6dec8] hover:border-[#6b8e78]/60",
+                accentBar: "bg-[#6b8e78]"
+            },
+            sporadic: {
+                dotBg: "bg-[#d97706]",
+                dotRing: "ring-[#d97706]/25",
+                badgeBg: "bg-[#fef3c7]",
+                badgeText: "text-[#92400e]",
+                badgeBorder: "border-[#fde68a]",
+                cardBorder: "border-[#e6dec8] hover:border-[#d97706]/60",
+                accentBar: "bg-[#d97706]"
+            },
+            systematic: {
+                dotBg: "bg-[#c2410c]",
+                dotRing: "ring-[#c2410c]/25",
+                badgeBg: "bg-[#ffedd5]",
+                badgeText: "text-[#9a3412]",
+                badgeBorder: "border-[#fed7aa]",
+                cardBorder: "border-[#e6dec8] hover:border-[#c2410c]/60",
+                accentBar: "bg-[#c2410c]"
+            },
+            empire: {
+                dotBg: "bg-[#881337]",
+                dotRing: "ring-[#881337]/30",
+                badgeBg: "bg-[#ffe4e6]",
+                badgeText: "text-[#881337]",
+                badgeBorder: "border-[#fecdd3]",
+                cardBorder: "border-[#e2c2c6] hover:border-[#881337]/70",
+                accentBar: "bg-[#881337]"
+            }
+        };
+
+        // Application State
+        let currentFilter = "all";
+        let collapsePeaceful = false;
+
+        /**
+         * Renders the timeline eras and cards into the DOM
+         */
+        function renderTimeline() {
+            const container = document.getElementById("timelineContainer");
+            container.innerHTML = "";
+            let totalVisible = 0;
+
+            timelineEras.forEach((era) => {
+                // Filter events inside this era
+                const filteredEvents = era.events.filter((ev) => {
+                    const matchesCategory = currentFilter === "all" || ev.severityCategory === currentFilter;
+                    const matchesCollapse = !(collapsePeaceful && ev.isPeaceful && currentFilter !== "peaceful");
+                    return matchesCategory && matchesCollapse;
+                });
+
+                if (filteredEvents.length === 0) return;
+
+                totalVisible += filteredEvents.length;
+
+                // Era Section Wrapper
+                const eraSection = document.createElement("section");
+                eraSection.className = "era-block";
+
+                // Era Header Banner
+                const eraHeader = `
+                    <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                        <div class="flex flex-wrap items-baseline justify-between gap-2">
+                            <div>
+                                <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                    ${era.eraTitleZh}
+                                </h2>
+                                <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                    ${era.eraTitleEn}
+                                </p>
+                            </div>
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                                ${era.eraSpan}
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                            ${era.eraSummary}
+                        </p>
+                    </div>
+                `;
+
+                // Vertical Timeline Spine & Cards List
+                let eventsHtml = `<div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>`;
+
+                filteredEvents.forEach((ev) => {
+                    const style = severityStyles[ev.severityCategory];
+
+                    const decreesListHtml = ev.decreesAndEvents
+                        .map(item => `<li class="flex items-start gap-2.5">
+                            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                            <span>${item}</span>
+                        </li>`)
+                        .join("");
+
+                    const martyrsHtml = ev.martyrs
+                        ? `<div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">
+                                代表殉道者 / Martyrs
+                            </span>
+                            <span class="text-[#2b2623] font-medium leading-relaxed">${ev.martyrs}</span>
+                           </div>`
+                        : "";
+
+                    eventsHtml += `
+                        <article class="timeline-item relative group">
+                            <!-- Timeline Node Marker -->
+                            <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full ${style.dotBg} ring-4 ${style.dotRing} border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+
+                            <!-- Event Card -->
+                            <div class="bg-[#fffdf9] border ${style.cardBorder} rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                                <!-- Left vertical intensity accent bar -->
+                                <div class="absolute left-0 top-0 bottom-0 w-1.5 ${style.accentBar}"></div>
+
+                                <!-- Card Header: Emperor(s), Reign Dates & Severity Badge -->
+                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                    <div>
+                                        <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">
+                                            ${ev.reign}
+                                        </div>
+                                        <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">
+                                            ${ev.emperors}
+                                        </h3>
+                                    </div>
+
+                                    <!-- Severity Badge -->
+                                    <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border ${style.badgeBg} ${style.badgeText} ${style.badgeBorder} shrink-0 self-start">
+                                        <span class="text-xs font-bold leading-tight">${ev.severityLabelZh}</span>
+                                        <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">${ev.severityLabelEn}</span>
+                                    </span>
+                                </div>
+
+                                <!-- Decrees & Historical Events -->
+                                <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                    ${decreesListHtml}
+                                </ul>
+
+                                <!-- Notable Martyrs (if applicable) -->
+                                ${martyrsHtml}
+                            </div>
+                        </article>
+                    `;
+                });
+
+                eventsHtml += `</div>`;
+                eraSection.innerHTML = eraHeader + eventsHtml;
+                container.appendChild(eraSection);
+            });
+
+            // Update counter
+            document.getElementById("visibleCount").textContent = totalVisible;
+        }
+
+        /**
+         * Initializes interactive filter buttons and peaceful-emperor collapse toggle
+         */
+        function initControls() {
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const toggleBtn = document.getElementById("togglePeaceful");
+            const toggleKnob = document.getElementById("toggleKnob");
+
+            filterButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    // Update active button styling
+                    filterButtons.forEach((b) => {
+                        b.classList.remove("active", "bg-[#2b2623]", "text-[#faf6ee]");
+                        b.classList.add("bg-[#f3ede0]", "text-[#2b2623]");
+                    });
+                    btn.classList.add("active", "bg-[#2b2623]", "text-[#faf6ee]");
+                    btn.classList.remove("bg-[#f3ede0]", "text-[#2b2623]");
+
+                    currentFilter = btn.getAttribute("data-filter");
+
+                    // If user explicitly clicks "Peaceful" filter, automatically un-collapse peaceful emperors
+                    if (currentFilter === "peaceful" && collapsePeaceful) {
+                        collapsePeaceful = false;
+                        toggleBtn.setAttribute("aria-checked", "false");
+                        toggleBtn.classList.remove("bg-[#7c1d1d]");
+                        toggleBtn.classList.add("bg-[#d6ccb4]");
+                        toggleKnob.classList.remove("translate-x-5");
+                        toggleKnob.classList.add("translate-x-0");
+                    }
+
+                    renderTimeline();
+                });
+            });
+
+            toggleBtn.addEventListener("click", () => {
+                collapsePeaceful = !collapsePeaceful;
+                toggleBtn.setAttribute("aria-checked", String(collapsePeaceful));
+
+                if (collapsePeaceful) {
+                    toggleBtn.classList.remove("bg-[#d6ccb4]");
+                    toggleBtn.classList.add("bg-[#7c1d1d]");
+                    toggleKnob.classList.remove("translate-x-0");
+                    toggleKnob.classList.add("translate-x-5");
+
+                    // If currently viewing only peaceful, switch back to all so screen isn't empty
+                    if (currentFilter === "peaceful") {
+                        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                        if (allBtn) allBtn.click();
+                        return;
+                    }
+                } else {
+                    toggleBtn.classList.remove("bg-[#7c1d1d]");
+                    toggleBtn.classList.add("bg-[#d6ccb4]");
+                    toggleKnob.classList.remove("translate-x-5");
+                    toggleKnob.classList.add("translate-x-0");
+                }
+
+                renderTimeline();
+            });
+        }
+
+        // Initialize on DOM load
+        window.addEventListener("DOMContentLoaded", () => {
+            initControls();
+            renderTimeline();
+        });
+    </script>
+</body>
+</html>
