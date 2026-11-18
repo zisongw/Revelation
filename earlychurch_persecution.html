@@ -1089,7 +1089,7 @@
 
     <!--
       Scripture hover, in sequence:
-        1) Bible Gateway tags the Chinese pills (和合本 CUVS). Only Chinese pills hold an
+        1) Bible Gateway tags the Chinese pills (现代标点和合本 CUVMPS). Only Chinese pills hold an
            English reference at this point, so it cannot touch the English pills.
         2) English pills are filled in, then Logos Reftagger (LSB) runs, told to skip the
            Chinese pills.
@@ -1124,7 +1124,7 @@
                     a.parentNode.replaceChild(span, a);
                     pills.push(span);
                 });
-                BGLinks.version = "CUVS";
+                BGLinks.version = "CUVMPS";
                 BGLinks.linkVerses();
                 // Show the Chinese label on the link Bible Gateway created
                 // (also re-applied if Bible Gateway wraps the text a moment later)
