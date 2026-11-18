@@ -72,74 +72,75 @@
             background: #a39576;
         }
 
-        /* Dual-mode Scripture Reference Pill: plain text for Reftagger hover + direct CUV/LSB badges */
-        .sc-wrap {
+        /* Interactive Bilingual Scripture Pills (CUV & LSB Hover/Tap Triggers) */
+        .sc-group {
             display: inline-flex;
             align-items: center;
             flex-wrap: wrap;
-            gap: 0.3rem;
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            padding: 0.05rem 0.45rem;
-            margin: 0.1rem 0.15rem;
-            font-size: 0.86em;
-            line-height: 1.45;
+            gap: 0.25rem;
+            margin: 0.05rem 0.15rem;
             vertical-align: baseline;
-            transition: border-color 0.15s ease, background-color 0.15s ease;
         }
 
-        .sc-wrap:hover {
-            background-color: #e2e8f0;
-            border-color: #94a3b8;
-        }
-
-        .sc-ref {
-            color: #0f172a;
-            font-weight: 600;
-            cursor: help;
-        }
-
-        /* Styling for Reftagger injected anchor inside .sc-ref */
-        .sc-ref a {
-            color: #0f172a !important;
-            text-decoration: underline dotted #64748b !important;
-            text-underline-offset: 3px;
-            cursor: help;
-        }
-
-        .sc-link {
+        .sc-pill {
             display: inline-flex;
             align-items: center;
-            color: #ffffff !important;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            padding: 0.06rem 0.42rem;
-            border-radius: 0.25rem;
-            text-decoration: none !important;
-            white-space: nowrap;
-            transition: opacity 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
+            gap: 0.25rem;
+            padding: 0.06rem 0.45rem;
+            border-radius: 0.375rem;
+            font-size: 0.84em;
+            font-weight: 600;
+            line-height: 1.45;
+            cursor: help;
+            user-select: none;
+            transition: all 0.15s ease;
         }
 
-        .sc-link-cuv {
+        .sc-pill-cuv {
+            background-color: #fdf2ee;
+            color: #7c2d12;
+            border: 1px solid #f2cfc2;
+        }
+
+        .sc-pill-cuv:hover,
+        .sc-pill-cuv.active-pill {
             background-color: #7c2d12;
+            color: #ffffff;
+            border-color: #7c2d12;
         }
 
-        .sc-link-cuv:hover {
-            background-color: #9a3412;
+        .sc-pill-lsb {
+            background-color: #eff4f9;
+            color: #1e3a5f;
+            border: 1px solid #c5d5e6;
         }
 
-        .sc-link-lsb {
+        .sc-pill-lsb:hover,
+        .sc-pill-lsb.active-pill {
             background-color: #1e3a5f;
+            color: #ffffff;
+            border-color: #1e3a5f;
         }
 
-        .sc-link-lsb:hover {
-            background-color: #2c5282;
+        /* Floating Scripture Tooltip Card */
+        #scriptureTooltip {
+            position: fixed;
+            z-index: 60;
+            width: min(380px, calc(100vw - 24px));
+            background-color: #fffdf9;
+            border: 1px solid #d8ccb2;
+            border-radius: 0.75rem;
+            box-shadow: 0 14px 32px -6px rgba(43, 38, 35, 0.22), 0 4px 12px -2px rgba(43, 38, 35, 0.1);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(4px);
+            transition: opacity 0.16s ease, transform 0.16s ease;
         }
 
-        .sc-link:active {
-            transform: scale(0.96);
+        #scriptureTooltip.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -163,53 +164,26 @@
                     </p>
                 </div>
 
-                <!-- Summary Stats Badge & Standalone Download Action -->
-                <div class="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
-                    <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-3.5 py-2 shadow-xs">
-                        <div class="text-center pr-3 border-r border-[#e6dec8]">
-                            <div class="text-base sm:text-lg font-bold text-[#7c1d1d]" id="visibleCount">16</div>
-                            <div class="text-[11px] text-[#574f4a]">显示节点</div>
-                        </div>
-                        <div class="text-xs text-[#574f4a] leading-snug">
-                            <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
-                            地方零星高压 → 帝国全面清剿
-                        </div>
+                <!-- Summary Stats Badge -->
+                <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-4 py-2.5 shadow-xs self-start lg:self-auto">
+                    <div class="text-center pr-3 border-r border-[#e6dec8]">
+                        <div class="text-base sm:text-lg font-bold text-[#7c1d1d]" id="visibleCount">16</div>
+                        <div class="text-[11px] text-[#574f4a]">显示节点</div>
                     </div>
-
-                    <button id="downloadHtmlBtn" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-[#1e3a5f] hover:bg-[#7c2d12] rounded-xl shadow-xs transition cursor-pointer" title="保存为可直接上传至 GitHub Pages 的独立 HTML 文件">
-                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"></path>
-                        </svg>
-                        <span>下载独立 HTML 文件</span>
-                    </button>
+                    <div class="text-xs text-[#574f4a] leading-snug">
+                        <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
+                        地方零星高压 → 帝国全面清剿
+                    </div>
                 </div>
             </div>
         </div>
     </header>
-
-    <!-- Toast Notification -->
-    <div id="toastBanner" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-[#1e3a5f] text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-lg border border-white/15">
-        <div class="flex items-start gap-2.5">
-            <svg class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <p id="toastMessage">已保存独立 HTML 文件 earlychurch_persecution.html！</p>
-        </div>
-    </div>
 
     <!-- Main Container -->
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 
         <!-- Interactive Control Panel & Heat Scale Legend -->
         <section class="bg-[#fffdf9] border border-[#e6dec8] rounded-2xl p-5 sm:p-6 mb-10 shadow-sm">
-            <!-- Dual-Mode Scripture Interaction Legend Banner -->
-            <div class="mb-5 bg-slate-50 border border-slate-200/90 rounded-xl px-4 py-3 text-xs text-slate-700 flex items-start sm:items-center gap-2.5 leading-relaxed">
-                <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 sm:mt-0"></span>
-                <span>
-                    <strong>双模经文交互：</strong>鼠标<strong>悬停</strong>在英文经文（如 <code class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-900 font-semibold">Revelation 2:9</code>）上可触发 Logos Reftagger <strong>LSB</strong> 弹窗预览；点击右侧「<strong class="text-[#7c2d12]">和合本 ↗</strong>」或「<strong class="text-[#1e3a5f]">LSB ↗</strong>」徽章可直接在 Logos 软件中打开对应译本。
-                </span>
-            </div>
-
             <!-- Heat-Scale Legend -->
             <div class="mb-6 pb-5 border-b border-[#efe8d8]">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
@@ -292,17 +266,86 @@
         <footer class="mt-16 pt-6 border-t border-[#e2d7be] text-center text-xs text-[#6e645e] space-y-2">
             <p class="font-medium text-[#2b2623]">历史编纂说明 | Historical & Editorial Note</p>
             <p>所有人名均采用中文维基百科与历史学界公信译名，并附注拉丁/英文标准拼写。年代均为公元（AD）。</p>
-            <div class="max-w-2xl mx-auto mt-3 p-3.5 rounded-xl bg-[#f5efe2]/80 border border-[#e2d7be] text-[11px] text-[#574f4a] leading-relaxed">
-                <span class="font-semibold text-[#7c1d1d]">GitHub 网页更新提示：</span>
-                下载本最新 HTML 文件后，将其重命名为 <code class="px-1.5 py-0.5 rounded bg-[#fffdf9] border border-[#dcd2ba] text-[#2b2623] font-mono">earlychurch_persecution.html</code>，进入 GitHub 仓库点击 <strong>Add file &gt; Upload files</strong> 上传覆盖原文件并提交（Commit changes），等待约 1 分钟即可自动同步更新。
-            </div>
         </footer>
     </main>
 
+    <!-- Floating Scripture Hover/Tap Tooltip Card -->
+    <div id="scriptureTooltip" role="tooltip" aria-hidden="true">
+        <div id="tooltipHeader" class="px-3.5 py-2 rounded-t-xl text-xs font-bold tracking-wide flex items-center justify-between gap-2 bg-[#7c2d12] text-white">
+            <span id="tooltipTitle">启示录 1:9 · 和合本 (CUV)</span>
+            <button id="tooltipCloseBtn" type="button" class="sm:hidden text-white/80 hover:text-white px-1 text-sm leading-none" aria-label="关闭经文提示">✕</button>
+        </div>
+        <div id="tooltipBody" class="px-3.5 py-3 text-xs sm:text-[13px] text-[#2b2623] leading-relaxed max-h-64 overflow-y-auto">
+        </div>
+    </div>
+
     <script>
         /**
+         * Embedded Scripture Dictionary (Chinese Union Version CUV & Legacy Standard Bible LSB)
+         */
+        const scriptureData = {
+            "rev1-9": {
+                cuv: {
+                    header: "启示录 1:9 · 和合本 (CUV)",
+                    text: "我约翰就是你们的弟兄，和你们在耶稣的患难、国度、忍耐里一同有分，为神的道，并为给耶稣作的见证，曾在那名叫拔摩的海岛上。"
+                },
+                lsb: {
+                    header: "Revelation 1:9 · Legacy Standard Bible (LSB)",
+                    text: "I, John, your brother and fellow partaker in the tribulation and kingdom and perseverance which are in Jesus, was on the island called Patmos because of the word of God and the witness of Jesus."
+                }
+            },
+            "rev2-9": {
+                cuv: {
+                    header: "启示录 2:9 · 和合本 (CUV)",
+                    text: "我知道你的患难，你的贫穷（你却是富足的），也知道那自称是犹太人所说的毁谤话，其实他们不是犹太人，乃是撒但一会的人。"
+                },
+                lsb: {
+                    header: "Revelation 2:9 · Legacy Standard Bible (LSB)",
+                    text: "I know your tribulation and your poverty (but you are rich), and the blasphemy by those who say they are Jews and are not, but are a synagogue of Satan."
+                }
+            },
+            "rev2-13": {
+                cuv: {
+                    header: "启示录 2:13 · 和合本 (CUV)",
+                    text: "我知道你的居所，就是有撒但座位之处；当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。"
+                },
+                lsb: {
+                    header: "Revelation 2:13 · Legacy Standard Bible (LSB)",
+                    text: "I know where you dwell, where Satan’s throne is; and you hold fast My name, and did not deny My faith even in the days of Antipas, My witness, My faithful one, who was killed among you, where Satan dwells."
+                }
+            },
+            "rev2-10": {
+                cuv: {
+                    header: "启示录 2:10 · 和合本 (CUV)",
+                    text: "你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。"
+                },
+                lsb: {
+                    header: "Revelation 2:10 · Legacy Standard Bible (LSB)",
+                    text: "Do not fear what you are about to suffer. Behold, the devil is about to cast some of you into prison, so that you will be tested, and you will have tribulation for ten days. Be faithful until death, and I will give you the crown of life."
+                }
+            },
+            "rev13": {
+                cuv: {
+                    header: "启示录 13:7–8, 15–17 · 和合本 (CUV)",
+                    text: "7 又任凭它与圣徒争战，并且得胜；也把权柄赐给它，制伏各族、各民、各方、各国。8 凡住在地上、名字从创世以来没有记在被杀之羔羊生命册上的人，都要拜它……15 又有权柄赐给它，叫兽像有生气，并且能说话，又叫所有不拜兽像的人都被杀害。16 它又叫众人，无论大小、贫富、自主的、为奴的，都在右手上或是在额上受一个印记。17 除了那受印记、有了兽名或有兽名数目的，都不得作买卖。"
+                },
+                lsb: {
+                    header: "Revelation 13:7–8, 15–17 · Legacy Standard Bible (LSB)",
+                    text: "7 It was also given to him to make war with the saints and to overcome them, and authority over every tribe and people and tongue and nation was given to him. 8 All who dwell on the earth will worship him, everyone whose name has not been written from the foundation of the world in the book of life of the Lamb who has been slain... 15 And it was given to him to give breath to the image of the beast, so that the image of the beast would even speak and cause as many as do not worship the image of the beast to be killed. 16 And he causes all, the small and the great, and the rich and the poor, and the free men and the slaves, to be given a mark on their right hand or on their forehead, 17 and he provides that no one will be able to buy or to sell, except the one who has the mark, either the name of the beast or the number of his name."
+                }
+            }
+        };
+
+        /**
+         * Helper to generate side-by-side non-linking Chinese (CUV) and English (LSB) hover/tap pills
+         */
+        function renderScripturePills(key, zhLabel, enLabel) {
+            return `<span class="sc-group"><span class="sc-pill sc-pill-cuv" tabindex="0" data-ref-key="${key}" data-lang="cuv">${zhLabel}</span><span class="sc-pill sc-pill-lsb" tabindex="0" data-ref-key="${key}" data-lang="lsb">${enLabel}</span></span>`;
+        }
+
+        /**
          * Structured dataset of Roman Imperial Eras and Emperors (81–313 AD)
-         * Every historical figure and martyr name strictly follows bilingual formatting: "English / Chinese Standard Name"
+         * Every historical figure and martyr name strictly follows bilingual formatting: "中文公信译名 (English Name)"
          */
         const timelineEras = [
             {
@@ -322,9 +365,9 @@
                         isPeaceful: false,
                         decreesAndEvents: [
                             "强化皇帝崇拜（自称“主与神” Dominus et Deus），要求民众向皇帝塑像及商业行会守护神献祭效忠。",
-                            "放逐使徒约翰 (Apostle John) 至拔摩海岛（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 1:9</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev1.9;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev1.9;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>），开启《启示录》的写作背景。",
-                            "士每拿教会遭受严重的经济迫害与贫穷（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:9</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.9;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.9;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。",
-                            "忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:13</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.13;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.13;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）。",
+                            `放逐使徒约翰 (Apostle John) 至拔摩海岛（${renderScripturePills("rev1-9", "启 1:9", "Rev 1:9")}），开启《启示录》的写作背景。`,
+                            `士每拿教会遭受严重的经济迫害与贫穷（${renderScripturePills("rev2-9", "启 2:9", "Rev 2:9")}）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。`,
+                            `忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（${renderScripturePills("rev2-13", "启 2:13", "Rev 2:13")}）。`,
                             "罗马贵族表亲弗拉维·克莱门斯 (Flavius Clemens) 夫妇因信仰被处决或流放（其妻多米提拉 Flavia Domitilla 被放逐）。"
                         ],
                         martyrs: "安提帕 (Antipas，别迦摩殉道)、弗拉维·克莱门斯 (Flavius Clemens)；流放者：使徒约翰 (Apostle John)、多米提拉 (Flavia Domitilla)"
@@ -386,7 +429,7 @@
                         severityLabelEn: "Sporadic / Mob-Driven",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:10</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.10;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.10;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span> 对士每拿教会的预言）。"
+                            `延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》${renderScripturePills("rev2-10", "启 2:10", "Rev 2:10")} 对士每拿教会的预言）。`
                         ],
                         martyrs: "士每拿主教坡旅甲 (Polycarp of Smyrna，约155年在竞技场被火焚殉道)"
                     },
@@ -571,7 +614,7 @@
                         severityLabelEn: "Empire-Wide Great Persecution",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 13:1–18</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev13.1-18;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev13.1-18;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）所描绘的制度化大试炼高度平行的历史图景。"
+                            `303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（${renderScripturePills("rev13", "启 13:1–18", "Rev 13:1–18")}）所描绘的制度化大试炼高度平行的历史图景。`
                         ],
                         martyrs: "尼科米底亚及帝国各地无数殉道者（史称“大逼迫” Great Persecution）"
                     },
@@ -753,81 +796,15 @@
 
             // Update counter
             document.getElementById("visibleCount").textContent = totalVisible;
-
-            // Re-run Logos Reftagger on newly rendered Scripture references if already loaded
-            if (window.refTagger && typeof window.refTagger.tag === "function") {
-                try {
-                    window.refTagger.tag(container);
-                } catch (e) {
-                    // Ignore tagging errors during initial script load
-                }
-            }
         }
 
         /**
-         * Initializes interactive filter buttons, peaceful-emperor collapse toggle, and standalone HTML download
+         * Initializes interactive filter buttons, peaceful-emperor collapse toggle, and dual-language Scripture tooltips
          */
         function initControls() {
             const filterButtons = document.querySelectorAll(".filter-btn");
             const toggleBtn = document.getElementById("togglePeaceful");
             const toggleKnob = document.getElementById("toggleKnob");
-            const downloadHtmlBtn = document.getElementById("downloadHtmlBtn");
-            const toastBanner = document.getElementById("toastBanner");
-            let toastTimer = null;
-
-            function showToast(msg) {
-                const toastMsgEl = document.getElementById("toastMessage");
-                if (toastMsgEl && msg) toastMsgEl.textContent = msg;
-                toastBanner.classList.remove("hidden");
-                if (toastTimer) clearTimeout(toastTimer);
-                toastTimer = setTimeout(function () {
-                    toastBanner.classList.add("hidden");
-                }, 4500);
-            }
-
-            if (downloadHtmlBtn) {
-                downloadHtmlBtn.addEventListener("click", function () {
-                    try {
-                        const clone = document.documentElement.cloneNode(true);
-
-                        // Hide toast banner in exported file
-                        const clonedToast = clone.querySelector("#toastBanner");
-                        if (clonedToast) clonedToast.classList.add("hidden");
-
-                        // Restore plain text inside .sc-ref so Reftagger initializes cleanly on GitHub Pages
-                        clone.querySelectorAll(".sc-ref").forEach(function (span) {
-                            span.textContent = span.textContent;
-                        });
-
-                        // Strip runtime Reftagger script & injected tooltip elements
-                        clone.querySelectorAll('script[src*="reftagger.com"]').forEach(function (s) {
-                            s.remove();
-                        });
-                        clone.querySelectorAll('[id*="refTagger"], [class*="rtTooltip"], [class*="rtContainer"], style#rt-tooltip-styles').forEach(function (node) {
-                            node.remove();
-                        });
-
-                        const fullHtml = "<!DOCTYPE html>\n" + clone.outerHTML;
-                        const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
-                        const url = URL.createObjectURL(blob);
-
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = "earlychurch_persecution.html";
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-
-                        setTimeout(function () {
-                            URL.revokeObjectURL(url);
-                        }, 1000);
-
-                        showToast("已下载 earlychurch_persecution.html，可直接上传覆盖 GitHub 仓库文件！");
-                    } catch (err) {
-                        showToast("下载遇到限制，请使用浏览器的“另存为”保存当前页面。");
-                    }
-                });
-            }
 
             filterButtons.forEach((btn) => {
                 btn.addEventListener("click", () => {
@@ -882,29 +859,166 @@
             });
         }
 
+        /**
+         * Dual-language (Chinese CUV & English LSB) floating Scripture hover/tap tooltip manager
+         */
+        function initScriptureTooltips() {
+            const tooltip = document.getElementById("scriptureTooltip");
+            const tooltipHeader = document.getElementById("tooltipHeader");
+            const tooltipTitle = document.getElementById("tooltipTitle");
+            const tooltipBody = document.getElementById("tooltipBody");
+            const tooltipCloseBtn = document.getElementById("tooltipCloseBtn");
+            let activePill = null;
+            let hideTimer = null;
+
+            function positionTooltip(targetEl) {
+                const rect = targetEl.getBoundingClientRect();
+                const tipRect = tooltip.getBoundingClientRect();
+                const margin = 12;
+
+                let left = rect.left + (rect.width / 2) - (tipRect.width / 2);
+                if (left < margin) left = margin;
+                if (left + tipRect.width > window.innerWidth - margin) {
+                    left = window.innerWidth - tipRect.width - margin;
+                }
+
+                let top = rect.bottom + 8;
+                if (top + tipRect.height > window.innerHeight - margin) {
+                    top = rect.top - tipRect.height - 8;
+                }
+                if (top < margin) top = margin;
+
+                tooltip.style.left = `${Math.round(left)}px`;
+                tooltip.style.top = `${Math.round(top)}px`;
+            }
+
+            function showTooltip(pillEl) {
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                    hideTimer = null;
+                }
+
+                const refKey = pillEl.getAttribute("data-ref-key");
+                const lang = pillEl.getAttribute("data-lang");
+                const entry = scriptureData[refKey] && scriptureData[refKey][lang];
+                if (!entry) return;
+
+                if (activePill && activePill !== pillEl) {
+                    activePill.classList.remove("active-pill");
+                }
+                activePill = pillEl;
+                activePill.classList.add("active-pill");
+
+                tooltipTitle.textContent = entry.header;
+                tooltipBody.textContent = entry.text;
+
+                if (lang === "cuv") {
+                    tooltipHeader.classList.remove("bg-[#1e3a5f]");
+                    tooltipHeader.classList.add("bg-[#7c2d12]");
+                } else {
+                    tooltipHeader.classList.remove("bg-[#7c2d12]");
+                    tooltipHeader.classList.add("bg-[#1e3a5f]");
+                }
+
+                tooltip.classList.add("visible");
+                tooltip.setAttribute("aria-hidden", "false");
+                positionTooltip(pillEl);
+            }
+
+            function hideTooltip(immediate) {
+                if (hideTimer) clearTimeout(hideTimer);
+                const doHide = () => {
+                    tooltip.classList.remove("visible");
+                    tooltip.setAttribute("aria-hidden", "true");
+                    if (activePill) {
+                        activePill.classList.remove("active-pill");
+                        activePill = null;
+                    }
+                };
+                if (immediate) {
+                    doHide();
+                } else {
+                    hideTimer = setTimeout(doHide, 160);
+                }
+            }
+
+            document.addEventListener("mouseover", (e) => {
+                const pill = e.target.closest(".sc-pill");
+                if (pill) {
+                    showTooltip(pill);
+                }
+            });
+
+            document.addEventListener("mouseout", (e) => {
+                const pill = e.target.closest(".sc-pill");
+                if (pill) {
+                    const related = e.relatedTarget;
+                    if (related && (tooltip.contains(related) || pill.contains(related))) return;
+                    hideTooltip(false);
+                }
+            });
+
+            tooltip.addEventListener("mouseenter", () => {
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                    hideTimer = null;
+                }
+            });
+
+            tooltip.addEventListener("mouseleave", () => {
+                hideTooltip(false);
+            });
+
+            document.addEventListener("focusin", (e) => {
+                const pill = e.target.closest(".sc-pill");
+                if (pill) showTooltip(pill);
+            });
+
+            document.addEventListener("focusout", (e) => {
+                const pill = e.target.closest(".sc-pill");
+                if (pill) hideTooltip(false);
+            });
+
+            // Tap support for touchscreens & dismiss on outside tap
+            document.addEventListener("click", (e) => {
+                const pill = e.target.closest(".sc-pill");
+                if (pill) {
+                    e.preventDefault();
+                    if (activePill === pill && tooltip.classList.contains("visible")) {
+                        hideTooltip(true);
+                    } else {
+                        showTooltip(pill);
+                    }
+                    return;
+                }
+                if (!tooltip.contains(e.target)) {
+                    hideTooltip(true);
+                }
+            });
+
+            if (tooltipCloseBtn) {
+                tooltipCloseBtn.addEventListener("click", () => hideTooltip(true));
+            }
+
+            window.addEventListener("scroll", () => {
+                if (activePill && tooltip.classList.contains("visible")) {
+                    positionTooltip(activePill);
+                }
+            }, { passive: true });
+
+            window.addEventListener("resize", () => {
+                if (activePill && tooltip.classList.contains("visible")) {
+                    positionTooltip(activePill);
+                }
+            });
+        }
+
         // Initialize on DOM load
         window.addEventListener("DOMContentLoaded", () => {
             initControls();
+            initScriptureTooltips();
             renderTimeline();
         });
-    </script>
-
-    <!-- Official Logos Reftagger v2 Script configured for Legacy Standard Bible (LSB) -->
-    <script>
-        var refTagger = {
-            settings: {
-                bibleVersion: "LSB",
-                socialSharing: [],
-                tooltipStyle: "light"
-            }
-        };
-        (function(d, t) {
-            var n = d.getElementsByTagName(t)[0];
-            var s = d.createElement(t);
-            s.src = "https://api.reftagger.com/v2/RefTagger.js";
-            s.async = true;
-            n.parentNode.insertBefore(s, n);
-        }(document, "script"));
     </script>
 </body>
 </html>
