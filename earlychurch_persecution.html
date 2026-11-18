@@ -49,7 +49,7 @@
             }
         }
 
-        /* Side-by-Side Bilingual Scripture Pills (CUV + Reftagger LSB) */
+        /* Side-by-Side Bilingual Scripture Pills (和合本 CUV + Reftagger LSB) */
         .sc-pair {
             display: inline-flex;
             align-items: center;
@@ -108,9 +108,6 @@
             cursor: help;
         }
 
-        /* Bible Gateway-tagged CUV link inside the Chinese pill */
-        .sc-zh a { color: inherit !important; text-decoration: none !important; }
-
         /* Clean styling matching Beale_Revelation_Date_Outline_LSB.html for Reftagger injected anchor */
         .sc-ref a {
             color: #0f172a !important;
@@ -130,12 +127,15 @@
             box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.08);
             overflow: hidden;
             pointer-events: none;
+            max-height: 60vh;
+            overflow-y: auto;
             opacity: 0;
             transform: translateY(4px);
             transition: opacity 0.15s ease, transform 0.15s ease;
         }
 
         #zhVerseTooltip.visible {
+            pointer-events: auto;
             opacity: 1;
             transform: translateY(0);
         }
@@ -322,19 +322,19 @@
                                 <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
                                     <span>
-                                        放逐使徒约翰 (Apostle John) 至拔摩海岛（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%201.9;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 1:9 · 和合本 (CUV)" data-zh-verse="我约翰就是你们的弟兄，和你们在耶稣的患难、国度、忍耐里一同有分，为神的道，并为给耶稣作的见证，曾在那名叫拔摩的海岛上。">启 1:9</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 1:9"></span></span></span>），开启《启示录》的写作背景。
+                                        放逐使徒约翰 (Apostle John) 至拔摩海岛（<span class="sc-pair"><a class="sc-zh" href="https://wd.bible/bible/verse/rev.1.9.cunps" target="_blank" rel="noopener noreferrer" data-cuv-key="Rev 1:9" data-zh-ref="启示录 1:9 · 和合本" data-zh-verse="">启 1:9</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 1:9"></span></span></span>），开启《启示录》的写作背景。
                                     </span>
                                 </li>
                                 <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
                                     <span>
-                                        士每拿教会遭受严重的经济迫害与贫穷（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.9;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:9 · 和合本 (CUV)" data-zh-verse="我知道你的患难，你的贫穷（你却是富足的），也知道那自称是犹太人所说的毁谤话，其实他们不是犹太人，乃是撒但一会的人。">启 2:9</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:9"></span></span></span>）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。
+                                        士每拿教会遭受严重的经济迫害与贫穷（<span class="sc-pair"><a class="sc-zh" href="https://wd.bible/bible/verse/rev.2.9.cunps" target="_blank" rel="noopener noreferrer" data-cuv-key="Rev 2:9" data-zh-ref="启示录 2:9 · 和合本" data-zh-verse="">启 2:9</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:9"></span></span></span>）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。
                                     </span>
                                 </li>
                                 <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
                                     <span>
-                                        忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.13;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:13 · 和合本 (CUV)" data-zh-verse="我知道你的居所，就是有撒但座位之处；当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。">启 2:13</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:13"></span></span></span>）。
+                                        忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（<span class="sc-pair"><a class="sc-zh" href="https://wd.bible/bible/verse/rev.2.13.cunps" target="_blank" rel="noopener noreferrer" data-cuv-key="Rev 2:13" data-zh-ref="启示录 2:13 · 和合本" data-zh-verse="">启 2:13</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:13"></span></span></span>）。
                                     </span>
                                 </li>
                                 <li class="flex items-start gap-2.5">
@@ -473,7 +473,7 @@
                                 <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
                                     <span>
-                                        延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.10;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:10 · 和合本 (CUV)" data-zh-verse="你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。">启 2:10</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:10"></span></span></span> 对士每拿教会的预言）。
+                                        延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》<span class="sc-pair"><a class="sc-zh" href="https://wd.bible/bible/verse/rev.2.10.cunps" target="_blank" rel="noopener noreferrer" data-cuv-key="Rev 2:10" data-zh-ref="启示录 2:10 · 和合本" data-zh-verse="">启 2:10</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 2:10"></span></span></span> 对士每拿教会的预言）。
                                     </span>
                                 </li>
                             </ul>
@@ -883,7 +883,7 @@
                                 <li class="flex items-start gap-2.5">
                                     <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
                                     <span>
-                                        303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%2013.1-18;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 13:1-18 · 和合本 (CUV)" data-zh-verse="“又任凭它与圣徒争战，并且得胜……凡住在地上、名字从创世以来没有记在被杀之羔羊生命册上的人，都要拜它……除了那受印记、有了兽名或有兽名数目的，都不得作买卖。”（启 13:7–8, 17）">启 13:1-18</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 13:1-18"></span></span></span>）所描绘的制度化大试炼高度平行的历史图景。
+                                        303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（<span class="sc-pair"><a class="sc-zh" href="https://wd.bible/bible/verse/rev.13.1.cunps" target="_blank" rel="noopener noreferrer" data-cuv-key="Rev 13:1-18" data-zh-ref="启示录 13:1-18 · 和合本" data-zh-verse="">启 13:1-18</a><span class="sc-en"><span class="sc-ref" data-ref="Rev. 13:1-18"></span></span></span>）所描绘的制度化大试炼高度平行的历史图景。
                                     </span>
                                 </li>
                             </ul>
@@ -935,7 +935,7 @@
     <!-- Floating Chinese Union Version (CUV) Hover Tooltip -->
     <div id="zhVerseTooltip" role="tooltip" aria-hidden="true">
         <div id="zhTooltipHeader" class="bg-[#e7e7e7] text-[#333333] text-xs font-bold px-3.5 py-2 border-b border-[#d4d4d4]"></div>
-        <div id="zhTooltipBody" class="text-[#444444] text-xs sm:text-[13px] leading-relaxed px-3.5 py-3"></div>
+        <div id="zhTooltipBody" class="text-[#444444] text-xs sm:text-[13px] leading-relaxed px-3.5 py-3" style="white-space: pre-line;"></div>
     </div>
 
     <!-- Interactive Filtering, Peaceful Collapse & Chinese Scripture Tooltip Script -->
@@ -1040,7 +1040,7 @@
             function showZhTooltip(targetEl) {
                 const ref = targetEl.getAttribute("data-zh-ref");
                 const verse = targetEl.getAttribute("data-zh-verse");
-                if (!ref || !verse) return;
+                if (!ref) return;
 
                 tooltipHeader.textContent = ref;
                 tooltipBody.textContent = verse;
@@ -1072,11 +1072,18 @@
                 tooltip.setAttribute("aria-hidden", "true");
             }
 
+            // Short delay on leave so the pointer can move onto the tooltip (to scroll long passages)
+            let hideTimer = null;
+            function scheduleHide() { clearTimeout(hideTimer); hideTimer = setTimeout(hideZhTooltip, 200); }
+            tooltip.addEventListener("mouseenter", function () { clearTimeout(hideTimer); });
+            tooltip.addEventListener("mouseleave", scheduleHide);
+
             document.querySelectorAll(".sc-zh").forEach(function (link) {
                 link.addEventListener("mouseenter", function () {
+                    clearTimeout(hideTimer);
                     showZhTooltip(link);
                 });
-                link.addEventListener("mouseleave", hideZhTooltip);
+                link.addEventListener("mouseleave", scheduleHide);
                 link.addEventListener("focus", function () {
                     showZhTooltip(link);
                 });
@@ -1088,84 +1095,82 @@
     </script>
 
     <!--
-      Scripture hover, in sequence:
-        1) Bible Gateway tags the Chinese pills (现代标点和合本 CUVMPS). Only Chinese pills hold an
-           English reference at this point, so it cannot touch the English pills.
-        2) English pills are filled in, then Logos Reftagger (LSB) runs, told to skip the
-           Chinese pills.
-      If Bible Gateway fails to load, the Chinese pills keep the built-in 和合本 tooltip.
+      Scripture pills
+        中文: 和合本 (新标点). Verse text comes from CUV_TEXT below and shows in the page's
+              own tooltip (hover on desktop; tap on phones). Clicking opens the verse on 微读圣经 (wd.bible).
+        English: Logos Reftagger, LSB.
     -->
     <script>
+        // ===== 和合本（新标点，神版）经文，公共领域。可以直接换行，多节经文每节一行 =====
+        var CUV_TEXT = {
+            "Rev 1:9":     `我约翰就是你们的弟兄，和你们在耶稣的患难、国度、忍耐里一同有分，为神的道，并为给耶稣作的见证，曾在那名叫拔摩的海岛上。`,
+            "Rev 2:9":     `我知道你的患难，你的贫穷（你却是富足的），也知道那自称是犹太人所说的毁谤话，其实他们不是犹太人，乃是撒但一会的人。`,
+            "Rev 2:10":    `你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。`,
+            "Rev 2:13":    `我知道你的居所，就是有撒但座位之处；当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。`,
+            "Rev 13:1-18": `1 我又看见一个兽从海中上来，有十角七头，在十角上戴着十个冠冕，七头上有亵渎的名号。
+2 我所看见的兽，形状像豹，脚像熊的脚，口像狮子的口。那龙将自己的能力、座位，和大权柄都给了它。
+3 我看见兽的七头中，有一个似乎受了死伤，那死伤却医好了。全地的人都希奇跟从那兽，
+4 又拜那龙，因为它将自己的权柄给了兽，也拜兽，说：“谁能比这兽，谁能与它交战呢？”
+5 又赐给它说夸大亵渎话的口，又有权柄赐给它，可以任意而行四十二个月。
+6 兽就开口向神说亵渎的话，亵渎神的名并他的帐幕，以及那些住在天上的。
+7 又任凭它与圣徒争战，并且得胜；也把权柄赐给它，制伏各族、各民、各方、各国。
+8 凡住在地上、名字从创世以来没有记在被杀之羔羊生命册上的人，都要拜它。
+9 凡有耳的，就应当听！
+10 掳掠人的，必被掳掠；用刀杀人的，必被刀杀。圣徒的忍耐和信心就是在此。
+11 我又看见另有一个兽从地中上来，有两角如同羊羔，说话好像龙。
+12 它在头一个兽面前，施行头一个兽所有的权柄，并且叫地和住在地上的人拜那死伤医好的头一个兽。
+13 又行大奇事，甚至在人面前，叫火从天降在地上。
+14 它因赐给它权柄在兽面前能行奇事，就迷惑住在地上的人，说：“要给那受刀伤还活着的兽作个像。”
+15 又有权柄赐给它，叫兽像有生气，并且能说话，又叫所有不拜兽像的人都被杀害。
+16 它又叫众人，无论大小贫富，自主的为奴的，都在右手上或是在额上受一个印记。
+17 除了那受印记、有了兽名或有兽名数目的，都不得作买卖。
+18 在这里有智慧：凡有聪明的，可以算计兽的数目；因为这是人的数目，它的数目是六百六十六。`
+        };
+        // =====================================================================================
+
         (function () {
-            var BOOKS = { Rev: "Revelation" };
-
-            function toEnglish(dataRef) {          // "Rev 13.1-18" -> "Revelation 13:1-18"
-                var m = dataRef.match(/^(\w+)\s+(\d+)\.(.+)$/);
-                return m ? (BOOKS[m[1]] || m[1]) + " " + m[2] + ":" + m[3] : dataRef;
-            }
-
-            function loadScript(src, done) {
-                var s = document.createElement("script");
-                s.src = src;
-                s.onload = function () { done(true); };
-                s.onerror = function () { done(false); };
-                document.body.appendChild(s);
-            }
-
-            function tagChinese() {
-                var pills = [];
-                document.querySelectorAll("a.sc-zh").forEach(function (a) {
-                    var m = a.getAttribute("href").match(/ref\.ly\/([^;]+);/);
-                    if (!m) return;
-                    var span = document.createElement("span");
-                    span.className = "sc-zh";
-                    span.setAttribute("data-zh-label", a.textContent);
-                    span.textContent = toEnglish(decodeURIComponent(m[1]));
-                    a.parentNode.replaceChild(span, a);
-                    pills.push(span);
-                });
-                BGLinks.version = "CUVMPS";
-                BGLinks.linkVerses();
-                // Show the Chinese label on the link Bible Gateway created
-                // (also re-applied if Bible Gateway wraps the text a moment later)
-                function relabel(span) {
-                    var link = span.querySelector("a");
-                    if (!link) return false;           // not tagged yet: leave the English text for Bible Gateway
-                    var label = span.getAttribute("data-zh-label");
-                    if (link.textContent !== label) link.textContent = label;
-                    return true;
-                }
-                pills.forEach(function (span) {
-                    if (relabel(span)) return;
-                    var obs = new MutationObserver(function () {
-                        if (relabel(span)) obs.disconnect();
-                    });
-                    obs.observe(span, { childList: true, subtree: true });
-                    setTimeout(function () { obs.disconnect(); }, 10000);
-                });
-            }
-
-            function startReftagger() {
-                document.querySelectorAll(".sc-ref[data-ref]").forEach(function (el) {
-                    el.textContent = el.getAttribute("data-ref");
-                });
-                window.refTagger = {
-                    settings: {
-                        bibleVersion: "LSB",
-                        socialSharing: [],
-                        tooltipStyle: "light",
-                        noSearchClassNames: ["sc-zh"]
-                    }
-                };
-                loadScript("https://api.reftagger.com/v2/RefTagger.js", function () {});
-            }
-
-            loadScript("https://www.biblegateway.com/public/link-to-us/tooltips/bglinks.js", function (ok) {
-                if (ok && window.BGLinks) {
-                    try { tagChinese(); } catch (e) { console.error("Bible Gateway tagging failed:", e); }
-                }
-                startReftagger();
+            // Fill each Chinese pill from CUV_TEXT
+            document.querySelectorAll("a.sc-zh[data-cuv-key]").forEach(function (a) {
+                var text = (CUV_TEXT[a.getAttribute("data-cuv-key")] || "").trim();
+                a.setAttribute("data-zh-verse", text || "（经文待填）");
             });
+
+            // Phones and tablets (no hover): first tap shows the verse, second tap on the same
+            // pill opens it, a tap elsewhere closes it.
+            if (window.matchMedia("(hover: none)").matches) {
+                var tip = document.getElementById("zhVerseTooltip");
+                var armed = null;
+                document.querySelectorAll("a.sc-zh").forEach(function (a) {
+                    a.addEventListener("click", function (e) {
+                        if (armed === a && tip.classList.contains("visible")) return;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (armed && armed !== a) armed.blur();
+                        armed = a;
+                        a.focus();
+                    });
+                });
+                tip.addEventListener("click", function (e) { e.stopPropagation(); });
+                document.addEventListener("click", function () {
+                    if (armed) { armed.blur(); armed = null; }
+                });
+            }
+
+            // English pills: Logos Reftagger (LSB)
+            document.querySelectorAll(".sc-ref[data-ref]").forEach(function (el) {
+                el.textContent = el.getAttribute("data-ref");
+            });
+            window.refTagger = {
+                settings: {
+                    bibleVersion: "LSB",
+                    socialSharing: [],
+                    tooltipStyle: "light",
+                    noSearchClassNames: ["sc-zh"]
+                }
+            };
+            var rt = document.createElement("script");
+            rt.src = "https://api.reftagger.com/v2/RefTagger.js";
+            document.body.appendChild(rt);
         })();
     </script>
 </body>
