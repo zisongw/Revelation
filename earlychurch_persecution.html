@@ -71,14 +71,84 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #a39576;
         }
+
+        /* Dual-mode Scripture Reference Pill: plain text for Reftagger hover + direct CUV/LSB badges */
+        .sc-wrap {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            padding: 0.05rem 0.45rem;
+            margin: 0.1rem 0.15rem;
+            font-size: 0.86em;
+            line-height: 1.45;
+            vertical-align: baseline;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .sc-wrap:hover {
+            background-color: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .sc-ref {
+            color: #0f172a;
+            font-weight: 600;
+            cursor: help;
+        }
+
+        /* Styling for Reftagger injected anchor inside .sc-ref */
+        .sc-ref a {
+            color: #0f172a !important;
+            text-decoration: underline dotted #64748b !important;
+            text-underline-offset: 3px;
+            cursor: help;
+        }
+
+        .sc-link {
+            display: inline-flex;
+            align-items: center;
+            color: #ffffff !important;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 0.06rem 0.42rem;
+            border-radius: 0.25rem;
+            text-decoration: none !important;
+            white-space: nowrap;
+            transition: opacity 0.15s ease, transform 0.1s ease, background-color 0.15s ease;
+        }
+
+        .sc-link-cuv {
+            background-color: #7c2d12;
+        }
+
+        .sc-link-cuv:hover {
+            background-color: #9a3412;
+        }
+
+        .sc-link-lsb {
+            background-color: #1e3a5f;
+        }
+
+        .sc-link-lsb:hover {
+            background-color: #2c5282;
+        }
+
+        .sc-link:active {
+            transform: scale(0.96);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-amber-200 selection:text-amber-950">
 
     <!-- Header Section -->
     <header class="border-b border-[#e2d7be] bg-[#f5efe2]/90 backdrop-blur-md sticky top-0 z-30 shadow-sm">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-5">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5">
                 <div>
                     <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#b8860b] mb-1">
                         <span>早期教会史专题图表</span>
@@ -93,34 +163,58 @@
                     </p>
                 </div>
 
-                <!-- Summary Stats Badge -->
-                <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-4 py-2.5 shadow-sm self-start md:self-auto">
-                    <div class="text-center pr-3 border-r border-[#e6dec8]">
-                        <div class="text-lg font-bold text-[#7c1d1d]" id="visibleCount">16</div>
-                        <div class="text-[11px] text-[#574f4a]">显示节点</div>
+                <!-- Summary Stats Badge & Standalone Download Action -->
+                <div class="flex flex-wrap items-center gap-2.5 self-start lg:self-auto">
+                    <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-3.5 py-2 shadow-xs">
+                        <div class="text-center pr-3 border-r border-[#e6dec8]">
+                            <div class="text-base sm:text-lg font-bold text-[#7c1d1d]" id="visibleCount">16</div>
+                            <div class="text-[11px] text-[#574f4a]">显示节点</div>
+                        </div>
+                        <div class="text-xs text-[#574f4a] leading-snug">
+                            <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
+                            地方零星高压 → 帝国全面清剿
+                        </div>
                     </div>
-                    <div class="text-xs text-[#574f4a] leading-snug">
-                        <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
-                        地方零星高压 → 帝国全面清剿
-                    </div>
+
+                    <button id="downloadHtmlBtn" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-[#1e3a5f] hover:bg-[#7c2d12] rounded-xl shadow-xs transition cursor-pointer" title="保存为可直接上传至 GitHub Pages 的独立 HTML 文件">
+                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"></path>
+                        </svg>
+                        <span>下载独立 HTML 文件</span>
+                    </button>
                 </div>
             </div>
         </div>
     </header>
+
+    <!-- Toast Notification -->
+    <div id="toastBanner" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-[#1e3a5f] text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-lg border border-white/15">
+        <div class="flex items-start gap-2.5">
+            <svg class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <p id="toastMessage">已保存独立 HTML 文件 earlychurch_persecution.html！</p>
+        </div>
+    </div>
 
     <!-- Main Container -->
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 
         <!-- Interactive Control Panel & Heat Scale Legend -->
         <section class="bg-[#fffdf9] border border-[#e6dec8] rounded-2xl p-5 sm:p-6 mb-10 shadow-sm">
+            <!-- Dual-Mode Scripture Interaction Legend Banner -->
+            <div class="mb-5 bg-slate-50 border border-slate-200/90 rounded-xl px-4 py-3 text-xs text-slate-700 flex items-start sm:items-center gap-2.5 leading-relaxed">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 shrink-0 mt-1.5 sm:mt-0"></span>
+                <span>
+                    <strong>双模经文交互：</strong>鼠标<strong>悬停</strong>在英文经文（如 <code class="px-1.5 py-0.5 bg-white border border-slate-200 rounded text-slate-900 font-semibold">Revelation 2:9</code>）上可触发 Logos Reftagger <strong>LSB</strong> 弹窗预览；点击右侧「<strong class="text-[#7c2d12]">和合本 ↗</strong>」或「<strong class="text-[#1e3a5f]">LSB ↗</strong>」徽章可直接在 Logos 软件中打开对应译本。
+                </span>
+            </div>
+
             <!-- Heat-Scale Legend -->
             <div class="mb-6 pb-5 border-b border-[#efe8d8]">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                     <span class="text-xs font-bold uppercase tracking-wider text-[#574f4a]">
                         逼迫烈度光谱图例 | Persecution Intensity Heat-Scale
-                    </span>
-                    <span class="text-xs text-[#786e67]">
-                        点击下方按钮筛选不同烈度的历史时期
                     </span>
                 </div>
                 
@@ -195,17 +289,20 @@
         </div>
 
         <!-- Scholarly Footer Note -->
-        <footer class="mt-16 pt-6 border-t border-[#e2d7be] text-center text-xs text-[#6e645e] space-y-1.5">
+        <footer class="mt-16 pt-6 border-t border-[#e2d7be] text-center text-xs text-[#6e645e] space-y-2">
             <p class="font-medium text-[#2b2623]">历史编纂说明 | Historical & Editorial Note</p>
             <p>所有人名均采用中文维基百科与历史学界公信译名，并附注拉丁/英文标准拼写。年代均为公元（AD）。</p>
-            <p>Interactive Timeline generated for Early Church History & Revelation Historical Context Study.</p>
+            <div class="max-w-2xl mx-auto mt-3 p-3.5 rounded-xl bg-[#f5efe2]/80 border border-[#e2d7be] text-[11px] text-[#574f4a] leading-relaxed">
+                <span class="font-semibold text-[#7c1d1d]">GitHub 网页更新提示：</span>
+                下载本最新 HTML 文件后，将其重命名为 <code class="px-1.5 py-0.5 rounded bg-[#fffdf9] border border-[#dcd2ba] text-[#2b2623] font-mono">earlychurch_persecution.html</code>，进入 GitHub 仓库点击 <strong>Add file &gt; Upload files</strong> 上传覆盖原文件并提交（Commit changes），等待约 1 分钟即可自动同步更新。
+            </div>
         </footer>
     </main>
 
     <script>
         /**
          * Structured dataset of Roman Imperial Eras and Emperors (81–313 AD)
-         * Every historical figure and martyr name strictly follows bilingual formatting: "中文公信译名 (English Name)"
+         * Every historical figure and martyr name strictly follows bilingual formatting: "English / Chinese Standard Name"
          */
         const timelineEras = [
             {
@@ -213,7 +310,7 @@
                 eraTitleZh: "一、弗拉维王朝（末代）",
                 eraTitleEn: "Flavian Dynasty (81–96)",
                 eraSpan: "81–96 AD",
-                eraSummary: "《启示录》成书背景时期：帝国崇拜强化，地方性高压初现。",
+                eraSummary: "《启示录》成书背景时期：帝国崇拜与商业行会压力交织，地方性宗教与经济迫害初现。",
                 events: [
                     {
                         id: "domitian",
@@ -224,10 +321,13 @@
                         severityLabelEn: "Sporadic / Local Pressure",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "强化“主与神”(Dominus et Deus) 皇帝崇拜，要求地方官员与民众向皇帝塑像献祭效忠。",
-                            "放逐使徒约翰 (Apostle John) 至拔摩海岛（《启示录》写作背景）；在罗马处决表亲弗拉维·克莱门斯 (Flavius Clemens) 等同情信仰的贵族。"
+                            "强化皇帝崇拜（自称“主与神” Dominus et Deus），要求民众向皇帝塑像及商业行会守护神献祭效忠。",
+                            "放逐使徒约翰 (Apostle John) 至拔摩海岛（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 1:9</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev1.9;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev1.9;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>），开启《启示录》的写作背景。",
+                            "士每拿教会遭受严重的经济迫害与贫穷（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:9</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.9;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.9;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。",
+                            "忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:13</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.13;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.13;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）。",
+                            "罗马贵族表亲弗拉维·克莱门斯 (Flavius Clemens) 夫妇因信仰被处决或流放（其妻多米提拉 Flavia Domitilla 被放逐）。"
                         ],
-                        martyrs: "使徒约翰 (Apostle John，被流放)、弗拉维·克莱门斯 (Flavius Clemens)"
+                        martyrs: "安提帕 (Antipas，别迦摩殉道)、弗拉维·克莱门斯 (Flavius Clemens)；流放者：使徒约翰 (Apostle John)、多米提拉 (Flavia Domitilla)"
                     }
                 ]
             },
@@ -260,7 +360,7 @@
                         severityLabelEn: "Sporadic / Judicial Precedent",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "约112年回复俾推尼总督小普林尼 (Pliny the Younger)：确立“不主动搜捕、具名告发则处决、献祭即赦免”的帝国司法基准，严禁受理匿名信。"
+                            "约112年回复俾推尼总督小普林尼 (Pliny the Younger)：确立“不主动搜捕、具名告发且拒不献祭则处决、当庭悔改献祭即赦免”的帝国司法基准。"
                         ],
                         martyrs: "安提阿主教伊格那丢 (Ignatius of Antioch，约107年押解罗马殉道)、耶路撒冷主教西面 (Simeon of Jerusalem)"
                     },
@@ -273,7 +373,7 @@
                         severityLabelEn: "Sporadic / Judicial Order",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "致信亚细亚总督，重申审理基督徒必须走正规法庭程序并提出实质违法证据，严禁暴民私刑与无端骚扰。"
+                            "致信亚细亚总督敏努修·丰达努斯 (Minucius Fundanus)，重申审理基督徒必须走正规法庭程序并提出实质违法证据，严禁暴民私刑。"
                         ],
                         martyrs: null
                     },
@@ -286,9 +386,9 @@
                         severityLabelEn: "Sporadic / Mob-Driven",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，民众常怒吼要求处决拒拜神明的基督徒。"
+                            "延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 2:10</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev2.10;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev2.10;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span> 对士每拿教会的预言）。"
                         ],
-                        martyrs: "士每拿主教坡旅甲 (Polycarp，约155年在竞技场被火焚殉道)"
+                        martyrs: "士每拿主教坡旅甲 (Polycarp of Smyrna，约155年在竞技场被火焚殉道)"
                     },
                     {
                         id: "marcus-aurelius",
@@ -309,7 +409,7 @@
             {
                 eraId: "severan",
                 eraTitleZh: "三、安敦尼末代至塞维鲁王朝",
-                eraTitleEn: "Commodus to Severan Dynasty (180–235)",
+                eraTitleEn: "Late Antonine to Severan Dynasty (180–235)",
                 eraSpan: "180–235 AD",
                 eraSummary: "逼迫出现首次“针对改宗与教理传播”的精准打击；王朝后期则迎来难得的宽容期。",
                 events: [
@@ -322,9 +422,9 @@
                         severityLabelEn: "Peaceful / Relative Calm",
                         isPeaceful: true,
                         decreesAndEvents: [
-                            "宠妃玛西亚 (Marcia) 同情基督徒，通过罗马主教维克托一世 (Victor I) 取得名单，释放了一批被发配撒丁岛矿山的信徒。"
+                            "宠妃玛西亚 (Marcia) 同情基督徒，通过罗马主教维克托一世 (Victor I) 取得名单，释放了一批被发配撒丁岛矿山的信徒；仅偶发元老院议员阿波罗尼乌斯 (Apollonius) 个别殉道。"
                         ],
-                        martyrs: null
+                        martyrs: "元老院议员阿波罗尼乌斯 (Apollonius，个别案例)"
                     },
                     {
                         id: "pertinax-julianus",
@@ -348,7 +448,7 @@
                         severityLabelEn: "Systematic / Anti-Conversion",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "约202年颁布诏书，严禁帝国公民改宗基督教与犹太教，旨在切断信仰传播源头，重点打击初信慕道友与亚历山大教理学院。"
+                            "约202年颁布诏书，严禁帝国公民改宗基督教与犹太教，旨在切断信仰传播源头，重点打击初信慕道友与教理学院（院长亚历山大的革利免 Clement of Alexandria 被迫流亡）。"
                         ],
                         martyrs: "北非迦太基的佩尔佩图阿 (Perpetua) 与费利西塔斯 (Felicitas)（203年殉道）、神学家俄利根 (Origen) 之父列奥尼达斯 (Leonidas)"
                     },
@@ -410,7 +510,7 @@
                         isPeaceful: false,
                         decreesAndEvents: [
                             "250年颁布“全民献祭令”：国家机器首次主动出击，强制所有公民向罗马神明献祭并领取官方“献祭证书”(libellus)，拒不执行者酷刑处死。",
-                            "引发教会内部关于如何接纳妥协“背道者”(Lapsi) 的重大神学争论。"
+                            "引发迦太基主教居普良 (Cyprian) 与罗马长老诺洼天 (Novatian) 之间关于如何接纳妥协“背道者”(Lapsi) 的重大神学争论。"
                         ],
                         martyrs: "罗马主教法比安 (Fabian)"
                     },
@@ -423,7 +523,7 @@
                         severityLabelEn: "Sporadic / Aftermath",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "西普里安瘟疫爆发期间，加卢斯 (Trebonianus Gallus) 短暂恢复向阿波罗神献祭的命令，流放罗马主教哥尼流 (Cornelius)。"
+                            "瘟疫爆发期间短暂恢复强制献祭令，流放罗马主教哥尼流 (Cornelius)。"
                         ],
                         martyrs: null
                     },
@@ -438,7 +538,7 @@
                         decreesAndEvents: [
                             "257–258年连发两道严厉敕令：禁止基督徒聚会及进入地下墓窟；下令立即处决所有拒绝献祭的主教、长老与执事；没收基督徒元老院议员与骑士阶层财产。"
                         ],
-                        martyrs: "迦太基主教居普良 (Cyprian)、罗马主教西斯笃二世 (Sixtus II)、执事老楞佐 (Lawrence)"
+                        martyrs: "迦太基主教居普良 (Cyprian of Carthage)、罗马主教西斯笃二世 (Sixtus II)、执事老楞佐 (Lawrence)"
                     },
                     {
                         id: "gallienus-to-carinus",
@@ -464,14 +564,14 @@
                 events: [
                     {
                         id: "diocletian",
-                        emperors: "戴克里先 (Diocletian) [284–305，逼迫持续至311]",
+                        emperors: "戴克里先 (Diocletian) [284–305，逼迫持续至311] & 副帝伽列里乌斯 (Galerius)",
                         reign: "284–311 AD",
                         severityCategory: "empire",
                         severityLabelZh: "帝国全面大逼迫",
                         severityLabelEn: "Empire-Wide Great Persecution",
                         isPeaceful: false,
                         decreesAndEvents: [
-                            "303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山）。"
+                            "303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（<span class=\"sc-wrap\"><span class=\"sc-ref\">Revelation 13:1–18</span><a class=\"sc-link sc-link-cuv\" href=\"https://ref.ly/Rev13.1-18;cuv\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"在 Logos 中打开和合本 (CUV)\">和合本 ↗</a><a class=\"sc-link sc-link-lsb\" href=\"https://ref.ly/Rev13.1-18;lgcystndrdbblsb\" target=\"_blank\" rel=\"noopener noreferrer\" title=\"Open Legacy Standard Bible (LSB) in Logos\">LSB ↗</a></span>）所描绘的制度化大试炼高度平行的历史图景。"
                         ],
                         martyrs: "尼科米底亚及帝国各地无数殉道者（史称“大逼迫” Great Persecution）"
                     },
@@ -482,7 +582,7 @@
                         severityCategory: "peaceful",
                         severityLabelZh: "和平 / 逼迫彻底终结",
                         severityLabelEn: "Peaceful / End of Persecution",
-                        isPeaceful: false, // Keep visible even when collapsing peaceful emperors, as it marks the climax/end
+                        isPeaceful: false,
                         decreesAndEvents: [
                             "311年伽列里乌斯 (Galerius) 病危颁布《塞尔迪卡宽容敕令》(Edict of Serdica) 承认镇压失败并停火。",
                             "313年君士坦丁一世 (Constantine I) 与李锡尼 (Licinius) 联合颁布《米兰敕令》(Edict of Milan)，确立宗教信仰自由并归还教产，持续两百五十年的大逼迫彻底结束。"
@@ -653,15 +753,81 @@
 
             // Update counter
             document.getElementById("visibleCount").textContent = totalVisible;
+
+            // Re-run Logos Reftagger on newly rendered Scripture references if already loaded
+            if (window.refTagger && typeof window.refTagger.tag === "function") {
+                try {
+                    window.refTagger.tag(container);
+                } catch (e) {
+                    // Ignore tagging errors during initial script load
+                }
+            }
         }
 
         /**
-         * Initializes interactive filter buttons and peaceful-emperor collapse toggle
+         * Initializes interactive filter buttons, peaceful-emperor collapse toggle, and standalone HTML download
          */
         function initControls() {
             const filterButtons = document.querySelectorAll(".filter-btn");
             const toggleBtn = document.getElementById("togglePeaceful");
             const toggleKnob = document.getElementById("toggleKnob");
+            const downloadHtmlBtn = document.getElementById("downloadHtmlBtn");
+            const toastBanner = document.getElementById("toastBanner");
+            let toastTimer = null;
+
+            function showToast(msg) {
+                const toastMsgEl = document.getElementById("toastMessage");
+                if (toastMsgEl && msg) toastMsgEl.textContent = msg;
+                toastBanner.classList.remove("hidden");
+                if (toastTimer) clearTimeout(toastTimer);
+                toastTimer = setTimeout(function () {
+                    toastBanner.classList.add("hidden");
+                }, 4500);
+            }
+
+            if (downloadHtmlBtn) {
+                downloadHtmlBtn.addEventListener("click", function () {
+                    try {
+                        const clone = document.documentElement.cloneNode(true);
+
+                        // Hide toast banner in exported file
+                        const clonedToast = clone.querySelector("#toastBanner");
+                        if (clonedToast) clonedToast.classList.add("hidden");
+
+                        // Restore plain text inside .sc-ref so Reftagger initializes cleanly on GitHub Pages
+                        clone.querySelectorAll(".sc-ref").forEach(function (span) {
+                            span.textContent = span.textContent;
+                        });
+
+                        // Strip runtime Reftagger script & injected tooltip elements
+                        clone.querySelectorAll('script[src*="reftagger.com"]').forEach(function (s) {
+                            s.remove();
+                        });
+                        clone.querySelectorAll('[id*="refTagger"], [class*="rtTooltip"], [class*="rtContainer"], style#rt-tooltip-styles').forEach(function (node) {
+                            node.remove();
+                        });
+
+                        const fullHtml = "<!DOCTYPE html>\n" + clone.outerHTML;
+                        const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+                        const url = URL.createObjectURL(blob);
+
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "earlychurch_persecution.html";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+
+                        setTimeout(function () {
+                            URL.revokeObjectURL(url);
+                        }, 1000);
+
+                        showToast("已下载 earlychurch_persecution.html，可直接上传覆盖 GitHub 仓库文件！");
+                    } catch (err) {
+                        showToast("下载遇到限制，请使用浏览器的“另存为”保存当前页面。");
+                    }
+                });
+            }
 
             filterButtons.forEach((btn) => {
                 btn.addEventListener("click", () => {
@@ -721,6 +887,24 @@
             initControls();
             renderTimeline();
         });
+    </script>
+
+    <!-- Official Logos Reftagger v2 Script configured for Legacy Standard Bible (LSB) -->
+    <script>
+        var refTagger = {
+            settings: {
+                bibleVersion: "LSB",
+                socialSharing: [],
+                tooltipStyle: "light"
+            }
+        };
+        (function(d, t) {
+            var n = d.getElementsByTagName(t)[0];
+            var s = d.createElement(t);
+            s.src = "https://api.reftagger.com/v2/RefTagger.js";
+            s.async = true;
+            n.parentNode.insertBefore(s, n);
+        }(document, "script"));
     </script>
 </body>
 </html>
