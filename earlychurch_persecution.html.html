@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗马帝国教会逼迫时间线 (81–313 AD) | The Timeline of Christian Persecution in the Roman Empire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-parchment: #faf6ee;
+            --card-bg: #fffdf9;
+            --ink-primary: #2b2623;
+            --ink-secondary: #574f4a;
+            --accent-crimson: #7c1d1d;
+            --accent-gold: #b8860b;
+            --border-subtle: #e6dec8;
+        }
+
+        body {
+            background-color: var(--bg-parchment);
+            color: var(--ink-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-image: radial-gradient(#e8dfc8 0.75px, transparent 0.75px);
+            background-size: 24px 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif-title {
+            font-family: 'Cinzel', 'Noto Serif SC', Georgia, serif;
+        }
+
+        /* Timeline central spine line */
+        .timeline-spine {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 3px;
+            background: linear-gradient(to bottom, #d4af37, #b8860b, #7c1d1d, #b8860b);
+            border-radius: 999px;
+        }
+
+        @media (min-width: 768px) {
+            .timeline-spine {
+                left: 36px;
+            }
+        }
+
+        /* Side-by-Side Bilingual Scripture Pills (CUV + Reftagger LSB) */
+        .sc-pair {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            vertical-align: baseline;
+            margin: 0.05rem 0.15rem;
+        }
+
+        /* Chinese Union Version (CUV) Pill */
+        .sc-zh {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fdf2f2;
+            border: 1px solid #e5b8b8;
+            color: #7c1d12 !important;
+            font-weight: 600;
+            font-size: 0.86em;
+            line-height: 1.4;
+            padding: 0.05rem 0.45rem;
+            border-radius: 0.375rem;
+            text-decoration: underline dotted #b91c1c !important;
+            text-underline-offset: 3px;
+            cursor: help;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sc-zh:hover,
+        .sc-zh:focus {
+            background-color: #fbe5e5;
+            border-color: #c88a8a;
+            outline: none;
+        }
+
+        /* English Legacy Standard Bible (LSB) Pill for Logos Reftagger v2 */
+        .sc-en {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            padding: 0.05rem 0.45rem;
+            font-size: 0.86em;
+            line-height: 1.4;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sc-en:hover {
+            background-color: #e2e8f0;
+            border-color: #94a3b8;
+        }
+
+        .sc-ref {
+            color: #0f172a;
+            font-weight: 600;
+            cursor: help;
+        }
+
+        /* Bible Gateway-tagged CUV link inside the Chinese pill */
+        .sc-zh a { color: inherit !important; text-decoration: none !important; }
+
+        /* Clean styling matching Beale_Revelation_Date_Outline_LSB.html for Reftagger injected anchor */
+        .sc-ref a {
+            color: #0f172a !important;
+            text-decoration: underline dotted #64748b !important;
+            text-underline-offset: 3px;
+        }
+
+        /* Custom Floating Tooltip for Chinese Union Version (CUV) */
+        #zhVerseTooltip {
+            position: fixed;
+            z-index: 9999;
+            width: 360px;
+            max-width: calc(100vw - 24px);
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        #zhVerseTooltip.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3ede0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c7bca1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a39576;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-200 selection:text-amber-950">
+
+    <!-- Header Section -->
+    <header class="border-b border-[#e2d7be] bg-[#f5efe2]/90 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5">
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#b8860b] mb-1">
+                        <span>早期教会史专题图表</span>
+                        <span>•</span>
+                        <span>Early Church History</span>
+                    </div>
+                    <h1 class="font-serif-title text-2xl sm:text-3xl font-bold text-[#7c1d1d] tracking-tight">
+                        罗马帝国教会逼迫时间线 <span class="text-[#2b2623] font-normal text-xl sm:text-2xl">(81–313 AD)</span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-0.5 font-medium">
+                        The Timeline of Christian Persecution in the Roman Empire: From Domitian to Diocletian
+                    </p>
+                </div>
+
+                <!-- Summary Stats Badge -->
+                <div class="flex items-center gap-3 bg-[#fffdf9] border border-[#e6dec8] rounded-xl px-3.5 py-2 shadow-xs self-start lg:self-auto">
+                    <div class="text-center pr-3 border-r border-[#e6dec8]">
+                        <div class="text-base sm:text-lg font-bold text-[#7c1d1d]" id="visibleCount">18</div>
+                        <div class="text-[11px] text-[#574f4a]">显示节点</div>
+                    </div>
+                    <div class="text-xs text-[#574f4a] leading-snug">
+                        <span class="font-semibold text-[#2b2623]">演进轨迹：</span><br>
+                        地方零星高压 → 帝国全面清剿
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Interactive Control Panel & Heat Scale Legend -->
+        <section class="bg-[#fffdf9] border border-[#e6dec8] rounded-2xl p-5 sm:p-6 mb-10 shadow-sm">
+            <!-- Heat-Scale Legend -->
+            <div class="mb-6 pb-5 border-b border-[#efe8d8]">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-[#574f4a]">
+                        逼迫烈度光谱图例 | Persecution Intensity Heat-Scale
+                    </span>
+                </div>
+                
+                <!-- Gradient Bar -->
+                <div class="h-3 w-full rounded-full overflow-hidden flex shadow-inner mb-2.5">
+                    <div class="w-1/4 bg-[#6b8e78]" title="Peaceful / Tolerant"></div>
+                    <div class="w-1/4 bg-[#d97706]" title="Sporadic / Judicial"></div>
+                    <div class="w-1/4 bg-[#c2410c]" title="Systematic / Targeted"></div>
+                    <div class="w-1/4 bg-[#881337]" title="Empire-Wide Great Persecution"></div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#6b8e78] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">宽容/平静期 <span class="text-[#786e67] block sm:inline text-[11px]">Peaceful</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#d97706] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">零星/司法消极 <span class="text-[#786e67] block sm:inline text-[11px]">Sporadic / Judicial</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#c2410c] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">系统/针对性打击 <span class="text-[#786e67] block sm:inline text-[11px]">Systematic / Targeted</span></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-[#881337] shrink-0"></span>
+                        <span class="font-medium text-[#2b2623]">帝国全面大逼迫 <span class="text-[#786e67] block sm:inline text-[11px]">Empire-Wide</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Buttons & Toggle -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <!-- Severity Filters -->
+                <div class="flex flex-wrap gap-2" id="filterGroup">
+                    <button type="button" data-filter="all" class="filter-btn active px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#2b2623] text-[#faf6ee] shadow-sm cursor-pointer">
+                        全部时期 All
+                    </button>
+                    <button type="button" data-filter="peaceful" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#6b8e78]"></span>
+                        宽容/平静期 Peaceful
+                    </button>
+                    <button type="button" data-filter="sporadic" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#d97706]"></span>
+                        零星/司法消极 Sporadic / Judicial
+                    </button>
+                    <button type="button" data-filter="systematic" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#c2410c]"></span>
+                        系统/针对性打击 Systematic / Targeted
+                    </button>
+                    <button type="button" data-filter="empire" class="filter-btn px-3.5 py-2 rounded-xl text-xs font-semibold transition-all bg-[#f3ede0] text-[#2b2623] hover:bg-[#e6dec8] cursor-pointer flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-[#881337]"></span>
+                        帝国全面大逼迫 Empire-Wide
+                    </button>
+                </div>
+
+                <!-- Toggle Peaceful Emperors Switch -->
+                <div class="flex items-center justify-between lg:justify-end gap-3 pt-3 lg:pt-0 border-t lg:border-t-0 border-[#efe8d8]">
+                    <label for="togglePeaceful" class="text-xs font-medium text-[#574f4a] cursor-pointer select-none">
+                        折叠无重大逼迫皇帝 <span class="text-[#8a7f77]">(Collapse Peaceful)</span>
+                    </label>
+                    <button type="button" id="togglePeaceful" role="switch" aria-checked="false" class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#d6ccb4] transition-colors duration-200 ease-in-out focus:outline-none">
+                        <span id="toggleKnob" class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Static Timeline Container (Permanent DOM elements for reliable Logos Reftagger v2 binding) -->
+        <div id="timelineContainer" class="space-y-12">
+
+            <!-- =================================================================== -->
+            <!-- ERA 1: 弗拉维王朝（末代） Flavian Dynasty (81–96)                     -->
+            <!-- =================================================================== -->
+            <section class="era-block">
+                <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <div>
+                            <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                一、弗拉维王朝（末代）
+                            </h2>
+                            <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                Flavian Dynasty (81–96)
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                            81–96 AD
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                        《启示录》成书背景时期：帝国崇拜与商业行会压力交织，地方性宗教与经济迫害初现。
+                    </p>
+                </div>
+
+                <div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>
+
+                    <!-- Card 1: Domitian -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">81–96 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">图密善 (Domitian)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Sporadic / Local Pressure</span>
+                                </span>
+                            </div>
+
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>强化皇帝崇拜（自称“主与神” <em>Dominus et Deus</em>），要求民众向皇帝塑像及商业行会守护神献祭效忠。</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>
+                                        放逐使徒约翰 (Apostle John) 至拔摩海岛（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%201.9;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 1:9 · 和合本 (CUV)" data-zh-verse="我约翰就是你们的弟兄，和你们在耶稣的患难、国度、忍耐里一同有分，为神的道，并为给耶稣作的见证，曾在那名叫拔摩的海岛上。">启 1:9</a><span class="sc-en"><span class="sc-ref" data-ref="Revelation 1:9"></span></span></span>），开启《启示录》的写作背景。
+                                    </span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>
+                                        士每拿教会遭受严重的经济迫害与贫穷（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.9;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:9 · 和合本 (CUV)" data-zh-verse="我知道你的患难，你的贫穷（你却是富足的），也知道那自称是犹太人所说的毁谤话，其实他们不是犹太人，乃是撒但一会的人。">启 2:9</a><span class="sc-en"><span class="sc-ref" data-ref="Revelation 2:9"></span></span></span>）：信徒因拒绝向行会守护神及皇帝献祭，并遭当地犹太社群排挤与告发，被剥夺商业行会资格与生计。
+                                    </span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>
+                                        忠心见证人安提帕 (Antipas) 在帝国崇拜中心别迦摩殉道（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.13;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:13 · 和合本 (CUV)" data-zh-verse="我知道你的居所，就是有撒但座位之处；当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。">启 2:13</a><span class="sc-en"><span class="sc-ref" data-ref="Revelation 2:13"></span></span></span>）。
+                                    </span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>罗马贵族表亲弗拉维·克莱门斯 (Flavius Clemens) 夫妇因信仰被处决或流放（其妻弗拉维娅·多米提拉 Flavia Domitilla 被放逐）。</span>
+                                </li>
+                            </ul>
+
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">安提帕 (Antipas，别迦摩殉道)、弗拉维·克莱门斯 (Flavius Clemens)；流放者：使徒约翰 (Apostle John)、弗拉维娅·多米提拉 (Flavia Domitilla)</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- ERA 2: 五贤帝时期 Five Good Emperors (96–180)                       -->
+            <!-- =================================================================== -->
+            <section class="era-block">
+                <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <div>
+                            <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                二、五贤帝时期
+                            </h2>
+                            <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                Nerva–Antonine Dynasty / Five Good Emperors (96–180)
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                            96–180 AD
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                        确立“不主动搜捕、具名告发则处决”的司法原则；后期因天灾瘟疫引发地方暴民逼迫升温。
+                    </p>
+                </div>
+
+                <div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>
+
+                    <!-- Card 2: Nerva -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">96–98 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">涅尔瓦 (Nerva)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / No Major Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>推翻图密善 (Domitian) 暴政，废除告密制度，赦免部分此前因“不敬神”或犹太习俗罪名被流放者。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Card 3: Trajan -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">98–117 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">图拉真 (Trajan)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Sporadic / Judicial Precedent</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>约112年回复俾推尼总督小普林尼 (Pliny the Younger)：确立“不主动搜捕、具名告发且拒不献祭则处决、当庭悔改献祭即赦免”的帝国司法基准。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">安提阿主教伊格那丢 (Ignatius of Antioch，约107年押解罗马殉道)、耶路撒冷主教西面 (Simeon of Jerusalem)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 4: Hadrian -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">117–138 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">哈德良 (Hadrian)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Sporadic / Judicial Order</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>致信亚细亚总督敏努修·丰达努斯 (Minucius Fundanus)，重申审理基督徒必须走正规法庭程序并提出实质违法证据，严禁暴民私刑。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Card 5: Antoninus Pius -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">138–161 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">安敦宁·毕尤 (Antoninus Pius)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Sporadic / Mob-Driven</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>
+                                        延续图拉真 (Trajan) 的司法消极政策，但地方发生地震、饥荒等天灾时，暴民常怒吼要求处决拒拜神明的基督徒（直接应验《启示录》<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%202.10;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 2:10 · 和合本 (CUV)" data-zh-verse="你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。">启 2:10</a><span class="sc-en"><span class="sc-ref" data-ref="Revelation 2:10"></span></span></span> 对士每拿教会的预言）。
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">士每拿主教坡旅甲 (Polycarp of Smyrna，约155年在竞技场被火焚殉道)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 6: Marcus Aurelius -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">161–180 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">马可·奥勒留 (Marcus Aurelius)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Intensified Local Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>安东尼瘟疫与蛮族入侵引发社会恐慌与民众迁怒，皇帝本人亦从斯多葛哲学立场厌恶基督徒的殉道精神。</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>177年高卢爆发惨烈的里昂与维埃纳大逼迫，地方当局动用酷刑大规模处决信徒。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">护教士游斯丁 (Justin Martyr，约165年斩首)、里昂主教坡提努斯 (Pothinus)、女奴布兰迪娜 (Blandina)</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- ERA 3: 安敦尼末代至塞维鲁王朝 Severan Dynasty (180–235)             -->
+            <!-- =================================================================== -->
+            <section class="era-block">
+                <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <div>
+                            <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                三、安敦尼末代至塞维鲁王朝
+                            </h2>
+                            <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                Late Antonine to Severan Dynasty (180–235)
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                            180–235 AD
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                        逼迫出现首次“针对改宗与教理传播”的精准打击；王朝后期则迎来难得的宽容期。
+                    </p>
+                </div>
+
+                <div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>
+
+                    <!-- Card 7: Commodus -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">180–192 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">康茂德 (Commodus)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / Relative Calm</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>宠妃玛西亚 (Marcia) 同情基督徒，通过罗马主教维克托一世 (Victor I) 取得名单，释放了一批被发配撒丁岛矿山的信徒；仅偶发元老院议员阿波罗尼乌斯 (Apollonius) 个别殉道。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">元老院议员阿波罗尼乌斯 (Apollonius，个别案例)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 8: Pertinax & Didius Julianus -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">193 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">佩蒂纳克斯 (Pertinax) &amp; 尤利安努斯 (Didius Julianus)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / No Record</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>“五帝之年”内战频仍，两位皇帝在位均仅数月，无针对教会的逼迫记录。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Card 9: Septimius Severus -->
+                    <article class="timeline-item relative group" data-severity="systematic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#c2410c] ring-4 ring-[#c2410c]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#c2410c]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#c2410c]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">193–211 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">塞普蒂米乌斯·塞维鲁 (Septimius Severus)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#ffedd5] text-[#9a3412] border-[#fed7aa] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">系统/针对性打击</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Systematic / Anti-Conversion</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>约202年颁布诏书，严禁帝国公民改宗基督教与犹太教，旨在切断信仰传播源头，重点打击初信慕道友与教理学院（院长亚历山大的革利免 Clement of Alexandria 被迫流亡）。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">北非迦太基的佩尔佩图阿 (Perpetua) 与费利西塔斯 (Felicitas)（203年殉道）、神学家俄利根 (Origen) 之父列奥尼达斯 (Leonidas)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 10: Later Severans -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">211–235 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">卡拉卡拉 (Caracalla) [211–217]、马克里努斯 (Macrinus) [217–218]、埃拉伽巴路斯 (Elagabalus) [218–222]、亚历山大·塞维鲁 (Severus Alexander) [222–235]</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / Broad Toleration</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>塞维鲁王朝后期整体对宗教采取包容态度，尤以亚历山大·塞维鲁 (Severus Alexander) 对基督教最为友善，帝国境内基本无官方逼迫。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- ERA 4: 三世纪危机时期 Crisis of the Third Century (235–284)         -->
+            <!-- =================================================================== -->
+            <section class="era-block">
+                <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <div>
+                            <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                四、三世纪危机时期
+                            </h2>
+                            <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                Crisis of the Third Century (235–284)
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                            235–284 AD
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                        帝国深陷内忧外患，首次发动全帝国范围、国家机器主动出击的“全民献祭”大逼迫。
+                    </p>
+                </div>
+
+                <div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>
+
+                    <!-- Card 11: Maximinus Thrax -->
+                    <article class="timeline-item relative group" data-severity="systematic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#c2410c] ring-4 ring-[#c2410c]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#c2410c]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#c2410c]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">235–238 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">马克西米努斯·色雷克斯 (Maximinus Thrax)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#ffedd5] text-[#9a3412] border-[#fed7aa] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">系统/针对性打击</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Systematic / Clergy Targeted</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>推翻前任宽容政策，首次下令专门逮捕并处决教会神职领袖（“斩首行动”），试图瓦解教会组织体系。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">罗马主教彭谦 (Pontian) 与对立主教希坡律陀 (Hippolytus)（均被流放撒丁岛矿山致死）</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 12: Gordians & Philip the Arab -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">238–249 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">戈尔迪安一世/二世/三世 (Gordian I/II/III) [238–244] &amp; 阿拉伯人菲利普 (Philip the Arab) [244–249]</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / Relative Peace</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>教会享受十余年平静发展期；阿拉伯人菲利普 (Philip the Arab) 甚至被早期教会史家传言暗中同情基督教。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Card 13: Decius -->
+                    <article class="timeline-item relative group" data-severity="empire" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#881337] ring-4 ring-[#881337]/30 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e2c2c6] hover:border-[#881337]/70 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#881337]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">249–251 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">德西乌斯 (Decius)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#ffe4e6] text-[#881337] border-[#fecdd3] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">帝国全面大逼迫</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Empire-Wide Great Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>250年颁布“全民献祭令”：国家机器首次主动出击，强制所有公民向罗马神明献祭并领取官方“献祭证书”(<em>libellus</em>)，拒不执行者酷刑处死。</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>引发迦太基主教居普良 (Cyprian) 与罗马长老诺洼天 (Novatian) 之间关于如何接纳妥协“背道者”(<em>Lapsi</em>) 的重大神学争论。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">罗马主教法比安 (Fabian)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 14: Gallus & Aemilianus -->
+                    <article class="timeline-item relative group" data-severity="sporadic" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#d97706] ring-4 ring-[#d97706]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#d97706]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#d97706]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">251–253 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">加卢斯 (Trebonianus Gallus) [251–253] &amp; 埃米利阿努斯 (Aemilianus) [253]</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#fef3c7] text-[#92400e] border-[#fde68a] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">零星/司法消极</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Sporadic / Aftermath</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>瘟疫爆发期间短暂恢复强制献祭令，流放罗马主教哥尼流 (Cornelius)。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Card 15: Valerian -->
+                    <article class="timeline-item relative group" data-severity="empire" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#881337] ring-4 ring-[#881337]/30 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e2c2c6] hover:border-[#881337]/70 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#881337]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">253–260 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">瓦勒良 (Valerian)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#ffe4e6] text-[#881337] border-[#fecdd3] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">帝国全面大逼迫</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Empire-Wide Great Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>257–258年连发两道严厉敕令：禁止基督徒聚会及进入地下墓窟；下令立即处决所有拒绝献祭的主教、长老与执事；没收基督徒元老院议员与骑士阶层财产。</span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">迦太基主教居普良 (Cyprian of Carthage)、罗马主教西斯笃二世 (Sixtus II)、执事老楞佐 (Lawrence)</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 16: Gallienus to Carinus -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="true">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">260–284 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">加里恩努斯 (Gallienus) 至 卡里努斯 (Carinus) 等诸帝</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / Little Peace of the Church</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>260年加里恩努斯 (Gallienus) 颁布宽容令，归还教会财产，开启长达约40年的“小和平时期”（仅奥勒良 Aurelian 275年临终前曾拟定逼迫令但未及实施）。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- =================================================================== -->
+            <!-- ERA 5: 四帝共治时期与逼迫终结 Tetrarchy & End of Persecution (284–313) -->
+            <!-- =================================================================== -->
+            <section class="era-block">
+                <div class="mb-6 bg-gradient-to-r from-[#f3ead6] via-[#f8f2e4] to-transparent border-l-4 border-[#b8860b] rounded-r-xl px-4 sm:px-5 py-3.5 shadow-xs">
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <div>
+                            <h2 class="font-serif-title text-lg sm:text-xl font-bold text-[#2b2623]">
+                                五、四帝共治时期与逼迫终结
+                            </h2>
+                            <p class="text-xs font-semibold tracking-wide text-[#8c6508] uppercase mt-0.5">
+                                Tetrarchy &amp; End of Persecution (284–313)
+                            </p>
+                        </div>
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-[#fffdf9] text-[#7c1d1d] border border-[#e2d5b5] shadow-2xs">
+                            284–313 AD
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-[#574f4a] mt-2 leading-relaxed">
+                        罗马帝国史上最惨烈的终极镇压，最终以帝国公开认输并颁布《米兰敕令》告终。
+                    </p>
+                </div>
+
+                <div class="relative pl-12 md:pl-16 space-y-6">
+                    <div class="timeline-spine"></div>
+
+                    <!-- Card 17: Diocletian & Galerius -->
+                    <article class="timeline-item relative group" data-severity="empire" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#881337] ring-4 ring-[#881337]/30 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e2c2c6] hover:border-[#881337]/70 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#881337]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">284–311 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">戴克里先 (Diocletian) [284–305，逼迫持续至311] &amp; 副帝伽列里乌斯 (Galerius)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#ffe4e6] text-[#881337] border-[#fecdd3] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">帝国全面大逼迫</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Empire-Wide Great Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>
+                                        303–304年在东部副帝伽列里乌斯 (Galerius) 极力推动下连颁四道灭绝敕令：拆毁全境教堂、焚烧全部圣经、逮捕并酷刑折磨所有神职人员、强制全民献祭（违者处死或挖眼断筋发配矿山），展现出与《启示录》（<span class="sc-pair"><a class="sc-zh" href="https://ref.ly/Rev%2013.1-18;cuv?t=biblia" target="_blank" rel="noopener noreferrer" data-zh-ref="启示录 13:1-18 · 和合本 (CUV)" data-zh-verse="“又任凭它与圣徒争战，并且得胜……凡住在地上、名字从创世以来没有记在被杀之羔羊生命册上的人，都要拜它……除了那受印记、有了兽名或有兽名数目的，都不得作买卖。”（启 13:7–8, 17）">启 13:1-18</a><span class="sc-en"><span class="sc-ref" data-ref="Revelation 13:1-18"></span></span></span>）所描绘的制度化大试炼高度平行的历史图景。
+                                    </span>
+                                </li>
+                            </ul>
+                            <div class="mt-3.5 pt-3 border-t border-[#f0e9d8] flex items-start gap-2 text-xs sm:text-sm">
+                                <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#7c1d1d]/10 text-[#7c1d1d] font-semibold text-xs shrink-0">代表殉道者 / Martyrs</span>
+                                <span class="text-[#2b2623] font-medium leading-relaxed">尼科米底亚及帝国各地无数殉道者（史称“大逼迫” Great Persecution）</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 18: Edicts of Toleration -->
+                    <article class="timeline-item relative group" data-severity="peaceful" data-peaceful="false">
+                        <div class="absolute -left-[33px] md:-left-[37px] top-5 w-4 h-4 rounded-full bg-[#6b8e78] ring-4 ring-[#6b8e78]/25 border-2 border-[#faf6ee] shadow-sm transition-transform duration-200 group-hover:scale-125"></div>
+                        <div class="bg-[#fffdf9] border border-[#e6dec8] hover:border-[#6b8e78]/60 rounded-2xl p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-[#6b8e78]"></div>
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5 mb-3">
+                                <div>
+                                    <div class="inline-block text-xs font-bold tracking-wider text-[#b8860b] uppercase mb-1">311–313 AD</div>
+                                    <h3 class="text-base sm:text-lg font-bold text-[#2b2623] leading-snug">宽容敕令与逼迫终结：伽列里乌斯 (Galerius)、君士坦丁一世 (Constantine I) &amp; 李锡尼 (Licinius)</h3>
+                                </div>
+                                <span class="inline-flex flex-col sm:items-end px-3 py-1 rounded-xl border bg-[#eef4f0] text-[#365341] border-[#c6dacd] shrink-0 self-start">
+                                    <span class="text-xs font-bold leading-tight">宽容/平静期</span>
+                                    <span class="text-[10px] opacity-85 font-medium leading-tight mt-0.5">Peaceful / End of Persecution</span>
+                                </span>
+                            </div>
+                            <ul class="space-y-2 text-xs sm:text-sm text-[#3f3935] leading-relaxed">
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>311年伽列里乌斯 (Galerius) 病危颁布《塞尔迪卡宽容敕令》(<em>Edict of Serdica</em>) 承认镇压失败并停火。</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#b8860b] shrink-0"></span>
+                                    <span>313年君士坦丁一世 (Constantine I) 与李锡尼 (Licinius) 联合颁布《米兰敕令》(<em>Edict of Milan</em>)，确立宗教信仰自由并归还教产，持续两百五十年的大逼迫彻底结束。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <!-- Scholarly Footer Note -->
+        <footer class="mt-16 pt-6 border-t border-[#e2d7be] text-center text-xs text-[#6e645e] space-y-2">
+            <p class="font-medium text-[#2b2623]">历史编纂说明 | Historical &amp; Editorial Note</p>
+            <p>所有人名均采用中文维基百科与历史学界公信译名，并附注拉丁/英文标准拼写。年代均为公元（AD）。</p>
+        </footer>
+    </main>
+
+    <!-- Floating Chinese Union Version (CUV) Hover Tooltip -->
+    <div id="zhVerseTooltip" role="tooltip" aria-hidden="true">
+        <div id="zhTooltipHeader" class="bg-[#e7e7e7] text-[#333333] text-xs font-bold px-3.5 py-2 border-b border-[#d4d4d4]"></div>
+        <div id="zhTooltipBody" class="text-[#444444] text-xs sm:text-[13px] leading-relaxed px-3.5 py-3"></div>
+    </div>
+
+    <!-- Interactive Filtering, Peaceful Collapse & Chinese Scripture Tooltip Script -->
+    <script>
+        (function () {
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            const toggleBtn = document.getElementById("togglePeaceful");
+            const toggleKnob = document.getElementById("toggleKnob");
+            const eraBlocks = document.querySelectorAll(".era-block");
+            const visibleCountEl = document.getElementById("visibleCount");
+
+            let currentFilter = "all";
+            let collapsePeaceful = false;
+
+            function applyFilters() {
+                let totalVisible = 0;
+
+                eraBlocks.forEach(function (era) {
+                    const cards = era.querySelectorAll(".timeline-item");
+                    let eraVisibleCount = 0;
+
+                    cards.forEach(function (card) {
+                        const severity = card.getAttribute("data-severity");
+                        const isPeaceful = card.getAttribute("data-peaceful") === "true";
+
+                        const matchesCategory = currentFilter === "all" || severity === currentFilter;
+                        const matchesCollapse = !(collapsePeaceful && isPeaceful && currentFilter !== "peaceful");
+
+                        if (matchesCategory && matchesCollapse) {
+                            card.classList.remove("hidden");
+                            eraVisibleCount++;
+                            totalVisible++;
+                        } else {
+                            card.classList.add("hidden");
+                        }
+                    });
+
+                    era.classList.toggle("hidden", eraVisibleCount === 0);
+                });
+
+                if (visibleCountEl) {
+                    visibleCountEl.textContent = totalVisible;
+                }
+            }
+
+            filterButtons.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    filterButtons.forEach(function (b) {
+                        b.classList.remove("active", "bg-[#2b2623]", "text-[#faf6ee]");
+                        b.classList.add("bg-[#f3ede0]", "text-[#2b2623]");
+                    });
+                    btn.classList.add("active", "bg-[#2b2623]", "text-[#faf6ee]");
+                    btn.classList.remove("bg-[#f3ede0]", "text-[#2b2623]");
+
+                    currentFilter = btn.getAttribute("data-filter");
+
+                    if (currentFilter === "peaceful" && collapsePeaceful) {
+                        collapsePeaceful = false;
+                        toggleBtn.setAttribute("aria-checked", "false");
+                        toggleBtn.classList.remove("bg-[#7c1d1d]");
+                        toggleBtn.classList.add("bg-[#d6ccb4]");
+                        toggleKnob.classList.remove("translate-x-5");
+                        toggleKnob.classList.add("translate-x-0");
+                    }
+
+                    applyFilters();
+                });
+            });
+
+            toggleBtn.addEventListener("click", function () {
+                collapsePeaceful = !collapsePeaceful;
+                toggleBtn.setAttribute("aria-checked", String(collapsePeaceful));
+
+                if (collapsePeaceful) {
+                    toggleBtn.classList.remove("bg-[#d6ccb4]");
+                    toggleBtn.classList.add("bg-[#7c1d1d]");
+                    toggleKnob.classList.remove("translate-x-0");
+                    toggleKnob.classList.add("translate-x-5");
+
+                    if (currentFilter === "peaceful") {
+                        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                        if (allBtn) {
+                            allBtn.click();
+                            return;
+                        }
+                    }
+                } else {
+                    toggleBtn.classList.remove("bg-[#7c1d1d]");
+                    toggleBtn.classList.add("bg-[#d6ccb4]");
+                    toggleKnob.classList.remove("translate-x-5");
+                    toggleKnob.classList.add("translate-x-0");
+                }
+
+                applyFilters();
+            });
+
+            // Chinese Union Version (CUV) Hover / Focus Tooltip
+            const tooltip = document.getElementById("zhVerseTooltip");
+            const tooltipHeader = document.getElementById("zhTooltipHeader");
+            const tooltipBody = document.getElementById("zhTooltipBody");
+
+            function showZhTooltip(targetEl) {
+                const ref = targetEl.getAttribute("data-zh-ref");
+                const verse = targetEl.getAttribute("data-zh-verse");
+                if (!ref || !verse) return;
+
+                tooltipHeader.textContent = ref;
+                tooltipBody.textContent = verse;
+                tooltip.classList.add("visible");
+                tooltip.setAttribute("aria-hidden", "false");
+
+                const rect = targetEl.getBoundingClientRect();
+                const tipRect = tooltip.getBoundingClientRect();
+                const margin = 12;
+
+                let left = rect.left;
+                if (left + tipRect.width > window.innerWidth - margin) {
+                    left = window.innerWidth - tipRect.width - margin;
+                }
+                if (left < margin) left = margin;
+
+                let top = rect.bottom + 8;
+                if (top + tipRect.height > window.innerHeight - margin) {
+                    top = rect.top - tipRect.height - 8;
+                }
+                if (top < margin) top = margin;
+
+                tooltip.style.left = left + "px";
+                tooltip.style.top = top + "px";
+            }
+
+            function hideZhTooltip() {
+                tooltip.classList.remove("visible");
+                tooltip.setAttribute("aria-hidden", "true");
+            }
+
+            document.querySelectorAll(".sc-zh").forEach(function (link) {
+                link.addEventListener("mouseenter", function () {
+                    showZhTooltip(link);
+                });
+                link.addEventListener("mouseleave", hideZhTooltip);
+                link.addEventListener("focus", function () {
+                    showZhTooltip(link);
+                });
+                link.addEventListener("blur", hideZhTooltip);
+            });
+
+            window.addEventListener("scroll", hideZhTooltip, { passive: true });
+        })();
+    </script>
+
+    <!--
+      Scripture hover, in sequence:
+        1) Bible Gateway tags the Chinese pills (和合本 CUVS). Only Chinese pills hold an
+           English reference at this point, so it cannot touch the English pills.
+        2) English pills are filled in, then Logos Reftagger (LSB) runs, told to skip the
+           Chinese pills.
+      If Bible Gateway fails to load, the Chinese pills keep the built-in 和合本 tooltip.
+    -->
+    <script>
+        (function () {
+            var BOOKS = { Rev: "Revelation" };
+
+            function toEnglish(dataRef) {          // "Rev 13.1-18" -> "Revelation 13:1-18"
+                var m = dataRef.match(/^(\w+)\s+(\d+)\.(.+)$/);
+                return m ? (BOOKS[m[1]] || m[1]) + " " + m[2] + ":" + m[3] : dataRef;
+            }
+
+            function loadScript(src, done) {
+                var s = document.createElement("script");
+                s.src = src;
+                s.onload = function () { done(true); };
+                s.onerror = function () { done(false); };
+                document.body.appendChild(s);
+            }
+
+            function tagChinese() {
+                var pills = [];
+                document.querySelectorAll("a.sc-zh").forEach(function (a) {
+                    var m = a.getAttribute("href").match(/ref\.ly\/([^;]+);/);
+                    if (!m) return;
+                    var span = document.createElement("span");
+                    span.className = "sc-zh";
+                    span.setAttribute("data-zh-label", a.textContent);
+                    span.textContent = toEnglish(decodeURIComponent(m[1]));
+                    a.parentNode.replaceChild(span, a);
+                    pills.push(span);
+                });
+                BGLinks.version = "CUVS";
+                BGLinks.linkVerses();
+                // Show the Chinese label on the link Bible Gateway created
+                // (also re-applied if Bible Gateway wraps the text a moment later)
+                function relabel(span) {
+                    var link = span.querySelector("a");
+                    if (!link) return false;           // not tagged yet: leave the English text for Bible Gateway
+                    var label = span.getAttribute("data-zh-label");
+                    if (link.textContent !== label) link.textContent = label;
+                    return true;
+                }
+                pills.forEach(function (span) {
+                    if (relabel(span)) return;
+                    var obs = new MutationObserver(function () {
+                        if (relabel(span)) obs.disconnect();
+                    });
+                    obs.observe(span, { childList: true, subtree: true });
+                    setTimeout(function () { obs.disconnect(); }, 10000);
+                });
+            }
+
+            function startReftagger() {
+                document.querySelectorAll(".sc-ref[data-ref]").forEach(function (el) {
+                    el.textContent = el.getAttribute("data-ref");
+                });
+                window.refTagger = {
+                    settings: {
+                        bibleVersion: "LSB",
+                        socialSharing: [],
+                        tooltipStyle: "light",
+                        noSearchClassNames: ["sc-zh"]
+                    }
+                };
+                loadScript("https://api.reftagger.com/v2/RefTagger.js", function () {});
+            }
+
+            loadScript("https://www.biblegateway.com/public/link-to-us/tooltips/bglinks.js", function (ok) {
+                if (ok && window.BGLinks) {
+                    try { tagChinese(); } catch (e) { console.error("Bible Gateway tagging failed:", e); }
+                }
+                startReftagger();
+            });
+        })();
+    </script>
+</body>
+</html>
