@@ -79,7 +79,6 @@
       background: radial-gradient(circle at 35% 30%, #e7c55a 0%, #b8892b 62%, #8a6416 100%); color: #2b2008;
       font: 700 11px/1 'EB Garamond', 'Inter', serif; border: 2px solid #faf6ec; box-shadow: 0 0 0 1px #5c4512, 0 2px 6px rgba(30,24,18,0.35);
       transition: transform .15s ease; }
-    .ch-pin.is-pair .ch-dot { box-shadow: 0 0 0 2.5px #B03A2E, 0 2px 6px rgba(30,24,18,0.35); }
     .ch-pin.prologue .ch-dot { background: #faf6ec; color: #6a4b10; box-shadow: 0 0 0 1px #8a6416, 0 2px 6px rgba(30,24,18,0.3); }
     .ch-pin:hover .ch-dot { transform: scale(1.12); }
     .ch-pin.is-active .ch-dot { transform: scale(1.22); box-shadow: 0 0 0 2.5px #2b2520, 0 3px 10px rgba(0,0,0,0.35); }
@@ -103,7 +102,7 @@
     .zl-d .site-pin:not(.is-active) .site-lbl { display: none; }
     .zl-e .site-pin { display: none; }
 
-    .dist-tag { pointer-events: none; white-space: nowrap; transform: translate(-50%, -50%);
+    .dist-tag { pointer-events: none; white-space: nowrap; width: max-content; transform: translate(-50%, -50%);
       background: rgba(250,246,236,0.94); border: 1px solid #8A6A1A; border-radius: 10px; padding: 1px 7px;
       font: 600 10.5px/1.35 'Inter', 'Noto Sans SC', sans-serif; color: #5c4512; box-shadow: 0 1px 4px rgba(43,37,32,0.15); }
 
@@ -1179,7 +1178,6 @@ const NOTES = [
       groups.sites = L.layerGroup().addTo(map);
       groups.churches = L.layerGroup().addTo(map);
       groups.sel = L.layerGroup().addTo(map);
-      groups.pair = L.layerGroup().addTo(map);
 
       L.control.scale({ position: 'bottomleft', maxWidth: 130, imperial: false }).addTo(map);
       addStaticLabels(); addPlaces(); renderProvince(); addChurches(); addSites();
@@ -1284,20 +1282,6 @@ const NOTES = [
   }
   function refPlainFixed(ref, lang) { const keep = state.lang; state.lang = lang; const out = refPlain(ref); state.lang = keep; return out; }
 
-  function renderPairLink() {
-    if (!map || !groups.pair) return;
-    groups.pair.clearLayers();
-    const s = curStop();
-    churchMarkers.forEach((m, id) => { const el = m.getElement && m.getElement(); const pin = el && el.querySelector('.ch-pin'); if (pin) pin.classList.toggle('is-pair', !!s.pair && s.pair === id); });
-    if (!s.pair) return;
-    const p = stopById(s.pair), col = CHI_COLOR[s.chi[0]];
-    const mid = [(s.lat + p.lat) / 2 + 0.12, (s.lon + p.lon) / 2];
-    const curve = interpolate([[s.lat, s.lon], mid, [p.lat, p.lon]], 12);
-    L.polyline(curve, { pane: 'roadsPane', interactive: false, color: col, weight: 2.2, opacity: 0.9, dashArray: '6 6', lineCap: 'round' }).addTo(groups.pair);
-    L.marker(curve[Math.floor(curve.length / 2)], { pane: 'arrowsPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
-      html: `<div class="dist-tag" style="border-color:${col};color:${col}">${s.chi} ↔ ${p.chi}</div>` }) }).addTo(groups.pair);
-  }
-
   function syncChurchHighlight() {
     churchMarkers.forEach((m, id) => {
       const el = m.getElement && m.getElement(); const pin = el && el.querySelector('.ch-pin');
@@ -1343,7 +1327,6 @@ const NOTES = [
     renderRoads(); syncChurchHighlight(); renderLegend(); renderStopBar();
     const s = curStop();
     document.getElementById('step-counter').textContent = s.n ? (isZh() ? `第 ${s.n} 封 / 7` : `Letter ${s.n} / 7`) : (isZh() ? '序幕' : 'Prologue');
-    renderPairLink();
   }
 
   function select(sel, doFly) {
@@ -1388,7 +1371,6 @@ const NOTES = [
     const zh = isZh();
     const items = [
       row(`<span class="inline-flex w-4 h-4 rounded-full shrink-0 items-center justify-center text-[8px] font-bold" style="background:#c9a034;border:1.5px solid #faf6ec;box-shadow:0 0 0 1px #5c4512"></span>`, zh ? '七教会（字母为交错结构位置，A 对 A′、B 对 B′、C 对 C′，D 居中）' : 'The seven churches, lettered by chiastic position (A pairs with A′, B with B′, C with C′; D at the centre)'),
-      row(line('border-top:2px dashed #B03A2E'), zh ? '所选教会与其交错对应的教会' : 'Selected church and its chiastic counterpart'),
       row(line('border-top:3px solid #8A6A1A'), zh ? '书信传递路线（罗马大道，示意）' : 'Circuit of the letters (Roman roads, schematic)'),
       row(line('border-top:2.5px dotted #2f6178'), zh ? '拔摩至以弗所的海路' : 'Sea route, Patmos to Ephesus'),
       row(line('border-top:1.5px dashed #7a6955'), zh ? '其他罗马道路（示意）' : 'Other Roman roads (schematic)'),
