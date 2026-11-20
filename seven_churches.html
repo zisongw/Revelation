@@ -77,8 +77,9 @@
     .ch-pin { position: relative; cursor: pointer; }
     .ch-dot { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%;
       background: radial-gradient(circle at 35% 30%, #e7c55a 0%, #b8892b 62%, #8a6416 100%); color: #2b2008;
-      font: 700 11.5px/1 'Inter', sans-serif; border: 2px solid #faf6ec; box-shadow: 0 0 0 1px #5c4512, 0 2px 6px rgba(30,24,18,0.35);
+      font: 700 11px/1 'EB Garamond', 'Inter', serif; border: 2px solid #faf6ec; box-shadow: 0 0 0 1px #5c4512, 0 2px 6px rgba(30,24,18,0.35);
       transition: transform .15s ease; }
+    .ch-pin.is-pair .ch-dot { box-shadow: 0 0 0 2.5px #B03A2E, 0 2px 6px rgba(30,24,18,0.35); }
     .ch-pin.prologue .ch-dot { background: #faf6ec; color: #6a4b10; box-shadow: 0 0 0 1px #8a6416, 0 2px 6px rgba(30,24,18,0.3); }
     .ch-pin:hover .ch-dot { transform: scale(1.12); }
     .ch-pin.is-active .ch-dot { transform: scale(1.22); box-shadow: 0 0 0 2.5px #2b2520, 0 3px 10px rgba(0,0,0,0.35); }
@@ -414,10 +415,12 @@ const STOPS = [
   { id:'patmos', n:0, zh:'拔摩', en:'Patmos', gr:'Πάτμος', lat:37.326, lon:26.546, zoom:11.5, ref:'Rev 1:9-20',
     modern:{zh:'今属希腊多德卡尼斯群岛',en:'Today in the Dodecanese, Greece'},
     title:{zh:'序幕：拔摩岛上的异象',en:'Prologue: The Vision on Patmos'},
-    summary:{zh:'约翰为神的道，并为给耶稣作的见证，曾在拔摩岛。主日他被圣灵感动，看见人子在七个金灯台中间行走，受命把所看见的写在书上，寄给亚细亚的七个教会。七星是七个教会的使者，七灯台就是七个教会 [[Rev 1:20]]。',
-             en:'John is on Patmos on account of the word of God and the testimony of Jesus. In the Spirit on the Lord’s day he sees the Son of Man walking among seven golden lampstands and is told to write what he sees in a book and send it to the seven churches of Asia. The seven stars are the angels of the churches; the seven lampstands are the churches [[Rev 1:20]].'},
+    summary:{zh:'约翰为神的道，并为给耶稣作的见证，曾在拔摩岛。主日他被圣灵感动，看见人子在七个金灯台中间行走，受命把所看见的写在书上，寄给亚细亚的七个教会。七星是七个教会的使者，七灯台就是七个教会 [[Rev 1:20]]。接下来的七道谕令（启 2–3 章）是全书审判的开端：基督先察验并审判自己的教会，然后才审判祂的仇敌。',
+             en:'John is on Patmos on account of the word of God and the testimony of Jesus. In the Spirit on the Lord’s day he sees the Son of Man walking among seven golden lampstands and is told to write what he sees in a book and send it to the seven churches of Asia. The seven stars are the angels of the churches; the seven lampstands are the churches [[Rev 1:20]]. The seven royal edicts that follow (Rev 2–3) open the book’s judgments: Christ first assesses and judges His own churches before He judges His enemies.'},
     bg:[
       {zh:'约翰自称是众信徒的弟兄，在耶稣的患难、国度、忍耐里与他们一同有分 [[Rev 1:9]]',en:'John calls himself their brother and fellow partaker in the tribulation, kingdom and perseverance that are in Jesus [[Rev 1:9]]'},
+      {zh:'人子身穿长衣、胸束金带，眼目如火焰，口中出两刃的利剑：祂是在灯台中间察验的大祭司，也是审判者 [[Rev 1:13-16]]',en:'The Son of Man is robed and girded with gold, with eyes like fire and a sword from His mouth: the high priest inspecting the lampstands and the judge [[Rev 1:13-16]]'},
+      {zh:'审判要从神的家起首 [[1Pe 4:17]]；参以西结异象中审判从圣所起首 [[Eze 9:1-6]]，以及荣耀归回圣殿、使以色列家因罪惭愧 [[Eze 43:1-12]]',en:'Judgment begins with the household of God [[1Pe 4:17]]; cf. Ezekiel’s vision where judgment begins at the sanctuary [[Eze 9:1-6]], and the glory returning to the temple so that Israel is ashamed of its sins [[Eze 43:1-12]]'},
       {zh:'书信的次序：以弗所、士每拿、别迦摩、推雅推喇、撒狄、非拉铁非、老底嘉 [[Rev 1:11]]',en:'The order of the letters: Ephesus, Smyrna, Pergamum, Thyatira, Sardis, Philadelphia, Laodicea [[Rev 1:11]]'},
       {zh:'人子的形像：七封信开头基督的自称，大多取自这段描写 [[Rev 1:12-18]]',en:'The vision of the Son of Man supplies most of the self-titles that open the seven letters [[Rev 1:12-18]]'},
       {zh:'爱任纽说，启示录的异象见于多米田在位末年，约公元95年（《驳异端》5.30.3，经外史料）',en:'Irenaeus places the vision near the end of Domitian’s reign, c. AD 95 (Against Heresies 5.30.3, extra-biblical)'},
@@ -434,7 +437,7 @@ const STOPS = [
     cross:'Rev 1:1-11; Rev 22:8-9',
     quote:{ref:'Rev 1:11', zh:'说：你所看见的，当写在书上，达与以弗所、士每拿、别迦摩、推雅推喇、撒狄、非拉铁非、老底嘉那七个教会。'} },
 
-  { id:'ephesus', n:1, zh:'以弗所', en:'Ephesus', gr:'Ἔφεσος', lat:37.9395, lon:27.3417, zoom:12, ref:'Rev 2:1-7',
+  { id:'ephesus', n:1, chi:'A', pair:'laodicea', theme:{zh:'耶稣察验并审判离弃起初爱心的教会',en:'Jesus assesses and judges the Church That Has Left Her First Love'}, zh:'以弗所', en:'Ephesus', gr:'Ἔφεσος', lat:37.9395, lon:27.3417, zoom:12, ref:'Rev 2:1-7',
     modern:{zh:'今土耳其塞尔丘克附近',en:'Near Selçuk, Turkey'},
     letter:{
       title:{zh:'右手拿着七星、在七个金灯台中间行走的 [[Rev 2:1]]；参 [[Rev 1:13, 16]]',en:'He who holds the seven stars in His right hand and walks among the seven golden lampstands [[Rev 2:1]]; cf. [[Rev 1:13, 16]]'},
@@ -468,7 +471,7 @@ const STOPS = [
     cross:'Act 18:19-21; Act 19:1-41; Act 20:17-38; Eph 1:1; 1Ti 1:3',
     quote:{ref:'Rev 2:4', zh:'然而有一件事我要责备你，就是你把起初的爱心离弃了。'} },
 
-  { id:'smyrna', n:2, zh:'士每拿', en:'Smyrna', gr:'Σμύρνα', lat:38.4189, lon:27.1395, zoom:12, ref:'Rev 2:8-11',
+  { id:'smyrna', n:2, chi:'B', pair:'philadelphia', theme:{zh:'耶稣察验并审判最纯洁的教会',en:'Jesus assesses and judges the Most Pure Church'}, zh:'士每拿', en:'Smyrna', gr:'Σμύρνα', lat:38.4189, lon:27.1395, zoom:12, ref:'Rev 2:8-11',
     modern:{zh:'今土耳其伊兹密尔',en:'İzmir, Turkey'},
     letter:{
       title:{zh:'那首先的、末后的，死过又活的 [[Rev 2:8]]；参 [[Rev 1:17-18]]',en:'The First and the Last, who was dead and has come to life [[Rev 2:8]]; cf. [[Rev 1:17-18]]'},
@@ -496,7 +499,7 @@ const STOPS = [
     cross:'Rev 2:8-11; Rev 20:6',
     quote:{ref:'Rev 2:10', zh:'你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。'} },
 
-  { id:'pergamum', n:3, zh:'别迦摩', en:'Pergamum', gr:'Πέργαμος', lat:39.1320, lon:27.1840, zoom:11.75, ref:'Rev 2:12-17',
+  { id:'pergamum', n:3, chi:'C', pair:'sardis', theme:{zh:'耶稣察验并审判靠近撒但居所的教会',en:'Jesus assesses and judges the Church Near the Domain of Satan'}, zh:'别迦摩', en:'Pergamum', gr:'Πέργαμος', lat:39.1320, lon:27.1840, zoom:11.75, ref:'Rev 2:12-17',
     modern:{zh:'今土耳其贝尔加马',en:'Bergama, Turkey'},
     letter:{
       title:{zh:'那有两刃利剑的 [[Rev 2:12]]；参 [[Rev 1:16]]',en:'He who has the sharp two-edged sword [[Rev 2:12]]; cf. [[Rev 1:16]]'},
@@ -526,7 +529,7 @@ const STOPS = [
     cross:'Rev 2:12-17; Num 22:1-25:9; Num 31:16',
     quote:{ref:'Rev 2:13', zh:'我知道你的居所，就是有撒但座位之处。当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。'} },
 
-  { id:'thyatira', n:4, zh:'推雅推喇', en:'Thyatira', gr:'Θυάτειρα', lat:38.9187, lon:27.8400, zoom:12.5, ref:'Rev 2:18-29',
+  { id:'thyatira', n:4, chi:'D', pair:null, theme:{zh:'耶稣察验并审判带着最危险的敌基督之灵的教会',en:'Jesus assesses and judges the Church with the Most Dangerous Spirit of Antichrist'}, zh:'推雅推喇', en:'Thyatira', gr:'Θυάτειρα', lat:38.9187, lon:27.8400, zoom:12.5, ref:'Rev 2:18-29',
     modern:{zh:'今土耳其阿克希萨尔',en:'Akhisar, Turkey'},
     letter:{
       title:{zh:'神之子，眼目如火焰，脚像光明铜的 [[Rev 2:18]]；参 [[Rev 1:14-15]]；[[Psa 2:7]]',en:'The Son of God, whose eyes are like a flame of fire and whose feet are like burnished bronze [[Rev 2:18]]; cf. [[Rev 1:14-15]]; [[Psa 2:7]]'},
@@ -541,6 +544,8 @@ const STOPS = [
       {zh:'行会聚餐往往伴随献祭给保护神；不参加就难以谋生——这是“吃祭偶像之物”的现实压力（解释）',en:'Guild banquets usually honoured a patron god, and staying away could cost one’s livelihood; this was the practical pressure behind eating food sacrificed to idols (interpretation)'},
       {zh:'城中铜匠行会有名——学者常联系基督“脚像光明的铜”（解释）',en:'The city’s bronze-smiths were well known; scholars often link this with feet like burnished bronze (interpretation)'},
       {zh:'卖紫色布的吕底亚是推雅推喇人，在腓立比信主 [[Act 16:14-15]]',en:'Lydia, the seller of purple, came from Thyatira and believed at Philippi [[Act 16:14-15]]'},
+      {zh:'这封信位于七道谕令的正中：基督宣告“众教会就知道我是那察看人肺腑心肠的” [[Rev 2:23]]，是整组审判的总纲（解释）',en:'This letter stands at the centre of the seven edicts: Christ declares that all the churches will know He is the one who searches minds and hearts [[Rev 2:23]], the keynote of the whole set of judgments (interpretation)'},
+      {zh:'耶洗别从教会里面引人拜偶像、行淫乱，预示后文的大淫妇巴比伦 [[Rev 17:1-6]]；信徒要从她出来，免得与她一同有罪、受灾 [[Rev 18:4]]；参约翰论敌基督之灵 [[1Jo 2:18-19]]；[[1Jo 4:1-3]]',en:'Jezebel leads people into idolatry and immorality from inside the church, foreshadowing the great harlot Babylon [[Rev 17:1-6]], from whom believers must come out so as not to share her sins and plagues [[Rev 18:4]]; cf. John on the spirit of antichrist [[1Jo 2:18-19]]; [[1Jo 4:1-3]]'},
       {zh:'城的保护神是太阳神阿波罗-提林诺斯，被尊为宙斯之子；基督在此特称“神之子”（经外史料；解释）',en:'The city’s patron was the sun-god Apollo Tyrimnos, hailed as son of Zeus; here alone Christ is called the Son of God (extra-biblical; interpretation)'}
     ],
     sites:[
@@ -550,7 +555,7 @@ const STOPS = [
     cross:'Rev 2:18-29; Act 16:14-15; 1Ki 16:29-33',
     quote:{ref:'Rev 2:20', zh:'然而有一件事我要责备你，就是你容让那自称是先知的妇人耶洗别教导我的仆人，引诱他们行奸淫，吃祭偶像之物。'} },
 
-  { id:'sardis', n:5, zh:'撒狄', en:'Sardis', gr:'Σάρδεις', lat:38.4882, lon:28.0398, zoom:12.25, ref:'Rev 3:1-6',
+  { id:'sardis', n:5, chi:'C′', pair:'pergamum', theme:{zh:'耶稣察验并审判最受迷惑也最迷惑人的教会',en:'Jesus assesses and judges the Most Deceived and Deceptive Church'}, zh:'撒狄', en:'Sardis', gr:'Σάρδεις', lat:38.4882, lon:28.0398, zoom:12.25, ref:'Rev 3:1-6',
     modern:{zh:'今土耳其萨尔特',en:'Sart, Turkey'},
     letter:{
       title:{zh:'那有神的七灵和七星的 [[Rev 3:1]]；参 [[Rev 1:4, 16]]',en:'He who has the seven Spirits of God and the seven stars [[Rev 3:1]]; cf. [[Rev 1:4, 16]]'},
@@ -563,6 +568,7 @@ const STOPS = [
       {zh:'吕底亚王国旧都，克罗伊斯王的都城；帕克托洛斯河出产砂金，相传最早的金银币在此铸造（希罗多德《历史》1.94、5.101，经外史料）',en:'Old capital of Lydia and of King Croesus; the Pactolus carried gold dust, and the first gold and silver coins were said to be struck here (Herodotus 1.94; 5.101, extra-biblical)'},
       {zh:'卫城号称不可攻破，却两度在疏于防守时被偷袭攻陷：公元前546年居鲁士，公元前214年安提阿古三世（希罗多德1.84；波利比乌斯7.15–18，经外史料）',en:'Its acropolis was thought impregnable, yet twice fell to surprise attacks where no one kept watch: Cyrus in 546 BC and Antiochus III in 214 BC (Herodotus 1.84; Polybius 7.15–18, extra-biblical)'},
       {zh:'“如同贼一样”可能令撒狄人想起这段城史；但这话也出自耶稣自己的教训 [[Mat 24:42-43]]，两种背景并不互斥（解释）',en:'Coming like a thief may have recalled that history in Sardis; it also repeats Jesus’ own teaching [[Mat 24:42-43]], and the two backgrounds are not exclusive (interpretation)'},
+      {zh:'名声与实际相反：外人看为活，基督看为死 [[Rev 3:1]]——教会自己受了迷惑，也以虚名迷惑别人（解释）',en:'Reputation and reality are opposites: alive in others’ eyes, dead in Christ’s [[Rev 3:1]]; a church deceived itself and deceiving others by its name (interpretation)'},
       {zh:'公元17年亚细亚大地震，撒狄受灾最重；提比留免其五年赋税，并拨款重建（塔西佗《编年史》2.47，经外史料）',en:'The great earthquake of AD 17 struck Sardis hardest; Tiberius remitted its taxes for five years and funded rebuilding (Tacitus, Annals 2.47, extra-biblical)'},
       {zh:'城中犹太人社群兴旺：浴场—体育馆建筑群里发现大型会堂，现存形制属公元3–4世纪（经外史料）',en:'A thriving Jewish community: a large synagogue was found in the bath-gymnasium complex, in its present form from the 3rd–4th century AD (extra-biblical)'}
     ],
@@ -579,7 +585,7 @@ const STOPS = [
     cross:'Rev 3:1-6; Mat 24:42-44',
     quote:{ref:'Rev 3:1', zh:'你要写信给撒狄教会的使者，说：那有神的七灵和七星的，说：我知道你的行为，按名你是活的，其实是死的。'} },
 
-  { id:'philadelphia', n:6, zh:'非拉铁非', en:'Philadelphia', gr:'Φιλαδέλφεια', lat:38.3500, lon:28.5170, zoom:12.5, ref:'Rev 3:7-13',
+  { id:'philadelphia', n:6, chi:'B′', pair:'smyrna', theme:{zh:'耶稣察验并审判忠心的教会',en:'Jesus assesses and judges the Faithful Church'}, zh:'非拉铁非', en:'Philadelphia', gr:'Φιλαδέλφεια', lat:38.3500, lon:28.5170, zoom:12.5, ref:'Rev 3:7-13',
     modern:{zh:'今土耳其阿拉谢希尔',en:'Alaşehir, Turkey'},
     letter:{
       title:{zh:'那圣洁、真实，拿着大卫的钥匙，开了就没有人能关，关了就没有人能开的 [[Rev 3:7]]；参 [[Isa 22:22]]；[[Rev 1:18]]',en:'He who is holy and true, who has the key of David, who opens and no one shuts, who shuts and no one opens [[Rev 3:7]]; cf. [[Isa 22:22]]; [[Rev 1:18]]'},
@@ -602,7 +608,7 @@ const STOPS = [
     cross:'Rev 3:7-13; Isa 22:20-23',
     quote:{ref:'Rev 3:8', zh:'我知道你的行为，你略有一点力量，也曾遵守我的道，没有弃绝我的名。看哪，我在你面前给你一个敞开的门，是无人能关的。'} },
 
-  { id:'laodicea', n:7, zh:'老底嘉', en:'Laodicea', gr:'Λαοδίκεια', lat:37.8360, lon:29.1070, zoom:11.5, ref:'Rev 3:14-22',
+  { id:'laodicea', n:7, chi:'A′', pair:'ephesus', theme:{zh:'耶稣察验并审判最妥协的教会',en:'Jesus assesses and judges the Most Compromised Church'}, zh:'老底嘉', en:'Laodicea', gr:'Λαοδίκεια', lat:37.8360, lon:29.1070, zoom:11.5, ref:'Rev 3:14-22',
     modern:{zh:'今土耳其代尼兹利附近',en:'Near Denizli, Turkey'},
     letter:{
       title:{zh:'那为阿们的，为诚信真实见证的，在神创造万物之上为元首的 [[Rev 3:14]]；参 [[Rev 1:5]]；[[Col 1:15-18]]',en:'The Amen, the faithful and true Witness, the Beginning of the creation of God [[Rev 3:14]]; cf. [[Rev 1:5]]; [[Col 1:15-18]]'},
@@ -617,6 +623,7 @@ const STOPS = [
       {zh:'出产光亮的黑羊毛（斯特拉波《地理志》12.8.16，经外史料）——对照“买白衣穿上”（解释）',en:'Known for glossy black wool (Strabo, Geography 12.8.16, extra-biblical); set against buying white garments (interpretation)'},
       {zh:'城附近的门-卡鲁神庙设有著名的医学院（斯特拉波12.8.20，经外史料）——学者常联系“眼药”（解释）',en:'Near the temple of Men Karou there was a famous medical school (Strabo 12.8.20, extra-biblical); often linked with the eye salve (interpretation)'},
       {zh:'城中用水靠引水道从南面泉源输送，含钙甚重；北面希拉波立有温泉，东面歌罗西有清凉的泉水——常见解释以此对照“不冷也不热”（解释）',en:'The city’s water came by aqueduct from springs to the south and was heavy with lime; Hierapolis to the north had hot springs and Colossae to the east cold water, a common reading of neither cold nor hot (interpretation)'},
+      {zh:'没有外来逼迫，也没有称赞：财富与自足使教会与城市的价值同化，成为七教会中最妥协的一个（解释）',en:'No persecution and no commendation: wealth and self-sufficiency made the church indistinguishable from its city, the most compromised of the seven (interpretation)'},
       {zh:'保罗为老底嘉的信徒竭力奋斗，嘱咐歌罗西人与老底嘉人交换书信 [[Col 2:1]]；[[Col 4:13-16]]',en:'Paul strives for the believers at Laodicea and has the Colossians and Laodiceans exchange letters [[Col 2:1]]; [[Col 4:13-16]]'}
     ],
     sites:[
@@ -631,6 +638,56 @@ const STOPS = [
     ],
     cross:'Rev 3:14-22; Col 2:1; Col 4:13-16',
     quote:{ref:'Rev 3:20', zh:'看哪，我站在门外叩门，若有听见我声音就开门的，我要进到他那里去，我与他，他与我一同坐席。'} }
+];
+
+/* =========================================================================
+   STRUCTURE — chiastic and thematic outline of Rev 2:1–3:22
+   ========================================================================= */
+const STRUCT = {
+  title:{zh:'开篇的审判（启 2:1–3:22）',en:'The Opening Judgments (Rev 2:1–3:22)'},
+  message:{zh:'耶稣在开始审判祂的仇敌之前，先察验并审判祂自己的新妇。这样，凡听见、明白并遵行圣灵向神家中之人所说之话的，就得以炼净、刚强，能忍耐到底、持守忠心，不与那敌对的妇人——耶洗别与大淫妇巴比伦——以及兽与撒但的国度同沾其灵、其罪、其灾，也逃脱那已在其中、并将要临到她们的审判。',
+           en:'Jesus assesses and judges His own bride before He begins His judgments on His adversaries, so that those who hear, perceive and obey what the Spirit says to God’s household may be purified and strengthened, endure and remain faithful, and escape any share in the spirit, sins, plagues and judgments that are present in, and soon to come on, the opposing woman — Jezebel and the harlot Babylon — and the kingdom of the Beast and Satan.'},
+  refs:'1Pe 4:17; Eze 9:1-6; Eze 43:1-12; Rev 18:4',
+  source:{zh:'交错结构与主题大纲取自研经讲义《开篇的审判》。',en:'Chiastic and thematic outline from the study notes The Opening Judgments.'}
+};
+const CHI_LEVEL = { 'A':0, 'B':1, 'C':2, 'D':3, 'C′':2, 'B′':1, 'A′':0 };
+const CHI_COLOR = { A:'#8A6A1A', B:'#2F6F73', C:'#6B2D5C', D:'#B03A2E' };
+const PAIRS = [
+  { k:'A', a:'ephesus', b:'laodicea',
+    t:{zh:'首尾 A ↔ A′：爱心冷却，信仰妥协',en:'Frame A ↔ A′: love grown cold, faith compromised'},
+    pts:[
+      {zh:'两封信分居首尾，也是传递路线的起点与终点：从老底嘉沿迈安德河谷回到以弗所',en:'The two letters open and close the set, and the two cities begin and end the circuit, which returns from Laodicea down the Maeander valley to Ephesus'},
+      {zh:'病根都在心：以弗所离弃起初的爱心 [[Rev 2:4]]；老底嘉不冷也不热 [[Rev 3:15-16]]',en:'Both ailments are of the heart: Ephesus has left its first love [[Rev 2:4]]; Laodicea is neither cold nor hot [[Rev 3:15-16]]'},
+      {zh:'警告都是被除去：灯台从原处挪去 [[Rev 2:5]]；从主口中吐出去 [[Rev 3:16]]',en:'Both warnings threaten removal: the lampstand taken from its place [[Rev 2:5]]; being spat out of Christ’s mouth [[Rev 3:16]]'},
+      {zh:'都回到创造的起头：神乐园中的生命树 [[Rev 2:7]]；在神创造万物之上为元首 [[Rev 3:14]]',en:'Both reach back to creation: the tree of life in the Paradise of God [[Rev 2:7]]; the Beginning of the creation of God [[Rev 3:14]]'},
+      {zh:'都要悔改 [[Rev 2:5]]；[[Rev 3:19]]。以弗所还有可称赞的劳碌，老底嘉则一无称赞',en:'Both are told to repent [[Rev 2:5]]; [[Rev 3:19]]. Ephesus still has toil to commend; Laodicea has nothing'}
+    ] },
+  { k:'B', a:'smyrna', b:'philadelphia',
+    t:{zh:'B ↔ B′：受苦而忠心，没有责备',en:'B ↔ B′: suffering, faithful, unrebuked'},
+    pts:[
+      {zh:'七封信中只有这两封没有责备',en:'The only two letters with no rebuke'},
+      {zh:'都受“撒但一会的人”敌对 [[Rev 2:9]]；[[Rev 3:9]]',en:'Both face those of the synagogue of Satan [[Rev 2:9]]; [[Rev 3:9]]'},
+      {zh:'都面对试炼：被试炼、患难十日 [[Rev 2:10]]；普天下人受试炼的时候 [[Rev 3:10]]',en:'Both face testing: tested with ten days of tribulation [[Rev 2:10]]; the hour of testing on the whole world [[Rev 3:10]]'},
+      {zh:'都提到冠冕：生命的冠冕 [[Rev 2:10]]；免得人夺去你的冠冕 [[Rev 3:11]]',en:'Both mention a crown: the crown of life [[Rev 2:10]]; let no one take your crown [[Rev 3:11]]'},
+      {zh:'力量微小却忠心：贫穷却是富足 [[Rev 2:9]]；略有一点力量 [[Rev 3:8]]',en:'Weak yet faithful: poor yet rich [[Rev 2:9]]; having little power [[Rev 3:8]]'}
+    ] },
+  { k:'C', a:'pergamum', b:'sardis',
+    t:{zh:'C ↔ C′：名与实',en:'C ↔ C′: name and reality'},
+    pts:[
+      {zh:'“名”是两封信的关键字：坚守主的名、白石上的新名 [[Rev 2:13, 17]]；按名是活的、不从生命册上涂抹、在父面前认他的名 [[Rev 3:1, 5]]',en:'Name is the key word in both: holding fast Christ’s name and the new name on the white stone [[Rev 2:13, 17]]; a name of being alive, a name not erased and confessed before the Father [[Rev 3:1, 5]]'},
+      {zh:'都以主的临到警告：快临到，用口中的剑攻击 [[Rev 2:16]]；如同贼一样临到 [[Rev 3:3]]',en:'Both are warned of His coming: quickly, with the sword of His mouth [[Rev 2:16]]; like a thief [[Rev 3:3]]'},
+      {zh:'应许都是白色的记号：白石 [[Rev 2:17]]；白衣 [[Rev 3:4-5]]',en:'Both promises are white: a white stone [[Rev 2:17]]; white garments [[Rev 3:4-5]]'},
+      {zh:'别迦摩的危险来自外面的撒但座位和里面的妥协；撒狄的危险是自以为活着，受了迷惑也迷惑人（解释）',en:'Pergamum’s danger is Satan’s throne outside and compromise inside; Sardis’s is believing itself alive, deceived and deceiving (interpretation)'}
+    ] },
+  { k:'D', a:'thyatira', b:null,
+    t:{zh:'中心 D：敌基督之灵的渗透与基督的审判',en:'Centre D: the spirit of antichrist within, and Christ’s judgment'},
+    pts:[
+      {zh:'七封信中最长的一封，位于正中',en:'The longest of the seven, standing at the centre'},
+      {zh:'启示录中唯一称基督为“神之子”之处 [[Rev 2:18]]，并引用诗篇第2篇的弥赛亚诗 [[Rev 2:26-27]]；[[Psa 2:7-9]]',en:'The only place in Revelation where Christ is called the Son of God [[Rev 2:18]], with the messianic Psalm 2 [[Rev 2:26-27]]; [[Psa 2:7-9]]'},
+      {zh:'向全体教会的宣告：众教会都要知道，基督是察看人肺腑心肠、照各人行为报应的 [[Rev 2:23]]',en:'A declaration to all the churches: they will know that Christ searches minds and hearts and repays each according to their deeds [[Rev 2:23]]'},
+      {zh:'耶洗别在教会里面，预示后文的大淫妇巴比伦 [[Rev 17:1-6]]；[[Rev 18:4]]',en:'Jezebel inside the church foreshadows the great harlot Babylon [[Rev 17:1-6]]; [[Rev 18:4]]'},
+      {zh:'结构在此转折：从这封信起，“凡有耳的”一句移到应许之后 [[Rev 2:29]]',en:'The structure turns here: from this letter on, the call to hear follows the promise [[Rev 2:29]]'}
+    ] }
 ];
 
 /* =========================================================================
@@ -678,8 +735,8 @@ const EVENTS = [
    ========================================================================= */
 const NOTES = [
   { t:{zh:'七封信的共同结构',en:'The Shared Pattern of the Letters'},
-    b:{zh:'<p>七封信都依同一格式写成：</p><ul><li>写信给某教会的使者；</li><li>基督的自称，大多取自第1章的异象；</li><li>“我知道你的行为”；</li><li>称赞与责备（士每拿、非拉铁非没有责备，老底嘉没有称赞）；</li><li>劝勉与警告；</li><li>“圣灵向众教会所说的话，凡有耳的，就应当听”；</li><li>给得胜者的应许，多在启示录末两章应验。</li></ul><p>前三封信先说“凡有耳的”，后说应许；后四封信次序颠倒 [[Rev 2:7]]；[[Rev 2:29]]。</p>',
-       en:'<p>All seven letters follow one pattern:</p><ul><li>address to the angel of the church;</li><li>Christ’s self-title, mostly drawn from the vision of chapter 1;</li><li>I know your works;</li><li>commendation and rebuke (Smyrna and Philadelphia receive no rebuke, Laodicea no commendation);</li><li>exhortation and warning;</li><li>he who has an ear, let him hear what the Spirit says to the churches;</li><li>a promise to the overcomer, mostly fulfilled in the last two chapters.</li></ul><p>In the first three letters the call to hear precedes the promise; in the last four it follows [[Rev 2:7]]; [[Rev 2:29]].</p>'} },
+    b:{zh:'<p>七封信都依同一格式写成：</p><ul><li>写信给某教会的使者；</li><li>基督的自称，大多取自第1章的异象；</li><li>“我知道你的行为”；</li><li>称赞与责备（士每拿、非拉铁非没有责备，老底嘉没有称赞）；</li><li>劝勉与警告；</li><li>“圣灵向众教会所说的话，凡有耳的，就应当听”；</li><li>给得胜者的应许，多在启示录末两章应验。</li></ul><p>前三封信先说“凡有耳的”，后说应许；后四封信次序颠倒 [[Rev 2:7]]；[[Rev 2:29]]。</p><p>七封信在主题与文学上构成交错结构（A–B–C–D–C′–B′–A′）：以弗所与老底嘉、士每拿与非拉铁非、别迦摩与撒狄两两相对，推雅推喇居中（见“结构”分页）。形式上，学者也指出这些信仿照帝王颁布的谕令，故称“王的谕令”。</p>',
+       en:'<p>All seven letters follow one pattern:</p><ul><li>address to the angel of the church;</li><li>Christ’s self-title, mostly drawn from the vision of chapter 1;</li><li>I know your works;</li><li>commendation and rebuke (Smyrna and Philadelphia receive no rebuke, Laodicea no commendation);</li><li>exhortation and warning;</li><li>he who has an ear, let him hear what the Spirit says to the churches;</li><li>a promise to the overcomer, mostly fulfilled in the last two chapters.</li></ul><p>In the first three letters the call to hear precedes the promise; in the last four it follows [[Rev 2:7]]; [[Rev 2:29]].</p><p>Thematically and literarily the letters form a chiasm (A–B–C–D–C′–B′–A′): Ephesus and Laodicea, Smyrna and Philadelphia, Pergamum and Sardis answer each other, with Thyatira at the centre (see the Structure tab). In form, scholars have also noted that the letters imitate imperial edicts, hence royal edicts.</p>'} },
   { t:{zh:'书信的次序与传递路线',en:'The Order of the Letters and the Circuit'},
     b:{zh:'<p>七城的次序 [[Rev 1:11]] 正好构成一条环形路线：从拔摩渡海到最近的大港以弗所，北上士每拿、别迦摩，再折向东南，经赫尔穆斯河谷到推雅推喇、撒狄、非拉铁非，最后到老底嘉，再顺迈安德河谷回到以弗所。拉姆齐（1904）认为这是送信人沿罗马大道巡回的路线；七城也都是各自地区的交通中心。下表是地图上示意道路的长度：</p>',
        en:'<p>The order of the cities [[Rev 1:11]] traces a loop: across the sea from Patmos to Ephesus, the nearest great port; north to Smyrna and Pergamum; then south-east through the Hermus valley to Thyatira, Sardis and Philadelphia; on to Laodicea; and back down the Maeander valley to Ephesus. Ramsay (1904) read it as a courier’s circuit along the Roman roads, each city being a hub for its district. The table gives the length of the schematic roads on the map:</p>'},
@@ -688,8 +745,8 @@ const NOTES = [
     b:{zh:'<ul><li><b>晚期说（约公元95年）</b>：爱任纽说异象见于多米田在位末年（《驳异端》5.30.3），亚历山大的革利免与优西比乌也说约翰从拔摩回到以弗所。教会状况似乎也指向较晚的年代，如以弗所已“离弃起初的爱心”，老底嘉在公元60年地震后已重建富足。本图采用此说。</li><li><b>早期说（约公元68–69年）</b>：有人依据 [[Rev 11:1-2]] 似乎假定圣殿仍在，以及 [[Rev 17:10]] 的“五位已经倾倒”推算，主张写于尼禄死后、耶路撒冷陷落以前。</li></ul>',
        en:'<ul><li><b>Late date (c. AD 95)</b>: Irenaeus places the vision near the end of Domitian’s reign (Against Heresies 5.30.3), and Clement of Alexandria and Eusebius have John return from Patmos to Ephesus. The churches’ condition seems to fit a later date: Ephesus has left its first love, and Laodicea has rebuilt in wealth after the earthquake of AD 60. This atlas follows the late date.</li><li><b>Early date (c. AD 68–69)</b>: some argue from [[Rev 11:1-2]], which seems to assume the temple still stands, and from the five kings who have fallen in [[Rev 17:10]], for a date after Nero and before the fall of Jerusalem.</li></ul>'} },
   { t:{zh:'几种读法',en:'Ways of Reading the Letters'},
-    b:{zh:'<ul><li><b>历史处境</b>：先听这七封信对第一世纪亚细亚七个真实教会说了什么。本图以此为起点。</li><li><b>普世适用</b>：七个教会代表各时代教会都可能出现的光景；每封信都以“圣灵向众教会所说的话”结束，表示信是写给所有教会的 [[Rev 2:7]]。</li><li><b>教会历史分期</b>：有人把七个教会读成教会史上相继的七个时期。德席尔瓦不赞同此说，理由是它忽略了今天多数教会的处境，更像士每拿与别迦摩。</li></ul>',
-       en:'<ul><li><b>Historical setting</b>: first hear what the letters said to seven real churches in 1st-century Asia. This atlas starts here.</li><li><b>Universal application</b>: the seven churches stand for conditions found in churches of every age; each letter ends with what the Spirit says to the churches, addressing all of them [[Rev 2:7]].</li><li><b>Ages of church history</b>: some read the seven churches as seven successive periods. David deSilva rejects this, since it overlooks the majority of today’s churches, whose situation is more like Smyrna’s or Pergamum’s.</li></ul>'} },
+    b:{zh:'<ul><li><b>交错结构（本图以此为纲）</b>：七道谕令两两相对，中心是推雅推喇；整组信是基督对自己家中的审判，先于对巴比伦、兽与撒但的审判 [[1Pe 4:17]]。</li><li><b>历史处境</b>：先听这七封信对第一世纪亚细亚七个真实教会说了什么；城市背景用来印证经文，而非取代经文。</li><li><b>普世适用</b>：七个教会代表各时代教会都可能出现的光景；每封信都以“圣灵向众教会所说的话”结束，表示信是写给所有教会的 [[Rev 2:7]]。</li><li><b>教会历史分期</b>：有人把七个教会读成教会史上相继的七个时期。德席尔瓦不赞同此说，理由是它忽略了今天多数教会的处境，更像士每拿与别迦摩。</li></ul>',
+       en:'<ul><li><b>Chiastic structure (the framework of this atlas)</b>: the seven edicts answer each other in pairs around Thyatira at the centre; together they are Christ’s judgment of His own household, before His judgment of Babylon, the Beast and Satan [[1Pe 4:17]].</li><li><b>Historical setting</b>: first hear what the letters said to seven real churches in 1st-century Asia; the city backgrounds illustrate the text rather than replace it.</li><li><b>Universal application</b>: the seven churches stand for conditions found in churches of every age; each letter ends with what the Spirit says to the churches, addressing all of them [[Rev 2:7]].</li><li><b>Ages of church history</b>: some read the seven churches as seven successive periods. David deSilva rejects this, since it overlooks the majority of today’s churches, whose situation is more like Smyrna’s or Pergamum’s.</li></ul>'} },
   { t:{zh:'巴兰、耶洗别与尼哥拉一党',en:'Balaam, Jezebel and the Nicolaitans'},
     b:{zh:'<p>别迦摩的“巴兰的教训”与推雅推喇的“耶洗别”，罪名相同：吃祭偶像之物、行奸淫 [[Rev 2:14]]；[[Rev 2:20]]。尼哥拉一党出现在以弗所与别迦摩 [[Rev 2:6]]；[[Rev 2:15]]，多数学者认为三者指同一类妥协：参与城中的祭偶像宴席与相关的淫乱。爱任纽认为尼哥拉党源于 [[Act 6:5]] 的尼哥拉（《驳异端》1.26.3），此说未必可靠。</p>',
        en:'<p>The teaching of Balaam at Pergamum and Jezebel at Thyatira carry the same charge: eating food sacrificed to idols and sexual immorality [[Rev 2:14]]; [[Rev 2:20]]. The Nicolaitans appear at Ephesus and Pergamum [[Rev 2:6]]; [[Rev 2:15]]. Most scholars take all three as one kind of compromise: joining the city’s idol feasts and the immorality around them. Irenaeus traced the Nicolaitans to the Nicolas of [[Act 6:5]] (Against Heresies 1.26.3), which is uncertain.</p>'} },
@@ -697,8 +754,8 @@ const NOTES = [
     b:{zh:'<p>底图：哥白尼数字高程模型（GLO-30）提供地形与山体阴影；自然地球 1:10m 数据提供海岸线、湖泊与主要河流，次要河流为示意补绘。</p><p>以弗所与米利都一带的古代海岸线依淤积研究示意补绘：第一世纪时以弗所港直通凯斯特河口，米利都仍临拉特米亚湾。亚细亚省界与罗马大道均为示意，只画主要干线。</p>',
        en:'<p>Base map: Copernicus DEM (GLO-30) for relief and hillshade; Natural Earth 1:10m for coastline, lakes and major rivers, with minor rivers sketched in.</p><p>The 1st-century shoreline near Ephesus and Miletus is sketched from silting studies: the harbour of Ephesus still opened on the Cayster estuary, and Miletus still stood on the Latmian Gulf. The provincial boundary and Roman roads are schematic, showing main routes only.</p>'} },
   { t:{zh:'资料来源与体例',en:'Sources and Conventions'},
-    b:{zh:'<p>中文人名、地名按和合本；经文悬停显示和合本，点击在微读圣经打开。英文界面的经文悬停显示 LSB 译本；英文正文为转述，不直接引用译本。</p><p>主要参考：拉姆齐《致亚细亚七教会的书信》（1904）；赫默《七教会书信的地方背景》（1986）；马克·威尔逊《圣经中的土耳其》；德席尔瓦的相关论述。古典史料：希罗多德、波利比乌斯、斯特拉波、塔西佗、狄奥、老普林尼；教父：爱任纽、优西比乌、伊格那丢书信、《坡旅甲殉道记》。另参考思想者影业出品的七教会纪录片（上下两集）。</p>',
-       en:'<p>English references show the Legacy Standard Bible on hover via Logos Reftagger; English text paraphrases rather than quotes a translation. Chinese references show the Chinese Union Version and open in WD Bible.</p><p>Main references: W. M. Ramsay, The Letters to the Seven Churches of Asia (1904); C. J. Hemer, The Letters to the Seven Churches of Asia in Their Local Setting (1986); Mark Wilson, Biblical Turkey; David deSilva’s related writings. Classical sources: Herodotus, Polybius, Strabo, Tacitus, Dio Cassius, Pliny the Elder; early church: Irenaeus, Eusebius, the letters of Ignatius, the Martyrdom of Polycarp. Also consulted: the two-part documentary on the seven churches from Thinking Man Films.</p>'} }
+    b:{zh:'<p>中文人名、地名按和合本；经文悬停显示和合本，点击在微读圣经打开。英文界面的经文悬停显示 LSB 译本；英文正文为转述，不直接引用译本。</p><p>主要参考：拉姆齐《致亚细亚七教会的书信》（1904）；赫默《七教会书信的地方背景》（1986）；马克·威尔逊《圣经中的土耳其》；德席尔瓦的相关论述。古典史料：希罗多德、波利比乌斯、斯特拉波、塔西佗、狄奥、老普林尼；教父：爱任纽、优西比乌、伊格那丢书信、《坡旅甲殉道记》。另参考思想者影业出品的七教会纪录片（上下两集）。交错结构与主题大纲取自研经讲义《开篇的审判》；“王的谕令”的形式分析见奥尼1990年的论文。</p>',
+       en:'<p>English references show the Legacy Standard Bible on hover via Logos Reftagger; English text paraphrases rather than quotes a translation. Chinese references show the Chinese Union Version and open in WD Bible.</p><p>Main references: W. M. Ramsay, The Letters to the Seven Churches of Asia (1904); C. J. Hemer, The Letters to the Seven Churches of Asia in Their Local Setting (1986); Mark Wilson, Biblical Turkey; David deSilva’s related writings. Classical sources: Herodotus, Polybius, Strabo, Tacitus, Dio Cassius, Pliny the Elder; early church: Irenaeus, Eusebius, the letters of Ignatius, the Martyrdom of Polycarp. Also consulted: the two-part documentary on the seven churches from Thinking Man Films. The chiastic and thematic outline comes from the study notes The Opening Judgments; on the letters as royal edicts see D. E. Aune (1990).</p>'} }
 ];
 
   </script>
@@ -712,7 +769,7 @@ const NOTES = [
   const state = {
     lang: 'en', stop: 0, tab: 'stops', sel: { type: 'stop', id: 'patmos' }, field: 'title',
     layers: { province: true, roads: true, sites: true, places: true },
-    relief: false, autoTimer: null, sidebar: true,
+    relief: false, autoTimer: null, detailOpen: false, sidebar: true,
     legendOpen: window.innerWidth >= 768, neStatus: 'loading'
   };
 
@@ -1122,6 +1179,7 @@ const NOTES = [
       groups.sites = L.layerGroup().addTo(map);
       groups.churches = L.layerGroup().addTo(map);
       groups.sel = L.layerGroup().addTo(map);
+      groups.pair = L.layerGroup().addTo(map);
 
       L.control.scale({ position: 'bottomleft', maxWidth: 130, imperial: false }).addTo(map);
       addStaticLabels(); addPlaces(); renderProvince(); addChurches(); addSites();
@@ -1217,7 +1275,7 @@ const NOTES = [
   function addChurches() {
     STOPS.forEach((s, i) => {
       const m = L.marker([s.lat, s.lon], { pane: 'churchPane', keyboard: false, icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12],
-        html: `<div class="ch-pin ${s.n ? '' : 'prologue'}" data-stop="${s.id}"><div class="ch-pulse"></div><div class="ch-dot">${s.n ? '' : '✦'}</div>
+        html: `<div class="ch-pin ${s.n ? '' : 'prologue'}" data-stop="${s.id}"><div class="ch-pulse"></div><div class="ch-dot">${s.chi || '✦'}</div>
           <div class="ch-name">${bil(s.zh, s.en)}<small>${bil(refPlainFixed(s.ref, 'zh'), refPlainFixed(s.ref, 'en'))}</small></div></div>` }) });
       m.on('click', () => { stopAuto(); select({ type: 'stop', id: s.id }, true); });
       m.addTo(groups.churches);
@@ -1225,6 +1283,20 @@ const NOTES = [
     });
   }
   function refPlainFixed(ref, lang) { const keep = state.lang; state.lang = lang; const out = refPlain(ref); state.lang = keep; return out; }
+
+  function renderPairLink() {
+    if (!map || !groups.pair) return;
+    groups.pair.clearLayers();
+    const s = curStop();
+    churchMarkers.forEach((m, id) => { const el = m.getElement && m.getElement(); const pin = el && el.querySelector('.ch-pin'); if (pin) pin.classList.toggle('is-pair', !!s.pair && s.pair === id); });
+    if (!s.pair) return;
+    const p = stopById(s.pair), col = CHI_COLOR[s.chi[0]];
+    const mid = [(s.lat + p.lat) / 2 + 0.12, (s.lon + p.lon) / 2];
+    const curve = interpolate([[s.lat, s.lon], mid, [p.lat, p.lon]], 12);
+    L.polyline(curve, { pane: 'roadsPane', interactive: false, color: col, weight: 2.2, opacity: 0.9, dashArray: '6 6', lineCap: 'round' }).addTo(groups.pair);
+    L.marker(curve[Math.floor(curve.length / 2)], { pane: 'arrowsPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
+      html: `<div class="dist-tag" style="border-color:${col};color:${col}">${s.chi} ↔ ${p.chi}</div>` }) }).addTo(groups.pair);
+  }
 
   function syncChurchHighlight() {
     churchMarkers.forEach((m, id) => {
@@ -1271,6 +1343,7 @@ const NOTES = [
     renderRoads(); syncChurchHighlight(); renderLegend(); renderStopBar();
     const s = curStop();
     document.getElementById('step-counter').textContent = s.n ? (isZh() ? `第 ${s.n} 封 / 7` : `Letter ${s.n} / 7`) : (isZh() ? '序幕' : 'Prologue');
+    renderPairLink();
   }
 
   function select(sel, doFly) {
@@ -1314,7 +1387,8 @@ const NOTES = [
     const line = (style) => `<span class="inline-block w-5 shrink-0" style="${style}"></span>`;
     const zh = isZh();
     const items = [
-      row(`<span class="inline-flex w-4 h-4 rounded-full shrink-0 items-center justify-center text-[8px] font-bold" style="background:#c9a034;border:1.5px solid #faf6ec;box-shadow:0 0 0 1px #5c4512"></span>`, zh ? '七教会' : 'The seven churches'),
+      row(`<span class="inline-flex w-4 h-4 rounded-full shrink-0 items-center justify-center text-[8px] font-bold" style="background:#c9a034;border:1.5px solid #faf6ec;box-shadow:0 0 0 1px #5c4512"></span>`, zh ? '七教会（字母为交错结构位置，A 对 A′、B 对 B′、C 对 C′，D 居中）' : 'The seven churches, lettered by chiastic position (A pairs with A′, B with B′, C with C′; D at the centre)'),
+      row(line('border-top:2px dashed #B03A2E'), zh ? '所选教会与其交错对应的教会' : 'Selected church and its chiastic counterpart'),
       row(line('border-top:3px solid #8A6A1A'), zh ? '书信传递路线（罗马大道，示意）' : 'Circuit of the letters (Roman roads, schematic)'),
       row(line('border-top:2.5px dotted #2f6178'), zh ? '拔摩至以弗所的海路' : 'Sea route, Patmos to Ephesus'),
       row(line('border-top:1.5px dashed #7a6955'), zh ? '其他罗马道路（示意）' : 'Other Roman roads (schematic)'),
@@ -1329,7 +1403,7 @@ const NOTES = [
     document.getElementById('stop-bar').innerHTML = STOPS.map((s, i) => {
       const on = i === state.stop, pc = '#A8801A';
       return `<button onclick="window._stop('${s.id}')" class="flex items-center gap-1.5 px-2 py-1 rounded-md border text-left whitespace-nowrap transition-colors ${on ? 'bg-[#2b2520] text-[#faf6ec] border-[#2b2520]' : 'bg-[#faf6ec]/75 border-[#c8b89c] text-[#2b2520] hover:bg-[#faf6ec]'}" style="box-shadow: inset 0 -3px 0 ${pc}" aria-pressed="${on}">
-        <span class="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${on ? 'bg-[#c9a227] text-[#2b2008]' : 'bg-[#e9dec6] text-[#6a4b10]'}">${s.n ? '<i class="block w-2 h-2 rounded-full" style="background:#A8801A"></i>' : '✦'}</span>
+        <span class="w-6 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${on ? 'bg-[#c9a227] text-[#2b2008]' : 'bg-[#e9dec6] text-[#6a4b10]'}">${s.chi || '✦'}</span>
         <span class="flex flex-col leading-tight"><span class="text-[11.5px] font-bold">${T(s)}</span><span class="text-[9.5px] ${on ? 'text-[#e9dec6]' : 'text-[#6a5b49]'}">${refPlain(s.ref)}</span></span></button>`;
     }).join('');
     const active = document.querySelector('#stop-bar [aria-pressed="true"]');
@@ -1337,7 +1411,7 @@ const NOTES = [
   }
 
   const TABS = [
-    ['stops', '七城', 'Cities'], ['compare', '书信对照', 'Compare'], ['sites', '遗址', 'Sites'],
+    ['stops', '七城', 'Cities'], ['structure', '结构', 'Structure'], ['compare', '书信对照', 'Compare'], ['sites', '遗址', 'Sites'],
     ['timeline', '年表', 'Timeline'], ['notes', '注释', 'Notes']
   ];
   function renderTabs() {
@@ -1350,6 +1424,16 @@ const NOTES = [
   const stopChip = (id) => { const s = stopById(id); return `<button onclick="window._stop('${id}')" class="text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#f3ebd8] hover:bg-[#e9dec6] text-[#5c4a35]">${s.n ? '' : '✦ '}${T(s)}</button>`; };
   const secHead = (zh, en) => `<div class="text-[11px] font-bold text-[#5c4a35] mb-1 mt-0.5">${isZh() ? zh : en}</div>`;
 
+  const chiTag = (k) => `<span class="inline-flex items-center justify-center min-w-[1.6rem] h-5 px-1 rounded-full text-[10.5px] font-bold text-white" style="background:${CHI_COLOR[k[0]]}">${k}</span>`;
+  function structBlock(s) {
+    const pr = PAIRS.find(p => p.k === s.chi[0]);
+    const other = s.pair ? stopById(s.pair) : null;
+    return `<div class="rounded-md border border-[#d9cbb2] bg-[#f7f1e3] px-2.5 py-2 mb-2.5" style="box-shadow: inset 3px 0 0 ${CHI_COLOR[s.chi[0]]}">
+      <div class="flex items-center gap-1.5 mb-1">${chiTag(s.chi)}<span class="${body('text-[12.5px] font-bold', 'font-serif-atlas text-[14.5px] font-bold')} text-[#2b2520]">${T(s.theme)}</span></div>
+      <div class="text-[11px] text-[#5c4a35] mb-1">${T(pr.t)}${other ? ` · <button onclick="window._stop('${other.id}')" class="underline decoration-dotted hover:text-[#9b2226]">${isZh() ? '对应：' : 'Pairs with '}${T(other)} ${other.chi}</button>` : ''}</div>
+      <ul class="basis ${body('text-[11.5px] leading-relaxed', 'font-serif-atlas text-[13px] leading-snug')} text-[#2b2520]">${pr.pts.map(x => `<li>${rich(T(x))}</li>`).join('')}</ul></div>`;
+  }
+
   function keyVerse(s) {
     const r = parseRefs(s.quote.ref)[0];
     return isZh()
@@ -1360,14 +1444,29 @@ const NOTES = [
           <span class="font-serif-atlas text-[14px] text-[#2b2520]"><b>Key verse:</b> ${refHTML(s.quote.ref)}</span></figure>`;
   }
 
+  function compactDetail() {
+    const sel = state.sel, zh = isZh();
+    let head = '';
+    if (sel.type === 'stop') { const s = curStop(); head = `<span class="text-[10.5px] font-semibold text-[#6a4b10] shrink-0">${s.n ? (zh ? `第 ${s.n} 封信` : `Letter ${s.n}`) : (zh ? '序幕' : 'Prologue')}</span><span class="font-serif-atlas font-bold text-[14px] text-[#2b2520] truncate">${T(s)}</span><span class="text-[10.5px] text-[#6a5b49] shrink-0">${refPlain(s.ref)}</span>`; }
+    else if (sel.type === 'site') { const f = findSite(sel.id); head = `<span class="font-serif-atlas font-bold text-[14px] text-[#1d4548] truncate">◆ ${T(f.site)}</span><span class="text-[10.5px] text-[#6a5b49] shrink-0">${T(f.stop)}</span>`; }
+    else { const ev = EVENTS.find(e => e.id === sel.id); head = `<span class="text-[11px] font-bold text-[#6a4b10] shrink-0">${T(ev.yr)}</span><span class="text-[11.5px] text-[#2b2520] truncate">${stripRefs(T(ev.t))}</span>`; }
+    return `<div class="flex items-center justify-between gap-2"><div class="flex items-baseline gap-1.5 min-w-0">${head}</div>
+      <button onclick="window._detail(true)" class="shrink-0 text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#faf6ec] hover:bg-[#efe5cf]">${zh ? '展开详情 ▾' : 'Details ▾'}</button></div>`;
+  }
+
   function renderDetail() {
     const el = document.getElementById('detail-panel');
     const sel = state.sel;
-    let html = '';
+    const compact = state.tab !== 'stops' && !state.detailOpen;
+    el.classList.toggle('p-3', !compact); el.classList.toggle('sm:p-3.5', !compact);
+    el.classList.toggle('px-3', compact); el.classList.toggle('py-1.5', compact);
+    el.style.maxHeight = state.tab === 'stops' ? '' : (compact ? 'none' : '42%');
+    if (compact) { el.innerHTML = compactDetail(); hideTip(); return; }
+    let html = state.tab !== 'stops' ? `<div class="flex justify-end -mt-1 mb-1"><button onclick="window._detail(false)" class="text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#faf6ec] hover:bg-[#efe5cf]">${isZh() ? '收起 ▴' : 'Collapse ▴'}</button></div>` : '';
     if (sel.type === 'stop') {
       const s = curStop(), i = state.stop;
       const prev = STOPS[i - 1], next = STOPS[i + 1];
-      html = `
+      html += `
         <div class="flex items-center justify-between gap-2 mb-1">${partBadge(s)}<span class="text-[11.5px] font-medium">${refHTML(s.ref)}</span></div>
         <div class="flex items-baseline flex-wrap gap-x-2 mb-0.5">
           <h2 class="font-serif-atlas font-bold text-xl leading-snug text-[#2b2520]">${T(s)}</h2>
@@ -1390,7 +1489,7 @@ const NOTES = [
         </div>`;
     } else if (sel.type === 'site') {
       const f = findSite(sel.id);
-      html = `
+      html += `
         <div class="flex items-center justify-between gap-2 mb-1">
           <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#dcebe8] text-[#1d4548]">${isZh() ? '考古遗址' : 'Archaeological site'}</span>${stopChip(f.stop.id)}</div>
         <h2 class="font-serif-atlas font-bold text-lg text-[#2b2520] leading-snug mb-1.5">◆ ${T(f.site)}</h2>
@@ -1398,7 +1497,7 @@ const NOTES = [
         <div class="flex flex-wrap gap-1">${f.stop.sites.filter(x => x.id !== f.site.id).map(x => `<button onclick="window._site('${f.stop.id}:${x.id}')" class="text-[11px] px-1.5 py-0.5 rounded border border-[#a9c7c8] bg-[#eef5f3] hover:bg-[#dcebe8] text-[#1d4548]">◆ ${T(x)}</button>`).join('')}</div>`;
     } else if (sel.type === 'event') {
       const ev = EVENTS.find(e => e.id === sel.id);
-      html = `
+      html += `
         <div class="flex items-center justify-between gap-2 mb-1">
           <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#5c4a35]">${isZh() ? '年表' : 'Timeline'}</span>
           <span class="text-[12px] font-bold text-[#6a4b10]">${T(ev.yr)}</span></div>
@@ -1415,7 +1514,7 @@ const NOTES = [
   /* ---------- Lists ---------- */
   const rowCls = (on) => `no-rt w-full text-left px-2.5 py-1.5 rounded-lg border transition-colors flex items-start gap-2 ${on ? 'bg-[#fcf9f2] border-[#8b7b65] shadow-sm' : 'bg-[#faf6ec]/75 border-transparent hover:bg-[#efe6d2]'}`;
   const groupHead = (txt, color) => `<div class="pt-2 pb-0.5 px-1 text-[11px] font-bold" style="color:${color}">${txt}</div>`;
-  const numDot = (s) => `<span class="w-5 h-5 mt-0.5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0" style="background:#c9a034;color:#2b2008">${s.n ? '' : '✦'}</span>`;
+  const numDot = (s) => `<span class="w-5 h-5 mt-0.5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0" style="background:#c9a034;color:#2b2008;min-width:1.5rem">${s.chi || '✦'}</span>`;
 
   function distanceTable() {
     const names = ['patmos', 'ephesus', 'smyrna', 'pergamum', 'thyatira', 'sardis', 'philadelphia', 'laodicea', 'ephesus'];
@@ -1434,7 +1533,27 @@ const NOTES = [
     const c = document.getElementById('list-container');
     const sel = state.sel;
     let html = '';
-    if (state.tab === 'stops') {
+    if (state.tab === 'structure') {
+      const card = (inner, extra = '') => `<article class="mb-2 p-3 rounded-lg bg-[#fcf9f2] border border-[#e0d4bc] ${extra}">${inner}</article>`;
+      const h3 = (zh, en) => `<h3 class="font-serif-atlas font-bold text-[15px] text-[#2b2520] mb-1.5">${isZh() ? zh : en}</h3>`;
+      const tx = (cls) => body(cls || 'text-[12.5px] leading-relaxed', 'font-serif-atlas text-[14px] leading-snug');
+      html += card(`<h2 class="font-serif-atlas font-bold text-[17px] text-[#2b2520] mb-1.5">${T(STRUCT.title)}</h2>
+        ${h3('信息', 'The message')}
+        <p class="${tx()} text-[#2b2520] mb-1.5">${T(STRUCT.message)}</p>
+        <div class="text-[11.5px] text-[#5c4a35]">${isZh() ? '参：' : 'Cf. '}${refHTML(STRUCT.refs)}</div>`, 'border-l-4 !border-l-[#B03A2E]');
+      const outline = (kind) => STOPS.filter(s => s.chi).map(s => {
+        const on = curStop().id === s.id && sel.type === 'stop';
+        const lab = kind === 'struct' ? `${isZh() ? `王的谕令 ${s.n}` : `Royal Edict ${s.n}`}<span class="text-[#6a5b49] font-normal"> ${refPlain(s.ref)}</span>` : T(s.theme);
+        return `<button onclick="window._stop('${s.id}')" class="no-rt w-full text-left flex items-start gap-1.5 py-0.5 rounded hover:bg-[#efe6d2] ${on ? 'bg-[#efe6d2]' : ''}" style="padding-left:${CHI_LEVEL[s.chi] * 18}px">
+          ${chiTag(s.chi)}<span class="${tx('text-[12px] leading-snug')} ${kind === 'struct' ? 'font-semibold' : ''} text-[#2b2520]">${lab}${kind === 'struct' ? ` <span class="text-[#6a5b49] font-normal">· ${T(s)}</span>` : ''}</span></button>`;
+      }).join('');
+      html += card(h3('结构大纲', 'Structural outline') + outline('struct'));
+      html += card(h3('主题大纲', 'Thematic outline') + outline('theme'));
+      html += PAIRS.map(p => card(`<div class="flex items-center gap-1.5 mb-1">${chiTag(p.k)}${p.b ? chiTag(p.k + '′') : ''}<span class="font-serif-atlas font-bold text-[14px] text-[#2b2520]">${T(p.t)}</span></div>
+        <div class="flex flex-wrap gap-1 mb-1.5">${[p.a, p.b].filter(Boolean).map(stopChip).join('')}</div>
+        <ul class="basis ${tx('text-[12px] leading-relaxed')} text-[#2b2520]">${p.pts.map(x => `<li>${rich(T(x))}</li>`).join('')}</ul>`, '')).join('');
+      html += `<p class="px-1 pb-2 text-[11px] text-[#6a5b49]">${T(STRUCT.source)}</p>`;
+    } else if (state.tab === 'stops') {
       html = STOPS.map((s, i) => {
         const on = sel.type === 'stop' && state.stop === i;
         const sub = s.letter ? T(s.letter.title).replace(/[；;]\s*(参|cf\.).*$/, '').replace(/\s*\[\[.*?\]\]/g, '') : T(s.title);
@@ -1444,11 +1563,11 @@ const NOTES = [
           <span class="block ${body('text-[11px]', 'font-serif-atlas text-[12.5px]')} text-[#6a5b49] leading-snug">${sub}</span></span></button>`;
       }).join('');
     } else if (state.tab === 'compare') {
-      html = `<div class="flex flex-wrap gap-1 px-1 pb-1.5">${LETTER_FIELDS.map(([k, zh, en]) =>
+      html = `<div class="flex flex-wrap gap-1 px-1 pb-1.5">${[['theme', '主题', 'Theme'], ...LETTER_FIELDS].map(([k, zh, en]) =>
         `<button onclick="window._field('${k}')" class="px-2 py-0.5 rounded-full border text-[11px] font-semibold ${state.field === k ? 'bg-[#2b2520] text-[#faf6ec] border-[#2b2520]' : 'bg-[#faf6ec] border-[#cbbba0] hover:bg-[#efe5cf]'}">${isZh() ? zh : en}</button>`).join('')}</div>`;
       html += STOPS.filter(s => s.letter).map(s => {
-        const f = s.letter[state.field], on = sel.type === 'stop' && curStop().id === s.id;
-        return `<div class="mb-1 px-2.5 py-1.5 rounded-lg border ${on ? 'bg-[#fcf9f2] border-[#8b7b65]' : 'bg-[#faf6ec]/75 border-transparent'}" style="box-shadow: inset 3px 0 0 #A8801A">
+        const f = state.field === 'theme' ? s.theme : s.letter[state.field], on = sel.type === 'stop' && curStop().id === s.id;
+                return `<div class="mb-1 px-2.5 py-1.5 rounded-lg border ${on ? 'bg-[#fcf9f2] border-[#8b7b65]' : 'bg-[#faf6ec]/75 border-transparent'}" style="box-shadow: inset 3px 0 0 #A8801A">
           <button onclick="window._stop('${s.id}')" class="no-rt flex items-center gap-1.5 mb-0.5 hover:underline">${numDot(s)}<span class="text-[12.5px] font-bold">${T(s)}</span><span class="text-[10.5px] text-[#6a5b49]">${refPlain(s.ref)}</span></button>
           <div class="${body('text-[12px] leading-relaxed', 'font-serif-atlas text-[13.5px] leading-snug')} ${f.none ? 'italic text-[#8b7b65]' : 'text-[#2b2520]'}">${rich(T(f))}</div></div>`;
       }).join('');
@@ -1539,7 +1658,8 @@ const NOTES = [
   window._stop = (id) => { stopAuto(); setPresetUI('stop'); select({ type: 'stop', id }, true); };
   window._site = (key) => { stopAuto(); setPresetUI('stop'); select({ type: 'site', id: key }, true); };
   window._event = (id) => { stopAuto(); select({ type: 'event', id }, true); };
-  window._tab = (t) => { state.tab = t; renderTabs(); renderList(false); };
+  window._tab = (t) => { state.tab = t; state.detailOpen = false; renderTabs(); renderDetail(); renderList(false); };
+  window._detail = (v) => { state.detailOpen = v; renderDetail(); };
   window._field = (f) => { state.field = f; renderList(true); };
   window.toggleLanguage = () => { state.lang = isZh() ? 'en' : 'zh'; applyLanguage(); };
   window.toggleRelief = () => { state.relief = !state.relief; updateButtons(); if (demLayer) demLayer.redraw(); };
