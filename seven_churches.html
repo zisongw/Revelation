@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The Seven Churches of Revelation · An Atlas</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --parchment-card: #faf6ec;
+      --ink: #2b2520;
+      --border-atlas: #8b7b65;
+      --gold: #A8801A;
+      --fire: #B03A2E;
+      --deceive: #2E3D5C;
+      --rome: #6B2D5C;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; width: 100%;
+      height: 100vh; height: 100dvh; overflow: hidden; overscroll-behavior: none;
+      background-color: #e9e0cc; color: var(--ink);
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .font-serif-atlas { font-family: 'EB Garamond', 'Noto Serif SC', Georgia, serif; }
+    .font-kai { font-family: 'Kaiti SC', 'STKaiti', 'KaiTi', '楷体', 'BiauKai', 'Noto Serif SC', serif; }
+    .font-greek { font-family: 'SBL Greek', 'Gentium Plus', 'EB Garamond', 'Noto Serif', serif; font-style: italic; }
+    .parchment-panel {
+      background-color: var(--parchment-card);
+      background-image: linear-gradient(180deg, rgba(255,253,248,0.82) 0%, rgba(235,224,200,0.38) 100%);
+    }
+    .atlas-legend-glass {
+      background: linear-gradient(180deg, rgba(250,246,236,0.66) 0%, rgba(243,235,216,0.54) 100%);
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+      border: 1px solid rgba(93,80,64,0.48);
+      box-shadow: inset 0 0 0 1px rgba(255,252,245,0.35), 0 4px 14px rgba(43,37,32,0.10);
+    }
+    .legend-text-halo { text-shadow: 0 0 5px rgba(250,246,236,0.92), 0 0 2px rgba(250,246,236,0.85); }
+    #map-container { width: 100%; height: 100%; background-color: #bed7e5; position: relative; z-index: 0; }
+    .map-neatline-overlay {
+      pointer-events: none; position: absolute; inset: 8px;
+      border: 1.5px solid rgba(93,80,64,0.72);
+      box-shadow: inset 0 0 0 3px rgba(250,246,236,0.45), inset 0 0 0 4px rgba(139,123,101,0.45);
+      z-index: 5;
+    }
+
+    /* Map labels */
+    .geo-label-water { pointer-events: none; text-align: center; font-family: 'EB Garamond', 'Noto Serif SC', Georgia, serif;
+      font-style: italic; color: #214e66; line-height: 1.15; white-space: nowrap; user-select: none;
+      text-shadow: 0 0 4px rgba(206,226,237,0.95), 0 0 8px rgba(206,226,237,0.85); }
+    .geo-label-region { pointer-events: none; text-align: center; font-family: 'EB Garamond', 'Noto Serif SC', Georgia, serif;
+      letter-spacing: 0.14em; line-height: 1.2; white-space: nowrap; user-select: none; font-weight: 600; color: rgba(88,72,52,0.62);
+      text-shadow: 0 0 4px rgba(245,238,220,0.95), 0 0 2px rgba(245,238,220,0.95); }
+    .geo-label-river { pointer-events: none; white-space: nowrap; font: italic 600 10px 'EB Garamond', 'Noto Serif SC', serif; color: #2f6178;
+      text-shadow: 0 0 3px rgba(245,238,220,0.95), 0 0 2px rgba(245,238,220,0.95); }
+    .prov-label { pointer-events: none; white-space: nowrap; text-align: center; font: 700 13px/1.2 'EB Garamond', 'Noto Serif SC', serif;
+      letter-spacing: 0.2em; color: var(--rome); opacity: .78; text-shadow: 0 0 4px rgba(250,246,236,0.98), 0 0 8px rgba(250,246,236,0.7); }
+    .place-wrap { position: relative; pointer-events: none; }
+    .place-dot { width: 6px; height: 6px; border-radius: 50%; background: #2b2520; border: 1.2px solid #faf6ec; box-shadow: 0 0 0 0.6px rgba(43,37,32,0.6); }
+    .place-lbl { position: absolute; left: 9px; top: 50%; transform: translateY(-52%); white-space: nowrap;
+      font-family: 'EB Garamond', 'Noto Serif SC', Georgia, serif; font-size: 11.5px; font-weight: 600; color: #3a3128;
+      text-shadow: 0 0 3px #faf6ec, 0 0 2px #faf6ec, 0 0 6px rgba(250,246,236,0.9); }
+    .place-lbl.t1 { font-size: 12.5px; font-weight: 700; color: #231d17; }
+    .zl-b .pt-2, .zl-c .pt-3 { display: none; }
+    .zl-b .geo-label-river, .zl-a .prov-label { display: none; }
+    .hide-places .place-wrap { display: none; }
+
+    /* Church markers — lampstands */
+    .ch-pin { position: relative; cursor: pointer; }
+    .ch-dot { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e7c55a 0%, #b8892b 62%, #8a6416 100%); color: #2b2008;
+      font: 700 11.5px/1 'Inter', sans-serif; border: 2px solid #faf6ec; box-shadow: 0 0 0 1px #5c4512, 0 2px 6px rgba(30,24,18,0.35);
+      transition: transform .15s ease; }
+    .ch-pin.prologue .ch-dot { background: #faf6ec; color: #6a4b10; box-shadow: 0 0 0 1px #8a6416, 0 2px 6px rgba(30,24,18,0.3); }
+    .ch-pin:hover .ch-dot { transform: scale(1.12); }
+    .ch-pin.is-active .ch-dot { transform: scale(1.22); box-shadow: 0 0 0 2.5px #2b2520, 0 3px 10px rgba(0,0,0,0.35); }
+    .ch-name { position: absolute; left: 29px; top: 50%; transform: translateY(-52%); white-space: nowrap;
+      font: 700 13px/1.15 'Noto Serif SC', 'EB Garamond', serif; color: #2b2520;
+      text-shadow: 0 0 4px #faf6ec, 0 0 2px #faf6ec, 0 0 7px rgba(250,246,236,0.95); }
+    body.lang-en .ch-name { font-family: 'EB Garamond', Georgia, serif; font-size: 14.5px; }
+    .zl-a .ch-name { display: none; }
+    .ch-name small { display: block; font: 500 10px/1.2 'Inter', 'Noto Sans SC', sans-serif; color: #6a5b49; }
+    .ch-pulse { position: absolute; inset: -6px; border-radius: 50%; border: 2.5px solid #c9a227; opacity: 0; pointer-events: none; }
+    .ch-pin.is-active .ch-pulse { animation: pulseRing 1.7s ease-out infinite; }
+    @keyframes pulseRing { 0% { transform: scale(0.85); opacity: 0.9; } 100% { transform: scale(2.1); opacity: 0; } }
+
+    /* Archaeological sites */
+    .site-pin { position: relative; cursor: pointer; }
+    .site-dia { width: 11px; height: 11px; transform: rotate(45deg); background: #2F6F73; border: 1.6px solid #faf6ec; box-shadow: 0 0 0 0.8px #1d4548; }
+    .site-pin.is-active .site-dia { background: #c9a227; box-shadow: 0 0 0 2px #2b2520; }
+    .site-lbl { position: absolute; left: 13px; top: 50%; transform: translateY(-55%); white-space: nowrap;
+      font: 600 11px/1.2 'Noto Serif SC', 'EB Garamond', serif; color: #1d4548;
+      text-shadow: 0 0 3px #faf6ec, 0 0 2px #faf6ec, 0 0 6px rgba(250,246,236,0.9); }
+    .zl-d .site-pin:not(.is-active) .site-lbl { display: none; }
+    .zl-e .site-pin { display: none; }
+
+    .dist-tag { pointer-events: none; white-space: nowrap; transform: translate(-50%, -50%);
+      background: rgba(250,246,236,0.94); border: 1px solid #8A6A1A; border-radius: 10px; padding: 1px 7px;
+      font: 600 10.5px/1.35 'Inter', 'Noto Sans SC', sans-serif; color: #5c4512; box-shadow: 0 1px 4px rgba(43,37,32,0.15); }
+
+    .site-callout { position: relative; pointer-events: none; }
+    .site-callout .box { position: absolute; left: 14px; top: -14px; max-width: 240px; width: max-content; background: rgba(250,246,236,0.97);
+      border: 1px solid #8b7b65; border-left: 3px solid #2F6F73; border-radius: 4px; padding: 3px 8px;
+      font: 600 11.5px/1.35 'Noto Serif SC','EB Garamond',serif; color: #2b2520; box-shadow: 0 2px 8px rgba(43,37,32,0.18); }
+
+    @media (prefers-reduced-motion: reduce) { .ch-pin.is-active .ch-pulse { animation: none; opacity: .6; } }
+
+    body.lang-zh .only-en { display: none !important; }
+    body.lang-en .only-zh { display: none !important; }
+
+    .leaflet-container { background: #bed7e5 !important; font-family: 'Inter', 'Noto Sans SC', sans-serif !important; }
+    .leaflet-div-icon { background: transparent !important; border: none !important; }
+    .leaflet-control-scale { margin-bottom: 64px !important; margin-left: 16px !important; }
+    .leaflet-control-scale-line { background: rgba(250,246,236,0.92) !important; border-color: #2b2520 !important; color: #2b2520 !important;
+      font: 600 10px 'Inter', sans-serif !important; padding: 1px 6px !important; border-radius: 3px !important; }
+
+    .atlas-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .atlas-scroll::-webkit-scrollbar-track { background: rgba(139,123,101,0.08); }
+    .atlas-scroll::-webkit-scrollbar-thumb { background: rgba(139,123,101,0.35); border-radius: 9999px; }
+
+    /* Scripture citations — 中文和合本 (page tooltip) · English LSB (Logos Reftagger) */
+    a.sc-zh { color: #6a3d12; text-decoration: none; border-bottom: 1px dotted rgba(106,61,18,0.55); white-space: nowrap; cursor: pointer; }
+    a.sc-zh:hover { color: #9b2226; border-bottom-style: solid; background: rgba(201,162,39,0.12); border-radius: 2px; }
+    .sc-en { white-space: normal; }
+    .sc-en a, a.rtBibleRef { color: #6a3d12 !important; text-decoration: none !important; border-bottom: 1px dotted rgba(106,61,18,0.55); white-space: nowrap; }
+    .sc-en a:hover, a.rtBibleRef:hover { color: #9b2226 !important; border-bottom-style: solid; }
+    a:focus-visible, button:focus-visible { outline: 2px solid #c9a227; outline-offset: 2px; border-radius: 3px; }
+    #zh-tip { position: fixed; z-index: 3000; display: none; max-height: 46vh; overflow: hidden; flex-direction: column;
+      background: #fcf9f2; border: 1px solid #8b7b65; border-radius: 8px; box-shadow: 0 8px 24px rgba(43,37,32,0.22);
+      font-family: 'Kaiti SC','STKaiti','KaiTi','楷体','Noto Serif SC',serif; color: #2b2520; }
+    #zh-tip.visible { display: flex; }
+    #zh-tip .zt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 6px 10px; background: #efe5cf;
+      border-bottom: 1px solid #d9cbb2; font: 700 12.5px 'Noto Serif SC', serif; border-radius: 8px 8px 0 0; }
+    #zh-tip .zt-ver { font: 500 10.5px 'Noto Sans SC', sans-serif; color: #6a5b49; }
+    #zh-tip .zt-body { padding: 8px 10px; font-size: 14px; line-height: 1.7; overflow-y: auto; }
+    #zh-tip .zt-v + .zt-v::before { content: ' '; }
+    #zh-tip sup { font: 600 9px 'Inter', sans-serif; color: #8b7b65; margin: 0 2px 0 1px; }
+    #zh-tip .zt-muted { color: #7a6955; font-size: 12px; }
+    #zh-tip .zt-foot { padding: 4px 10px 6px; font: 500 10.5px 'Noto Sans SC', sans-serif; color: #7a6955; border-top: 1px dashed #e0d4bc; }
+
+    .tab-btn.is-active { background: #2b2520; color: #faf6ec; }
+    .kv { display: grid; grid-template-columns: auto 1fr; column-gap: 10px; row-gap: 6px; }
+    .kv dt { color: #7a6955; font-size: 11px; white-space: nowrap; padding-top: 2px; }
+    .kv dd { margin: 0; font-size: 12.5px; line-height: 1.6; }
+    body.lang-en .kv dd { font-family: 'EB Garamond', Georgia, serif; font-size: 14px; line-height: 1.4; }
+    .kv dd.none { color: #8b7b65; font-style: italic; }
+    .note-body p, .note-body li { font-size: 12.5px; line-height: 1.65; }
+    body.lang-en .note-body p, body.lang-en .note-body li { font-family: 'EB Garamond', Georgia, serif; font-size: 14.5px; line-height: 1.45; }
+    .note-body ul { padding-left: 16px; list-style: disc; margin: 4px 0; }
+    .note-body li { margin-bottom: 3px; }
+    .note-body p + p, .note-body p + ul, .note-body ul + p { margin-top: 6px; }
+    .basis li { position: relative; padding-left: 12px; margin-bottom: 4px; }
+    .basis li::before { content: ''; position: absolute; left: 1px; top: 0.62em; width: 5px; height: 5px; border-radius: 50%; background: #8b7b65; }
+    .tag-x { font-size: 0.86em; color: #7a6955; }
+
+    @media (max-width: 960px) {
+      #workspace { flex-direction: column; }
+      #map-pane { height: 52%; width: 100%; }
+      #study-sidebar { height: 48%; width: 100% !important; border-left: none !important; border-top: 2px solid var(--border-atlas); }
+      #study-sidebar.hidden-sidebar { display: none; }
+      #map-pane.expanded-map { height: 100%; }
+      #detail-panel { max-height: 52% !important; }
+      .leaflet-control-scale { display: none; }
+    }
+  </style>
+</head>
+<body class="lang-en flex flex-col h-[100dvh] w-screen overflow-hidden">
+
+  <header class="parchment-panel border-b-2 border-[#8b7b65] px-2.5 sm:px-4 py-1.5 sm:py-2 flex flex-wrap items-center justify-between gap-1.5 sm:gap-2 shrink-0 z-30 shadow-sm">
+    <div class="flex items-center gap-2 min-w-0 flex-1">
+      <div class="hidden sm:flex w-8 h-8 rounded-full border border-[#8b7b65] bg-[#f3ebd8] items-center justify-center shrink-0" aria-hidden="true">
+        <svg class="w-4 h-4 text-[#6a4b10]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 3v15M5 8v4a7 7 0 0 0 14 0V8M8.5 9v3a3.5 3.5 0 0 0 7 0V9M8 21h8" /><circle cx="12" cy="3" r="0.8" fill="currentColor"/><circle cx="5" cy="7.2" r="0.8" fill="currentColor"/><circle cx="19" cy="7.2" r="0.8" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="truncate min-w-0">
+        <div class="flex items-baseline gap-2">
+          <h1 class="font-serif-atlas font-bold text-sm sm:text-lg text-[#2b2520] truncate">
+            <span class="only-zh">启示录七教会：地图与书信</span>
+            <span class="only-en">The Seven Churches of Revelation: An Atlas</span>
+          </h1>
+          <span class="hidden md:inline-block text-[10.5px] font-medium px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#5c4a35] border border-[#c7b698]">
+            <span class="only-zh">启示录 1–3 章</span><span class="only-en">Revelation 1–3</span>
+          </span>
+        </div>
+        <p class="hidden sm:block font-serif-atlas italic text-[11px] text-[#6a5b49] truncate -mt-0.5">
+          <span class="only-zh">启示录 1–3 章 · 哥白尼高程地形 · 自然地球 1:10m 水系与海岸线</span>
+          <span class="only-en">Revelation 1–3 · Copernicus DEM (GLO-30) relief · Natural Earth 1:10m</span>
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center justify-between sm:justify-end gap-1.5 w-full sm:w-auto shrink-0">
+      <div class="flex items-center gap-0.5 sm:gap-1 bg-[#ede3cc] p-0.5 sm:p-1 rounded-lg border border-[#c8b89c]">
+        <button id="btn-preset-stop" onclick="applyPreset('stop')" class="preset-btn px-2 py-1 rounded-md text-[11px] sm:text-xs font-medium bg-[#2b2520] text-[#faf6ec]"><span class="only-zh">本城</span><span class="only-en">City</span></button>
+        <button id="btn-preset-circuit" onclick="applyPreset('circuit')" class="preset-btn px-2 py-1 rounded-md text-[11px] sm:text-xs font-medium text-[#3b3228] hover:bg-[#faf6ec]"><span class="only-zh">七城路线</span><span class="only-en">Circuit</span></button>
+        <button id="btn-preset-empire" onclick="applyPreset('empire')" class="preset-btn px-2 py-1 rounded-md text-[11px] sm:text-xs font-medium text-[#3b3228] hover:bg-[#faf6ec]"><span class="only-zh">罗马东部</span><span class="only-en">Roman East</span></button>
+      </div>
+      <div class="flex items-center gap-1 sm:gap-1.5">
+        <button id="btn-relief" onclick="toggleRelief()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg border border-[#8b7b65] bg-[#faf6ec] hover:bg-[#efe5cf] text-[11px] sm:text-xs font-semibold text-[#2b2520]"></button>
+        <button id="btn-lang-toggle" onclick="toggleLanguage()" class="flex items-center rounded-lg border border-[#8b7b65] bg-[#ede3cc] p-0.5 text-[11px] sm:text-xs font-semibold shadow-sm hover:border-[#5c4a35]">
+          <span id="lang-pill-zh" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md text-[#3b3228]">中文</span>
+          <span id="lang-pill-en" class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md bg-[#2b2520] text-[#faf6ec]">EN</span>
+        </button>
+        <button id="btn-sidebar" onclick="toggleSidebar()" class="px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg border border-[#8b7b65] bg-[#faf6ec] hover:bg-[#efe5cf] text-[11px] sm:text-xs font-medium text-[#2b2520] flex items-center gap-1">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="15" y1="4" x2="15" y2="20"></line></svg>
+          <span id="sidebar-toggle-text" class="hidden md:inline"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="workspace" class="flex flex-1 min-h-0 overflow-hidden">
+    <section id="map-pane" class="relative flex-1 min-w-0 h-full">
+      <div id="map-container" class="zl-a zl-b zl-c zl-d"></div>
+      <div class="map-neatline-overlay"></div>
+
+      <div class="absolute top-3 left-3 z-20 atlas-legend-glass rounded-lg w-[214px] sm:w-[262px] max-w-[calc(100%-24px)]">
+        <div class="px-2.5 py-1.5 sm:px-3 sm:py-2 flex items-start justify-between gap-1.5 cursor-pointer select-none" onclick="toggleLegend()">
+          <div class="min-w-0 legend-text-halo">
+            <div class="text-[9.5px] sm:text-[10px] font-semibold text-[#5b4a36] leading-tight" id="cart-eyebrow"></div>
+            <div class="font-serif-atlas font-bold text-[12.5px] sm:text-[14.5px] text-[#1f1914] leading-tight mt-0.5" id="cart-title"></div>
+            <div class="text-[10.5px] sm:text-[11px] text-[#3f3428] leading-snug mt-0.5" id="cart-sub"></div>
+          </div>
+          <button id="btn-legend" type="button" class="mt-0.5 p-0.5 rounded hover:bg-[#efe6d2]/50 text-[#4a3d2f] shrink-0">
+            <svg id="legend-arrow" class="w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+        </div>
+        <div id="legend-content" class="px-2.5 pb-2 pt-1 border-t border-[#8b7b65]/30 legend-text-halo">
+          <div id="legend-items" class="space-y-0.5"></div>
+          <div class="pt-1.5 mt-1 border-t border-[#8b7b65]/25 grid grid-cols-2 gap-x-2 gap-y-0.5 text-[10.5px] text-[#2b2520]">
+            <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3 accent-[#6B2D5C]" checked onchange="setLayer('province',this.checked)"><span class="only-zh">亚细亚省</span><span class="only-en">Province</span></label>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3 accent-[#8A6A1A]" checked onchange="setLayer('roads',this.checked)"><span class="only-zh">道路</span><span class="only-en">Roads</span></label>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3 accent-[#2F6F73]" checked onchange="setLayer('sites',this.checked)"><span class="only-zh">遗址</span><span class="only-en">Sites</span></label>
+            <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" class="w-3 h-3 accent-[#2b2520]" checked onchange="setLayer('places',this.checked)"><span class="only-zh">其他地名</span><span class="only-en">Other places</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div id="data-status-pill" class="hidden sm:flex absolute top-3 right-3 z-20 atlas-legend-glass rounded-md px-2 py-1 text-[10px] text-[#3d3328] flex-col gap-0.5 max-w-[230px] legend-text-halo">
+        <div class="flex items-center gap-1.5"><span id="dot-dem" class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span><span id="text-dem" class="font-semibold"></span></div>
+        <div class="flex items-center gap-1.5"><span id="dot-ne" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse shrink-0"></span><span id="text-ne"></span></div>
+      </div>
+
+      <div class="absolute bottom-[62px] right-4 z-20 flex flex-col items-end gap-2">
+        <div class="hidden sm:block bg-[#faf6ec]/92 rounded-full p-1 border border-[#8b7b65] shadow" aria-hidden="true">
+          <svg class="w-10 h-10" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#8b7b65" stroke-width="1.3" />
+            <polygon points="50,12 56,50 50,50" fill="#2b2520" /><polygon points="50,12 44,50 50,50" fill="#e5d8bc" stroke="#2b2520" stroke-width="0.6" />
+            <polygon points="50,88 44,50 50,50" fill="#2b2520" /><polygon points="50,88 56,50 50,50" fill="#e5d8bc" stroke="#2b2520" stroke-width="0.6" />
+            <polygon points="88,50 50,56 50,50" fill="#2b2520" /><polygon points="88,50 50,44 50,50" fill="#e5d8bc" stroke="#2b2520" stroke-width="0.6" />
+            <polygon points="12,50 50,44 50,50" fill="#2b2520" /><polygon points="12,50 50,56 50,50" fill="#e5d8bc" stroke="#2b2520" stroke-width="0.6" />
+            <circle cx="50" cy="50" r="3" fill="#faf6ec" stroke="#2b2520" stroke-width="1" />
+            <text x="50" y="9" text-anchor="middle" font-family="EB Garamond, serif" font-weight="700" font-size="10" fill="#2b2520">N</text>
+          </svg>
+        </div>
+        <div class="flex flex-col bg-[#faf6ec] rounded-lg border border-[#8b7b65] shadow overflow-hidden">
+          <button id="btn-zoom-in" onclick="mapZoom(1)" class="w-8 h-8 flex items-center justify-center hover:bg-[#ece1cb] text-[#2b2520] border-b border-[#d5c7ae] font-bold text-base">+</button>
+          <button id="btn-zoom-out" onclick="mapZoom(-1)" class="w-8 h-8 flex items-center justify-center hover:bg-[#ece1cb] text-[#2b2520] border-b border-[#d5c7ae] font-bold text-base">−</button>
+          <button id="btn-zoom-reset" onclick="applyPreset('stop')" class="w-8 h-8 flex items-center justify-center hover:bg-[#ece1cb] text-[#2b2520]">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="absolute left-3 right-3 bottom-3 z-20">
+        <div id="stop-bar" class="atlas-legend-glass rounded-lg px-1.5 py-1 flex items-stretch gap-1 overflow-x-auto atlas-scroll"></div>
+      </div>
+    </section>
+
+    <aside id="study-sidebar" class="parchment-panel w-full lg:w-[410px] xl:w-[450px] h-full border-l-2 border-[#8b7b65] flex flex-col shrink-0 z-20">
+      <div class="px-2.5 sm:px-3 py-1.5 bg-[#efe5cf] border-b border-[#cbbba0] flex items-center justify-between gap-1.5 shrink-0">
+        <div class="flex items-center gap-1 sm:gap-1.5">
+          <button onclick="stepStop(-1)" class="px-2 py-1 rounded bg-[#faf6ec] hover:bg-[#e5d8bc] border border-[#b4a186] text-[11px] sm:text-xs font-medium"><span class="only-zh">◀ 上一城</span><span class="only-en">◀ Prev</span></button>
+          <button id="btn-autoplay" onclick="toggleAutoPlay()" class="px-2 sm:px-2.5 py-1 rounded bg-[#2b2520] hover:bg-[#413830] text-[#faf6ec] text-[11px] sm:text-xs font-medium"></button>
+          <button onclick="stepStop(1)" class="px-2 py-1 rounded bg-[#faf6ec] hover:bg-[#e5d8bc] border border-[#b4a186] text-[11px] sm:text-xs font-medium"><span class="only-zh">下一城 ▶</span><span class="only-en">Next ▶</span></button>
+        </div>
+        <span id="step-counter" class="font-serif-atlas font-bold text-xs text-[#5c4a35] bg-[#faf6ec] px-2 py-0.5 rounded border border-[#cbbba0]"></span>
+      </div>
+      <nav id="tabs" class="px-2 py-1.5 bg-[#f3ebd8] border-b border-[#d9cbb2] flex gap-1 overflow-x-auto atlas-scroll shrink-0" role="tablist"></nav>
+      <div id="detail-panel" class="p-3 sm:p-3.5 border-b-2 border-[#cbbba0] bg-[#fcf9f2] shrink-0 max-h-[58%] overflow-y-auto atlas-scroll"></div>
+      <div id="list-container" class="flex-1 overflow-y-auto atlas-scroll p-2"></div>
+    </aside>
+  </div>
+
+  <script>
+/* =========================================================================
+   GEOGRAPHY — polygons/lines in [lon, lat]; points in [lat, lon]
+   ========================================================================= */
+
+/* Roman province of Asia, late 1st century (schematic: Mysia, Lydia, Ionia, Caria, western Phrygia).
+   Sea edges are masked by the Natural Earth ocean layer drawn above it. */
+const PROVINCE_ASIA = [
+  [25.70,40.15],[26.60,40.45],[27.60,40.45],[28.60,40.35],[29.50,40.05],[30.30,39.55],[31.05,38.95],
+  [31.30,38.35],[30.90,37.85],[30.20,37.35],[29.45,36.95],[28.70,36.55],[27.80,36.45],[27.10,36.55],
+  [26.45,36.95],[26.05,37.45],[25.80,38.20],[25.75,39.00],[25.65,39.60]
+];
+
+/* Ancient water bodies (schematic, 1st c. AD): Cayster estuary at Ephesus; Latmian Gulf before the Maeander silted it */
+const ANCIENT_WATER = [
+  { id:'cayster', pts:[[27.215,37.985],[27.27,37.968],[27.318,37.950],[27.333,37.944],[27.320,37.935],[27.28,37.930],[27.235,37.935],[27.20,37.950]] },
+  { id:'latmian', pts:[[27.17,37.66],[27.24,37.66],[27.30,37.635],[27.37,37.605],[27.46,37.565],[27.55,37.535],[27.61,37.505],
+                       [27.57,37.470],[27.48,37.470],[27.39,37.495],[27.31,37.525],[27.285,37.545],[27.24,37.560],[27.18,37.580]] }
+];
+
+/* Roman roads (schematic; main lines only) — points [lat, lon] */
+const ROADS = {
+  pat_eph: { sea:true, pts:[[37.326,26.546],[37.45,26.80],[37.62,26.98],[37.70,27.06],[37.82,27.18],[37.905,27.27],[37.944,27.330]] },
+  eph_smy: { pts:[[37.941,27.341],[38.06,27.37],[38.18,27.33],[38.30,27.23],[38.419,27.139]] },
+  smy_per: { pts:[[38.419,27.139],[38.55,27.06],[38.70,26.98],[38.86,26.98],[39.00,27.07],[39.132,27.184]] },
+  per_thy: { pts:[[39.132,27.184],[39.08,27.38],[39.01,27.58],[38.95,27.73],[38.919,27.840]] },
+  thy_sar: { pts:[[38.919,27.840],[38.80,27.89],[38.66,27.95],[38.56,28.00],[38.488,28.040]] },
+  sar_phi: { pts:[[38.488,28.040],[38.45,28.18],[38.40,28.33],[38.37,28.43],[38.350,28.517]] },
+  phi_lao: { pts:[[38.350,28.517],[38.24,28.66],[38.12,28.82],[37.98,28.98],[37.90,29.06],[37.836,29.107]] },
+  lao_eph: { pts:[[37.836,29.107],[37.86,28.92],[37.90,28.62],[37.89,28.30],[37.866,27.838],[37.853,27.528],[37.90,27.42],[37.941,27.341]] },
+  lao_hie: { minor:true, pts:[[37.836,29.107],[37.88,29.115],[37.926,29.126]] },
+  lao_col: { minor:true, pts:[[37.836,29.107],[37.81,29.18],[37.788,29.261]] },
+  eph_mil: { minor:true, pts:[[37.941,27.341],[37.853,27.528],[37.70,27.40],[37.659,27.298],[37.530,27.278]] },
+  per_tro: { minor:true, pts:[[39.132,27.184],[39.30,27.05],[39.585,26.995],[39.55,26.60],[39.488,26.337],[39.755,26.159]] },
+  smy_sar: { minor:true, pts:[[38.419,27.139],[38.50,27.40],[38.58,27.70],[38.52,27.92],[38.488,28.040]] }
+};
+
+/* Order of the letters (Rev 1:11) as road keys */
+const CIRCUIT = ['pat_eph','eph_smy','smy_per','per_thy','thy_sar','sar_phi','phi_lao','lao_eph'];
+
+/* Supplemental rivers (schematic), [lon, lat] */
+const EXTRA_RIVERS = [
+  { zh:'凯斯特河', en:'Cayster', pts:[[28.25,38.22],[27.95,38.17],[27.70,38.09],[27.50,38.00],[27.38,37.965],[27.32,37.950]] },
+  { zh:'迈安德河', en:'Maeander', pts:[[29.45,37.98],[29.10,37.93],[28.80,37.91],[28.45,37.89],[28.10,37.87],[27.80,37.84],[27.58,37.78],[27.48,37.66],[27.47,37.57]] },
+  { zh:'赫尔穆斯河', en:'Hermus', pts:[[29.00,38.78],[28.70,38.62],[28.45,38.56],[28.20,38.55],[28.00,38.60],[27.75,38.62],[27.45,38.62],[27.20,38.62],[26.95,38.62]] },
+  { zh:'凯库斯河', en:'Caicus', pts:[[27.85,39.20],[27.60,39.16],[27.38,39.12],[27.18,39.06],[27.02,38.97],[26.92,38.93]] },
+  { zh:'吕卡斯河', en:'Lycus', pts:[[29.40,37.78],[29.25,37.81],[29.12,37.86],[28.98,37.90]] },
+  { zh:'帕克托洛斯河', en:'Pactolus', pts:[[28.06,38.38],[28.045,38.44],[28.035,38.49],[28.03,38.55]] }
+];
+
+/* Places: [id, zh, en, lat, lon, tier]  tier 1 always · 2 at zoom ≥ 7 · 3 at zoom ≥ 9 */
+const PLACES = [
+  ['miletus','米利都','Miletus',37.530,27.278,2],
+  ['priene','普里耶涅','Priene',37.659,27.298,3],
+  ['magnesia','马格尼西亚','Magnesia on the Maeander',37.853,27.528,2],
+  ['tralles','特拉勒斯','Tralles',37.866,27.838,2],
+  ['hierapolis','希拉波立','Hierapolis',37.926,29.126,2],
+  ['colossae','歌罗西','Colossae',37.788,29.261,2],
+  ['aphrodisias','阿佛洛狄西亚','Aphrodisias',37.708,28.723,3],
+  ['troas','特罗亚','Troas',39.755,26.159,2],
+  ['assos','亚朔','Assos',39.488,26.337,3],
+  ['adramyttium','亚大米田','Adramyttium',39.585,26.995,3],
+  ['mitylene','米推利尼','Mitylene',39.106,26.555,3],
+  ['chios','基阿','Chios',38.370,26.135,3],
+  ['samos','撒摩','Samos',37.691,26.944,3],
+  ['cos','哥士','Cos',36.893,27.288,3],
+  ['rhodes','罗底','Rhodes',36.443,28.226,2],
+  ['rome','罗马','Rome',41.893,12.483,1],
+  ['corinth','哥林多','Corinth',37.906,22.878,2],
+  ['athens','雅典','Athens',37.975,23.735,2],
+  ['philippi','腓立比','Philippi',41.012,24.286,2],
+  ['thessalonica','帖撒罗尼迦','Thessalonica',40.640,22.940,2],
+  ['antioch','安提阿','Antioch',36.200,36.160,1],
+  ['tarsus','大数','Tarsus',36.917,34.895,2],
+  ['jerusalem','耶路撒冷','Jerusalem',31.778,35.235,1],
+  ['alexandria','亚历山大','Alexandria',31.200,29.920,1]
+];
+
+/* Static labels: [lat, lon, zh, en, size, kind] kind: water | region */
+const LABELS = [
+  [38.25,25.45,'爱琴海','Aegean Sea',15,'water'],
+  [35.60,27.20,'大海（地中海）','Great Sea (Mediterranean)',13,'water'],
+  [38.50,26.88,'士每拿湾','Gulf of Smyrna',9,'water'],
+  [43.20,34.00,'黑海','Black Sea',13,'water'],
+  [39.62,27.75,'每西亚','MYSIA',11.5,'region'],
+  [38.82,28.55,'吕底亚','LYDIA',11.5,'region'],
+  [38.12,26.70,'伊奥尼亚','IONIA',10,'region'],
+  [37.30,28.10,'卡里亚','CARIA',10.5,'region'],
+  [38.65,30.20,'弗吕家','PHRYGIA',11.5,'region'],
+  [36.55,29.90,'吕家','LYCIA',10.5,'region'],
+  [40.55,30.60,'庇推尼','BITHYNIA',10.5,'region'],
+  [39.40,32.70,'加拉太','GALATIA',11,'region'],
+  [36.95,31.10,'旁非利亚','PAMPHYLIA',10,'region'],
+  [40.95,22.70,'马其顿','MACEDONIA',11,'region'],
+  [37.75,22.25,'亚该亚','ACHAIA',11,'region'],
+  [37.10,34.90,'基利家','CILICIA',10,'region']
+];
+
+/* Fallback sea if Natural Earth cannot load — very simplified Aegean */
+const FALLBACK_OCEAN = { type:'FeatureCollection', features:[
+  { type:'Feature', properties:{}, geometry:{ type:'Polygon', coordinates:[[
+    [26.20,40.10],[26.10,39.50],[26.90,39.50],[26.70,39.10],[26.80,38.70],[26.60,38.45],[27.05,38.45],[26.80,38.35],[26.30,38.30],
+    [26.60,38.00],[27.25,37.95],[27.20,37.60],[27.25,37.35],[27.50,37.00],[27.30,36.95],[28.00,36.80],[28.20,36.60],[29.00,36.60],
+    [30.00,36.30],[30.60,36.80],[31.50,36.70],[33.00,36.10],[34.60,36.80],[35.90,36.80],[35.90,34.00],[20.00,34.00],[20.00,38.00],
+    [21.10,37.80],[22.10,37.00],[23.00,36.50],[23.20,37.40],[22.90,38.00],[23.40,38.30],[24.00,38.20],[23.00,39.00],[22.60,40.40],
+    [23.60,40.20],[24.50,40.90],[26.00,40.80],[26.20,40.10]]] } }
+]};
+
+/* =========================================================================
+   STOPS — Patmos + the seven churches in the order of Rev 1:11.
+   Background items marked 经外史料 / extra-biblical, or 解释 / interpretation.
+   ========================================================================= */
+const LETTER_FIELDS = [
+  ['title',   '基督的自称', 'Christ’s self-title'],
+  ['praise',  '称赞', 'Commendation'],
+  ['rebuke',  '责备', 'Rebuke'],
+  ['call',    '劝勉与警告', 'Exhortation and warning'],
+  ['promise', '给得胜者的应许', 'Promise to the overcomer']
+];
+
+const STOPS = [
+  { id:'patmos', n:0, zh:'拔摩', en:'Patmos', gr:'Πάτμος', lat:37.326, lon:26.546, zoom:11.5, ref:'Rev 1:9-20',
+    modern:{zh:'今属希腊多德卡尼斯群岛',en:'Today in the Dodecanese, Greece'},
+    title:{zh:'序幕：拔摩岛上的异象',en:'Prologue: The Vision on Patmos'},
+    summary:{zh:'约翰为神的道，并为给耶稣作的见证，曾在拔摩岛。主日他被圣灵感动，看见人子在七个金灯台中间行走，受命把所看见的写在书上，寄给亚细亚的七个教会。七星是七个教会的使者，七灯台就是七个教会 [[Rev 1:20]]。',
+             en:'John is on Patmos on account of the word of God and the testimony of Jesus. In the Spirit on the Lord’s day he sees the Son of Man walking among seven golden lampstands and is told to write what he sees in a book and send it to the seven churches of Asia. The seven stars are the angels of the churches; the seven lampstands are the churches [[Rev 1:20]].'},
+    bg:[
+      {zh:'约翰自称是众信徒的弟兄，在耶稣的患难、国度、忍耐里与他们一同有分 [[Rev 1:9]]',en:'John calls himself their brother and fellow partaker in the tribulation, kingdom and perseverance that are in Jesus [[Rev 1:9]]'},
+      {zh:'书信的次序：以弗所、士每拿、别迦摩、推雅推喇、撒狄、非拉铁非、老底嘉 [[Rev 1:11]]',en:'The order of the letters: Ephesus, Smyrna, Pergamum, Thyatira, Sardis, Philadelphia, Laodicea [[Rev 1:11]]'},
+      {zh:'人子的形像：七封信开头基督的自称，大多取自这段描写 [[Rev 1:12-18]]',en:'The vision of the Son of Man supplies most of the self-titles that open the seven letters [[Rev 1:12-18]]'},
+      {zh:'爱任纽说，启示录的异象见于多米田在位末年，约公元95年（《驳异端》5.30.3，经外史料）',en:'Irenaeus places the vision near the end of Domitian’s reign, c. AD 95 (Against Heresies 5.30.3, extra-biblical)'},
+      {zh:'优西比乌记载多米田把约翰放逐到拔摩，多米田死后约翰回到以弗所（《教会史》3.18、3.20、3.23，经外史料）',en:'Eusebius records that Domitian banished John to Patmos and that John returned to Ephesus after Domitian died (Church History 3.18, 3.20, 3.23, extra-biblical)'}
+    ],
+    sites:[
+      {id:'cave', zh:'启示洞', en:'Cave of the Apocalypse', lat:37.3166, lon:26.5436,
+       d:{zh:'传统认为约翰在此领受异象；洞外后建修道院附属小堂（传统，经外史料）。',en:'Traditionally where John received the vision; a chapel was later built around it (tradition, extra-biblical).'}},
+      {id:'monastery', zh:'圣约翰修道院', en:'Monastery of St John', lat:37.3089, lon:26.5478,
+       d:{zh:'公元1088年由修士赫里斯托杜洛斯建于岛上最高处的霍拉（经外史料）。',en:'Founded in 1088 by the monk Christodoulos on the heights of Chora (extra-biblical).'}},
+      {id:'skala', zh:'斯卡拉港', en:'Skala harbour', lat:37.3261, lon:26.5458,
+       d:{zh:'岛上的天然港；以弗所在东北方约一百公里的海路之外。',en:'The island’s natural harbour; Ephesus lies about 100 km to the north-east by sea.'}}
+    ],
+    cross:'Rev 1:1-11; Rev 22:8-9',
+    quote:{ref:'Rev 1:11', zh:'说：你所看见的，当写在书上，达与以弗所、士每拿、别迦摩、推雅推喇、撒狄、非拉铁非、老底嘉那七个教会。'} },
+
+  { id:'ephesus', n:1, zh:'以弗所', en:'Ephesus', gr:'Ἔφεσος', lat:37.9395, lon:27.3417, zoom:12, ref:'Rev 2:1-7',
+    modern:{zh:'今土耳其塞尔丘克附近',en:'Near Selçuk, Turkey'},
+    letter:{
+      title:{zh:'右手拿着七星、在七个金灯台中间行走的 [[Rev 2:1]]；参 [[Rev 1:13, 16]]',en:'He who holds the seven stars in His right hand and walks among the seven golden lampstands [[Rev 2:1]]; cf. [[Rev 1:13, 16]]'},
+      praise:{zh:'劳碌、忍耐；不能容忍恶人；试验那自称为使徒却不是使徒的，看出他们是假的；为主的名劳苦，并不乏倦；恨恶尼哥拉一党的行为 [[Rev 2:2-3, 6]]',en:'Toil and perseverance; no tolerance for evil men; testing those who call themselves apostles and finding them false; enduring for Christ’s name without growing weary; hating the deeds of the Nicolaitans [[Rev 2:2-3, 6]]'},
+      rebuke:{zh:'把起初的爱心离弃了 [[Rev 2:4]]',en:'They have left their first love [[Rev 2:4]]'},
+      call:{zh:'应当回想是从哪里坠落的，并要悔改，行起初所行的事；不然，主要把灯台从原处挪去 [[Rev 2:5]]',en:'Remember from where they have fallen, repent and do the first works; otherwise their lampstand will be removed from its place [[Rev 2:5]]'},
+      promise:{zh:'得胜的，赐他吃神乐园中生命树的果子 [[Rev 2:7]]；参 [[Gen 2:9]]；[[Rev 22:2, 14]]',en:'To the one who overcomes: to eat of the tree of life in the Paradise of God [[Rev 2:7]]; cf. [[Gen 2:9]]; [[Rev 22:2, 14]]'}
+    },
+    bg:[
+      {zh:'亚细亚省最大的城市与港口，位于凯斯特河口，是罗马总督常驻之地（经外史料）',en:'The largest city and port of Asia at the mouth of the Cayster, and the usual seat of the Roman proconsul (extra-biblical)'},
+      {zh:'亚底米大庙是古代七大奇观之一；以弗所城以“亚底米的庙守”自居 [[Act 19:27, 35]]',en:'The Temple of Artemis was one of the Seven Wonders, and the city prided itself as temple-keeper of Artemis [[Act 19:27, 35]]'},
+      {zh:'多米田年间（约公元89/90年）建成奉祀弗拉维王朝皇帝的神庙，以弗所首次获得皇帝崇拜“庙守城”的称号（经外史料）',en:'Under Domitian (c. AD 89/90) a temple to the Flavian emperors was completed, and Ephesus became an imperial temple-keeper city for the first time (extra-biblical)'},
+      {zh:'保罗在此传道两年多，叫住在亚细亚的都听见主的道 [[Act 19:8-10]]；[[Act 20:31]]；剧场暴动 [[Act 19:23-41]]',en:'Paul preaches here more than two years, so that all who lived in Asia heard the word [[Act 19:8-10]]; [[Act 20:31]]; the riot in the theatre [[Act 19:23-41]]'},
+      {zh:'保罗在米利都嘱咐以弗所长老防备凶暴的豺狼和说悖谬话的人 [[Act 20:17, 28-31]]，与信中“试验假使徒”相呼应（解释）',en:'At Miletus Paul warns the Ephesian elders of savage wolves and men speaking perverse things [[Act 20:17, 28-31]], echoed in the testing of false apostles (interpretation)'},
+      {zh:'提摩太留在以弗所 [[1Ti 1:3]]；保罗写以弗所书 [[Eph 1:1]]',en:'Timothy stays in Ephesus [[1Ti 1:3]]; Paul’s letter to the Ephesians [[Eph 1:1]]'},
+      {zh:'港口因凯斯特河淤积而逐渐远离城区，今日遗址离海已有数公里（经外史料）——学者常联系“把灯台从原处挪去”（解释）',en:'Silt from the Cayster pushed the harbour ever farther from the city, and the ruins now lie several kilometres inland (extra-biblical); scholars often connect this with the lampstand removed from its place (interpretation)'},
+      {zh:'伊格那丢约公元110年写信给以弗所教会，称赞他们不让异端在其中立足（经外史料）',en:'Ignatius, writing c. AD 110, praises the Ephesians for giving false teachers no foothold (extra-biblical)'}
+    ],
+    sites:[
+      {id:'artemision', zh:'亚底米神庙', en:'Temple of Artemis', lat:37.9497, lon:27.3639,
+       d:{zh:'古代七大奇观之一，今只剩一根重立的石柱。银匠底米丢为它煽动全城 [[Act 19:24-27]]。',en:'One of the Seven Wonders; a single re-erected column remains. Demetrius the silversmith stirs up the city on its behalf [[Act 19:24-27]].'}},
+      {id:'theatre', zh:'大剧场', en:'Great Theatre', lat:37.9410, lon:27.3423,
+       d:{zh:'众人在此齐声喊叫“大哉，以弗所人的亚底米”约两小时 [[Act 19:29-34]]。',en:'The crowd rushes in here and chants the greatness of Artemis for about two hours [[Act 19:29-34]].'}},
+      {id:'sebastoi', zh:'弗拉维皇帝神庙', en:'Temple of the Sebastoi', lat:37.9372, lon:27.3404,
+       d:{zh:'多米田年间建成，奉祀弗拉维王朝诸帝；出土巨像残件（经外史料）。',en:'Completed under Domitian for the Flavian emperors; fragments of a colossal statue survive (extra-biblical).'}},
+      {id:'harbour', zh:'古港', en:'Ancient harbour', lat:37.9445, lon:27.3305,
+       d:{zh:'由港口大道连到剧场；因淤积需要反复疏浚，终至废弃（经外史料）。',en:'Linked to the theatre by the Harbour Street; silting required repeated dredging until it was abandoned (extra-biblical).'}},
+      {id:'stjohn', zh:'圣约翰大殿', en:'Basilica of St John', lat:37.9517, lon:27.3683,
+       d:{zh:'公元6世纪查士丁尼所建，传统认为建在约翰墓上（传统，经外史料）。',en:'Built by Justinian in the 6th century over what tradition holds to be John’s tomb (tradition, extra-biblical).'}}
+    ],
+    cross:'Act 18:19-21; Act 19:1-41; Act 20:17-38; Eph 1:1; 1Ti 1:3',
+    quote:{ref:'Rev 2:4', zh:'然而有一件事我要责备你，就是你把起初的爱心离弃了。'} },
+
+  { id:'smyrna', n:2, zh:'士每拿', en:'Smyrna', gr:'Σμύρνα', lat:38.4189, lon:27.1395, zoom:12, ref:'Rev 2:8-11',
+    modern:{zh:'今土耳其伊兹密尔',en:'İzmir, Turkey'},
+    letter:{
+      title:{zh:'那首先的、末后的，死过又活的 [[Rev 2:8]]；参 [[Rev 1:17-18]]',en:'The First and the Last, who was dead and has come to life [[Rev 2:8]]; cf. [[Rev 1:17-18]]'},
+      praise:{zh:'知道你的患难、你的贫穷（你却是富足的）；也知道那自称是犹太人所说的毁谤话，其实他们不是犹太人，乃是撒但一会的人 [[Rev 2:9]]',en:'Their tribulation and poverty, though they are rich; the slander of those who say they are Jews and are not, but are a synagogue of Satan [[Rev 2:9]]'},
+      rebuke:{none:true, zh:'没有责备', en:'No rebuke'},
+      call:{zh:'将要受的苦不用怕；魔鬼要把几个人下在监里，必受患难十日；务要至死忠心 [[Rev 2:10]]',en:'Do not fear what they are about to suffer; the devil will throw some into prison and they will have tribulation ten days; be faithful until death [[Rev 2:10]]'},
+      promise:{zh:'赐他生命的冠冕 [[Rev 2:10]]；得胜的，必不受第二次死的害 [[Rev 2:11]]；参 [[Rev 20:6, 14]]',en:'The crown of life [[Rev 2:10]]; the one who overcomes will not be hurt by the second death [[Rev 2:11]]; cf. [[Rev 20:6, 14]]'}
+    },
+    bg:[
+      {zh:'倚帕古斯山而建的港城；山顶城郭环绕，古人常以“冠冕”形容其城景（经外史料）——学者常联系“生命的冠冕”（解释）',en:'A port city climbing the slopes of Mount Pagos, whose crowning circuit of buildings the ancients likened to a crown (extra-biblical); often linked with the crown of life (interpretation)'},
+      {zh:'公元前195年即为“罗马城”女神建庙，以忠于罗马自豪（塔西佗《编年史》4.56，经外史料）',en:'It built a temple to the goddess Roma as early as 195 BC and prided itself on its loyalty (Tacitus, Annals 4.56, extra-biblical)'},
+      {zh:'公元26年，在亚细亚十一城的竞争中获准为提比留、利维亚与元老院建庙（塔西佗《编年史》4.55–56，经外史料）',en:'In AD 26 it beat ten other cities of Asia for the right to build a temple to Tiberius, Livia and the Senate (Tacitus, Annals 4.55–56, extra-biblical)'},
+      {zh:'旧城约公元前600年被吕底亚所毁，此后约三百年间只剩村落，直到公元前4世纪末才重建（经外史料）——学者常联系“死过又活的”（解释）',en:'The old city was destroyed by Lydia c. 600 BC and for some three centuries survived only as villages before being refounded in the late 4th century BC (extra-biblical); often linked with the one who was dead and came to life (interpretation)'},
+      {zh:'坡旅甲是士每拿的监督，约公元155/156年在此殉道；《坡旅甲殉道记》记他说自己事奉基督已八十六年（经外史料）',en:'Polycarp, bishop of Smyrna, was martyred here c. AD 155/156; the Martyrdom of Polycarp has him say he had served Christ eighty-six years (extra-biblical)'},
+      {zh:'伊格那丢约公元110年途经士每拿，后来写信给士每拿教会与坡旅甲（经外史料）',en:'Ignatius passed through Smyrna c. AD 110 and later wrote to the church and to Polycarp (extra-biblical)'}
+    ],
+    sites:[
+      {id:'agora', zh:'士每拿广场', en:'Agora of Smyrna', lat:38.4187, lon:27.1390,
+       d:{zh:'现存遗迹多为公元178年地震后马可·奥勒留年间重建的（经外史料）。',en:'Most of what stands was rebuilt under Marcus Aurelius after the earthquake of AD 178 (extra-biblical).'}},
+      {id:'pagos', zh:'帕古斯山', en:'Mount Pagos', lat:38.4118, lon:27.1446,
+       d:{zh:'今称卡迪菲卡莱；希腊化时期重建的城郭以此为顶（经外史料）。',en:'Today Kadifekale; the crown of the Hellenistic refoundation (extra-biblical).'}},
+      {id:'oldsmyrna', zh:'旧士每拿', en:'Old Smyrna', lat:38.4636, lon:27.1661,
+       d:{zh:'今拜拉克勒土丘；约公元前600年被吕底亚王阿律阿特斯摧毁（经外史料）。',en:'The mound at Bayraklı, destroyed by the Lydian king Alyattes c. 600 BC (extra-biblical).'}}
+    ],
+    cross:'Rev 2:8-11; Rev 20:6',
+    quote:{ref:'Rev 2:10', zh:'你将要受的苦你不用怕。魔鬼要把你们中间几个人下在监里，叫你们被试炼，你们必受患难十日。你务要至死忠心，我就赐给你那生命的冠冕。'} },
+
+  { id:'pergamum', n:3, zh:'别迦摩', en:'Pergamum', gr:'Πέργαμος', lat:39.1320, lon:27.1840, zoom:11.75, ref:'Rev 2:12-17',
+    modern:{zh:'今土耳其贝尔加马',en:'Bergama, Turkey'},
+    letter:{
+      title:{zh:'那有两刃利剑的 [[Rev 2:12]]；参 [[Rev 1:16]]',en:'He who has the sharp two-edged sword [[Rev 2:12]]; cf. [[Rev 1:16]]'},
+      praise:{zh:'住在有撒但座位之处，仍坚守主的名；忠心的见证人安提帕在那里被杀的时候，也没有弃绝主的道 [[Rev 2:13]]',en:'Living where Satan’s throne is, they hold fast Christ’s name and did not deny the faith even when Antipas, His faithful witness, was killed among them [[Rev 2:13]]'},
+      rebuke:{zh:'有人服从巴兰的教训——巴兰教巴勒将绊脚石放在以色列人面前，叫他们吃祭偶像之物、行奸淫 [[Rev 2:14]]；参 [[Num 25:1-3]]；[[Num 31:16]]；也有人服从尼哥拉一党的教训 [[Rev 2:15]]',en:'Some hold the teaching of Balaam, who taught Balak to put a stumbling block before Israel, to eat food sacrificed to idols and commit sexual immorality [[Rev 2:14]]; cf. [[Num 25:1-3]]; [[Num 31:16]]; some hold the teaching of the Nicolaitans [[Rev 2:15]]'},
+      call:{zh:'要悔改；不然，主必快临到，用口中的剑攻击他们 [[Rev 2:16]]',en:'Repent; otherwise Christ will come quickly and make war against them with the sword of His mouth [[Rev 2:16]]'},
+      promise:{zh:'赐他隐藏的吗哪，并赐他一块白石，上面写着新名，除了那领受的以外，没有人能认识 [[Rev 2:17]]；参 [[Exo 16:32-34]]；[[Isa 62:2]]',en:'Hidden manna, and a white stone with a new name written on it that no one knows but the one who receives it [[Rev 2:17]]; cf. [[Exo 16:32-34]]; [[Isa 62:2]]'}
+    },
+    bg:[
+      {zh:'阿塔罗斯王朝的都城；公元前133年阿塔罗斯三世遗命将王国交给罗马，后来成为亚细亚省（经外史料）',en:'Capital of the Attalid kings; in 133 BC Attalus III bequeathed his kingdom to Rome, which made it the province of Asia (extra-biblical)'},
+      {zh:'公元前29年获准为罗马女神与奥古斯都建庙，是亚细亚第一座行省级的皇帝崇拜神庙（狄奥《罗马史》51.20，经外史料）',en:'In 29 BC it received leave to build a temple to Roma and Augustus, the first provincial temple of the imperial cult in Asia (Dio Cassius 51.20, extra-biblical)'},
+      {zh:'卫城上有公元前2世纪的宙斯大祭坛，今存柏林佩加蒙博物馆；城外有医神亚斯克勒庇俄斯的疗愈圣所，以蛇为标记（经外史料）',en:'On the acropolis stood the 2nd-century BC Great Altar of Zeus, now in Berlin’s Pergamon Museum; below the city lay the healing sanctuary of Asclepius, whose emblem was the serpent (extra-biblical)'},
+      {zh:'“撒但座位”经文没有明指；常见的解释有：皇帝崇拜中心、宙斯大祭坛、医神崇拜，或整座卫城所代表的宗教与政治权势（解释）',en:'Scripture does not identify Satan’s throne; proposals include the imperial cult, the Altar of Zeus, the cult of Asclepius, or the whole religious and political power of the acropolis (interpretation)'},
+      {zh:'罗马总督握有判处死刑的“剑权”——学者常以此对照基督是“有两刃利剑的”（解释）',en:'The proconsul held the right of the sword, the power of capital sentence; scholars often set this against Christ who has the two-edged sword (interpretation)'},
+      {zh:'城中图书馆藏书甚丰，相传羊皮纸因此地得名（老普林尼《自然史》13.70，经外史料）',en:'Its library was famous, and parchment was said to take its name from the city (Pliny the Elder, Natural History 13.70, extra-biblical)'}
+    ],
+    sites:[
+      {id:'acropolis', zh:'卫城', en:'Acropolis', lat:39.1323, lon:27.1838,
+       d:{zh:'高出平原约三百米，王宫、神庙、图书馆与剧场层层而上（经外史料）。',en:'Rising some 300 m above the plain, with palaces, temples, library and theatre in terraces (extra-biblical).'}},
+      {id:'altar', zh:'宙斯大祭坛', en:'Great Altar of Zeus', lat:39.1312, lon:27.1843,
+       d:{zh:'公元前2世纪欧迈尼斯二世所建，浮雕刻画众神与巨人之战；原址今只剩基座（经外史料）。',en:'Built under Eumenes II in the 2nd century BC with a frieze of gods and giants; only the foundation remains on site (extra-biblical).'}},
+      {id:'trajaneum', zh:'图拉真神庙', en:'Trajaneum', lat:39.1330, lon:27.1836,
+       d:{zh:'公元2世纪为图拉真与哈德良所建，晚于启示录，显示皇帝崇拜在此持续（经外史料）。',en:'Built in the 2nd century for Trajan and Hadrian, after Revelation, showing the imperial cult continuing here (extra-biblical).'}},
+      {id:'asclepieion', zh:'医神圣所', en:'Asclepieion', lat:39.1253, lon:27.1653,
+       d:{zh:'医神亚斯克勒庇俄斯的疗愈中心，名医盖伦生于别迦摩，曾在此习医（经外史料）。',en:'The healing centre of Asclepius, where Pergamum’s own Galen trained as a physician (extra-biblical).'}}
+    ],
+    cross:'Rev 2:12-17; Num 22:1-25:9; Num 31:16',
+    quote:{ref:'Rev 2:13', zh:'我知道你的居所，就是有撒但座位之处。当我忠心的见证人安提帕在你们中间、撒但所住的地方被杀之时，你还坚守我的名，没有弃绝我的道。'} },
+
+  { id:'thyatira', n:4, zh:'推雅推喇', en:'Thyatira', gr:'Θυάτειρα', lat:38.9187, lon:27.8400, zoom:12.5, ref:'Rev 2:18-29',
+    modern:{zh:'今土耳其阿克希萨尔',en:'Akhisar, Turkey'},
+    letter:{
+      title:{zh:'神之子，眼目如火焰，脚像光明铜的 [[Rev 2:18]]；参 [[Rev 1:14-15]]；[[Psa 2:7]]',en:'The Son of God, whose eyes are like a flame of fire and whose feet are like burnished bronze [[Rev 2:18]]; cf. [[Rev 1:14-15]]; [[Psa 2:7]]'},
+      praise:{zh:'爱心、信心、勤劳、忍耐；末后所行的善事比起初所行的更多 [[Rev 2:19]]',en:'Love, faith, service and perseverance; their latter works exceed the first [[Rev 2:19]]'},
+      rebuke:{zh:'容让那自称是先知的妇人耶洗别教导并引诱仆人行奸淫、吃祭偶像之物；给她悔改的机会，她却不肯悔改 [[Rev 2:20-21]]；参 [[1Ki 16:31]]；[[2Ki 9:22]]',en:'They tolerate the woman Jezebel, who calls herself a prophetess and leads Christ’s servants into immorality and food sacrificed to idols; she was given time to repent and refuses [[Rev 2:20-21]]; cf. [[1Ki 16:31]]; [[2Ki 9:22]]'},
+      call:{zh:'主是察看人肺腑心肠的 [[Rev 2:23]]；其余不晓得那所谓撒但深奥之理的，只要持守已经有的，直等到主来 [[Rev 2:24-25]]',en:'Christ searches minds and hearts [[Rev 2:23]]; the rest, who have not known the so-called deep things of Satan, are to hold fast what they have until He comes [[Rev 2:24-25]]'},
+      promise:{zh:'得胜又遵守主命令到底的，赐他权柄制伏列国，用铁杖辖管 [[Rev 2:26-27]]；参 [[Psa 2:8-9]]；又赐他晨星 [[Rev 2:28]]；参 [[Rev 22:16]]',en:'Authority over the nations, to rule them with a rod of iron [[Rev 2:26-27]]; cf. [[Psa 2:8-9]]; and the morning star [[Rev 2:28]]; cf. [[Rev 22:16]]'}
+    },
+    bg:[
+      {zh:'塞琉古一世设立的马其顿军事殖民地，地处通往别迦摩的要道，城防薄弱（斯特拉波《地理志》13.4.4，经外史料）',en:'A Macedonian military colony founded by Seleucus I on the road to Pergamum, with no natural defences (Strabo, Geography 13.4.4, extra-biblical)'},
+      {zh:'铭文显示城中行会特别多：染匠、羊毛工、麻布工、皮匠、铜匠、陶匠、面包师等（经外史料）',en:'Inscriptions record an unusual number of trade guilds: dyers, wool-workers, linen-workers, leather-workers, bronze-smiths, potters, bakers and others (extra-biblical)'},
+      {zh:'行会聚餐往往伴随献祭给保护神；不参加就难以谋生——这是“吃祭偶像之物”的现实压力（解释）',en:'Guild banquets usually honoured a patron god, and staying away could cost one’s livelihood; this was the practical pressure behind eating food sacrificed to idols (interpretation)'},
+      {zh:'城中铜匠行会有名——学者常联系基督“脚像光明的铜”（解释）',en:'The city’s bronze-smiths were well known; scholars often link this with feet like burnished bronze (interpretation)'},
+      {zh:'卖紫色布的吕底亚是推雅推喇人，在腓立比信主 [[Act 16:14-15]]',en:'Lydia, the seller of purple, came from Thyatira and believed at Philippi [[Act 16:14-15]]'},
+      {zh:'城的保护神是太阳神阿波罗-提林诺斯，被尊为宙斯之子；基督在此特称“神之子”（经外史料；解释）',en:'The city’s patron was the sun-god Apollo Tyrimnos, hailed as son of Zeus; here alone Christ is called the Son of God (extra-biblical; interpretation)'}
+    ],
+    sites:[
+      {id:'tepe', zh:'古城中心遗址', en:'Ancient city centre', lat:38.9186, lon:27.8398,
+       d:{zh:'今阿克希萨尔市中心的提佩墓地遗址，可见柱廊与早期教堂的残迹（经外史料）。',en:'The Tepe Mezarlığı site in central Akhisar, with colonnade and early church remains (extra-biblical).'}}
+    ],
+    cross:'Rev 2:18-29; Act 16:14-15; 1Ki 16:29-33',
+    quote:{ref:'Rev 2:20', zh:'然而有一件事我要责备你，就是你容让那自称是先知的妇人耶洗别教导我的仆人，引诱他们行奸淫，吃祭偶像之物。'} },
+
+  { id:'sardis', n:5, zh:'撒狄', en:'Sardis', gr:'Σάρδεις', lat:38.4882, lon:28.0398, zoom:12.25, ref:'Rev 3:1-6',
+    modern:{zh:'今土耳其萨尔特',en:'Sart, Turkey'},
+    letter:{
+      title:{zh:'那有神的七灵和七星的 [[Rev 3:1]]；参 [[Rev 1:4, 16]]',en:'He who has the seven Spirits of God and the seven stars [[Rev 3:1]]; cf. [[Rev 1:4, 16]]'},
+      praise:{zh:'还有几名是未曾污秽自己衣服的，他们要穿白衣与主同行，因为他们是配得过的 [[Rev 3:4]]',en:'A few names have not soiled their garments; they will walk with Christ in white, for they are worthy [[Rev 3:4]]'},
+      rebuke:{zh:'按名是活的，其实是死的；所行的在神面前，没有一样是完全的 [[Rev 3:1-2]]',en:'They have a name that they are alive, but are dead; none of their works has been found complete before God [[Rev 3:1-2]]'},
+      call:{zh:'要警醒，坚固那剩下将要衰微的；回想是怎样领受、怎样听见的，又要遵守，并要悔改；若不警醒，主必临到如同贼一样 [[Rev 3:2-3]]；参 [[Mat 24:42-43]]；[[1Th 5:2]]',en:'Wake up and strengthen what remains; remember what they received and heard, keep it and repent; if they do not wake up, Christ will come like a thief [[Rev 3:2-3]]; cf. [[Mat 24:42-43]]; [[1Th 5:2]]'},
+      promise:{zh:'必穿白衣；主必不从生命册上涂抹他的名，且要在父面前和众使者面前认他的名 [[Rev 3:5]]；参 [[Mat 10:32]]；[[Rev 20:12, 15]]',en:'White garments; Christ will not erase his name from the book of life, and will confess his name before the Father and His angels [[Rev 3:5]]; cf. [[Mat 10:32]]; [[Rev 20:12, 15]]'}
+    },
+    bg:[
+      {zh:'吕底亚王国旧都，克罗伊斯王的都城；帕克托洛斯河出产砂金，相传最早的金银币在此铸造（希罗多德《历史》1.94、5.101，经外史料）',en:'Old capital of Lydia and of King Croesus; the Pactolus carried gold dust, and the first gold and silver coins were said to be struck here (Herodotus 1.94; 5.101, extra-biblical)'},
+      {zh:'卫城号称不可攻破，却两度在疏于防守时被偷袭攻陷：公元前546年居鲁士，公元前214年安提阿古三世（希罗多德1.84；波利比乌斯7.15–18，经外史料）',en:'Its acropolis was thought impregnable, yet twice fell to surprise attacks where no one kept watch: Cyrus in 546 BC and Antiochus III in 214 BC (Herodotus 1.84; Polybius 7.15–18, extra-biblical)'},
+      {zh:'“如同贼一样”可能令撒狄人想起这段城史；但这话也出自耶稣自己的教训 [[Mat 24:42-43]]，两种背景并不互斥（解释）',en:'Coming like a thief may have recalled that history in Sardis; it also repeats Jesus’ own teaching [[Mat 24:42-43]], and the two backgrounds are not exclusive (interpretation)'},
+      {zh:'公元17年亚细亚大地震，撒狄受灾最重；提比留免其五年赋税，并拨款重建（塔西佗《编年史》2.47，经外史料）',en:'The great earthquake of AD 17 struck Sardis hardest; Tiberius remitted its taxes for five years and funded rebuilding (Tacitus, Annals 2.47, extra-biblical)'},
+      {zh:'城中犹太人社群兴旺：浴场—体育馆建筑群里发现大型会堂，现存形制属公元3–4世纪（经外史料）',en:'A thriving Jewish community: a large synagogue was found in the bath-gymnasium complex, in its present form from the 3rd–4th century AD (extra-biblical)'}
+    ],
+    sites:[
+      {id:'acropolis', zh:'卫城', en:'Acropolis', lat:38.4790, lon:28.0410,
+       d:{zh:'陡峭的山脊，南面以外几乎无路可上，却两度被偷袭攻陷（经外史料）。',en:'A sheer ridge almost unclimbable except from the south, yet twice taken by stealth (extra-biblical).'}},
+      {id:'gym', zh:'浴场—体育馆与会堂', en:'Bath-gymnasium and synagogue', lat:38.4882, lon:28.0398,
+       d:{zh:'罗马时期的大型建筑群，南翼改作会堂，可容数百人（经外史料）。',en:'A vast Roman complex whose south wing became a synagogue holding several hundred people (extra-biblical).'}},
+      {id:'artemis', zh:'亚底米神庙', en:'Temple of Artemis', lat:38.4762, lon:28.0297,
+       d:{zh:'希腊化时期始建的巨型神庙，罗马时期续建（经外史料）。',en:'A colossal temple begun in the Hellenistic period and continued under Rome (extra-biblical).'}},
+      {id:'pactolus', zh:'帕克托洛斯河炼金作坊', en:'Pactolus gold refinery', lat:38.4870, lon:28.0335,
+       d:{zh:'吕底亚时期提炼砂金的作坊遗址（经外史料）。',en:'Remains of the Lydian workshops where river gold was refined (extra-biblical).'}}
+    ],
+    cross:'Rev 3:1-6; Mat 24:42-44',
+    quote:{ref:'Rev 3:1', zh:'你要写信给撒狄教会的使者，说：那有神的七灵和七星的，说：我知道你的行为，按名你是活的，其实是死的。'} },
+
+  { id:'philadelphia', n:6, zh:'非拉铁非', en:'Philadelphia', gr:'Φιλαδέλφεια', lat:38.3500, lon:28.5170, zoom:12.5, ref:'Rev 3:7-13',
+    modern:{zh:'今土耳其阿拉谢希尔',en:'Alaşehir, Turkey'},
+    letter:{
+      title:{zh:'那圣洁、真实，拿着大卫的钥匙，开了就没有人能关，关了就没有人能开的 [[Rev 3:7]]；参 [[Isa 22:22]]；[[Rev 1:18]]',en:'He who is holy and true, who has the key of David, who opens and no one shuts, who shuts and no one opens [[Rev 3:7]]; cf. [[Isa 22:22]]; [[Rev 1:18]]'},
+      praise:{zh:'略有一点力量，也曾遵守主的道，没有弃绝主的名；主在他们面前给一个无人能关的敞开的门 [[Rev 3:8]]；遵守主忍耐的道 [[Rev 3:10]]',en:'With little power they kept Christ’s word and did not deny His name; He sets before them an open door that no one can shut [[Rev 3:8]]; they kept the word of His perseverance [[Rev 3:10]]'},
+      rebuke:{none:true, zh:'没有责备', en:'No rebuke'},
+      call:{zh:'撒但一会的人必来在他们脚前下拜，知道主是爱他们的 [[Rev 3:9]]；参 [[Isa 60:14]]；主必快来，要持守所有的，免得人夺去冠冕 [[Rev 3:11]]',en:'Those of the synagogue of Satan will bow at their feet and know that Christ has loved them [[Rev 3:9]]; cf. [[Isa 60:14]]; He is coming quickly, so hold fast what they have, that no one take their crown [[Rev 3:11]]'},
+      promise:{zh:'在普天下人受试炼的时候保守他们 [[Rev 3:10]]；得胜的，要在神殿中作柱子，必不再从那里出去；写上神的名、新耶路撒冷的名和主的新名 [[Rev 3:12]]；参 [[Rev 21:2, 10]]',en:'Kept from the hour of testing that is coming on the whole world [[Rev 3:10]]; the overcomer becomes a pillar in the temple of God and will not go out again, bearing the name of God, of the new Jerusalem and Christ’s new name [[Rev 3:12]]; cf. [[Rev 21:2, 10]]'}
+    },
+    bg:[
+      {zh:'帕加马王朝所建，以阿塔罗斯二世“爱兄弟者”的称号命名（经外史料）',en:'Founded by the Attalid kings and named for Attalus II’s epithet Philadelphus, lover of his brother (extra-biblical)'},
+      {zh:'坐落在通往弗吕家高原的大道上，有“通往东方的门户”之称（经外史料）——学者常联系“敞开的门”（解释）',en:'Set on the highway up to the Phrygian plateau and called a gateway to the east (extra-biblical); often linked with the open door (interpretation)'},
+      {zh:'公元17年大地震后余震不断，城墙常裂，居民多住在城外田间（斯特拉波《地理志》12.8.18、13.4.10，经外史料）——对照得胜者“必不再从那里出去”（解释）',en:'After AD 17 aftershocks went on for years, the walls kept cracking and most people lived out in the countryside (Strabo, Geography 12.8.18; 13.4.10, extra-biblical); set against the overcomer who will not go out again (interpretation)'},
+      {zh:'为感谢提比留赈灾，城一度改名“新凯撒利亚”，后来又称“弗拉维亚”（经外史料）——对照“写上神的名和我的新名”（解释）',en:'In gratitude for Tiberius’ relief the city took the name Neocaesarea, and later Flavia (extra-biblical); set against the new name written on the overcomer (interpretation)'},
+      {zh:'伊格那丢约公元110年写信给非拉铁非教会，劝他们合一，并论及会中的犹太化争议（经外史料）',en:'Ignatius, writing c. AD 110, urges the Philadelphians to unity and addresses a dispute over Judaizing (extra-biblical)'}
+    ],
+    sites:[
+      {id:'basilica', zh:'圣约翰教堂遗址', en:'Church of St John', lat:38.3486, lon:28.5186,
+       d:{zh:'拜占庭时期教堂的巨大砖柱残迹，位于今阿拉谢希尔城中（经外史料）。',en:'Massive brick piers of a Byzantine church in the middle of modern Alaşehir (extra-biblical).'}}
+    ],
+    cross:'Rev 3:7-13; Isa 22:20-23',
+    quote:{ref:'Rev 3:8', zh:'我知道你的行为，你略有一点力量，也曾遵守我的道，没有弃绝我的名。看哪，我在你面前给你一个敞开的门，是无人能关的。'} },
+
+  { id:'laodicea', n:7, zh:'老底嘉', en:'Laodicea', gr:'Λαοδίκεια', lat:37.8360, lon:29.1070, zoom:11.5, ref:'Rev 3:14-22',
+    modern:{zh:'今土耳其代尼兹利附近',en:'Near Denizli, Turkey'},
+    letter:{
+      title:{zh:'那为阿们的，为诚信真实见证的，在神创造万物之上为元首的 [[Rev 3:14]]；参 [[Rev 1:5]]；[[Col 1:15-18]]',en:'The Amen, the faithful and true Witness, the Beginning of the creation of God [[Rev 3:14]]; cf. [[Rev 1:5]]; [[Col 1:15-18]]'},
+      praise:{none:true, zh:'没有称赞', en:'No commendation'},
+      rebuke:{zh:'不冷也不热，像温水，主必从口中把他们吐出去；自称富足、一样都不缺，却不知道自己是困苦、可怜、贫穷、瞎眼、赤身的 [[Rev 3:15-17]]',en:'Neither cold nor hot but lukewarm, so Christ will spit them out of His mouth; they say they are rich and need nothing, not knowing they are wretched, miserable, poor, blind and naked [[Rev 3:15-17]]'},
+      call:{zh:'劝他们向主买火炼的金子、白衣与眼药 [[Rev 3:18]]；凡主所疼爱的，就责备管教，所以要发热心，也要悔改 [[Rev 3:19]]；参 [[Pro 3:12]]；主站在门外叩门 [[Rev 3:20]]',en:'Buy from Christ gold refined by fire, white garments and eye salve [[Rev 3:18]]; those He loves He reproves and disciplines, so be zealous and repent [[Rev 3:19]]; cf. [[Pro 3:12]]; He stands at the door and knocks [[Rev 3:20]]'},
+      promise:{zh:'得胜的，主要赐他在主的宝座上与主同坐，就如主得了胜，在父的宝座上与父同坐一般 [[Rev 3:21]]',en:'The overcomer will sit with Christ on His throne, as He overcame and sat with His Father on His throne [[Rev 3:21]]'}
+    },
+    bg:[
+      {zh:'安提阿古二世所建（约公元前261–253年），以王后老底嘉命名；吕卡斯河谷的金融重镇（经外史料）',en:'Founded by Antiochus II (c. 261–253 BC) and named for his wife Laodice; the banking centre of the Lycus valley (extra-biblical)'},
+      {zh:'公元60年大地震后，不靠罗马援助，凭自己的财力重建（塔西佗《编年史》14.27，经外史料）——对照“我是富足，已经发了财”（解释）',en:'After the earthquake of AD 60 it rebuilt from its own resources without Roman aid (Tacitus, Annals 14.27, extra-biblical); set against the church’s boast that it is rich (interpretation)'},
+      {zh:'出产光亮的黑羊毛（斯特拉波《地理志》12.8.16，经外史料）——对照“买白衣穿上”（解释）',en:'Known for glossy black wool (Strabo, Geography 12.8.16, extra-biblical); set against buying white garments (interpretation)'},
+      {zh:'城附近的门-卡鲁神庙设有著名的医学院（斯特拉波12.8.20，经外史料）——学者常联系“眼药”（解释）',en:'Near the temple of Men Karou there was a famous medical school (Strabo 12.8.20, extra-biblical); often linked with the eye salve (interpretation)'},
+      {zh:'城中用水靠引水道从南面泉源输送，含钙甚重；北面希拉波立有温泉，东面歌罗西有清凉的泉水——常见解释以此对照“不冷也不热”（解释）',en:'The city’s water came by aqueduct from springs to the south and was heavy with lime; Hierapolis to the north had hot springs and Colossae to the east cold water, a common reading of neither cold nor hot (interpretation)'},
+      {zh:'保罗为老底嘉的信徒竭力奋斗，嘱咐歌罗西人与老底嘉人交换书信 [[Col 2:1]]；[[Col 4:13-16]]',en:'Paul strives for the believers at Laodicea and has the Colossians and Laodiceans exchange letters [[Col 2:1]]; [[Col 4:13-16]]'}
+    ],
+    sites:[
+      {id:'watertower', zh:'水塔与输水管', en:'Water tower and pipes', lat:37.8355, lon:29.1080,
+       d:{zh:'城中的配水塔，石管内壁结满厚厚的钙垢（经外史料）。',en:'The city’s distribution tower; its stone pipes are thick with lime deposits (extra-biblical).'}},
+      {id:'church', zh:'老底嘉教堂', en:'Church of Laodicea', lat:37.8358, lon:29.1104,
+       d:{zh:'公元4世纪初的大型教堂，近年发掘修复（经外史料）。',en:'A large early 4th-century church, recently excavated and restored (extra-biblical).'}},
+      {id:'hierapolis', zh:'希拉波立温泉', en:'Hot springs of Hierapolis', lat:37.9240, lon:29.1240,
+       d:{zh:'今棉花堡，温泉流下石灰华台地 [[Col 4:13]]。',en:'Today Pamukkale, where hot springs pour over travertine terraces [[Col 4:13]].'}},
+      {id:'colossae', zh:'歌罗西土丘', en:'Mound of Colossae', lat:37.7880, lon:29.2610,
+       d:{zh:'尚未大规模发掘的古城；以巴弗与腓利门的家乡 [[Col 4:12]]；[[Phm 1:1-2]]。',en:'A largely unexcavated city, home of Epaphras and Philemon [[Col 4:12]]; [[Phm 1:1-2]].'}}
+    ],
+    cross:'Rev 3:14-22; Col 2:1; Col 4:13-16',
+    quote:{ref:'Rev 3:20', zh:'看哪，我站在门外叩门，若有听见我声音就开门的，我要进到他那里去，我与他，他与我一同坐席。'} }
+];
+
+/* =========================================================================
+   TIMELINE
+   ========================================================================= */
+const EVENTS = [
+  { id:'e1', k:-546, yr:{zh:'公元前546年',en:'546 BC'}, stop:'sardis',
+    t:{zh:'居鲁士偷袭撒狄卫城，吕底亚王国灭亡（希罗多德1.84，经外史料）',en:'Cyrus takes the acropolis of Sardis by stealth and Lydia falls (Herodotus 1.84, extra-biblical)'} },
+  { id:'e2', k:-133, yr:{zh:'公元前133年',en:'133 BC'}, stop:'pergamum',
+    t:{zh:'阿塔罗斯三世遗命将别迦摩王国交给罗马；公元前129年设亚细亚省（经外史料）',en:'Attalus III bequeaths the kingdom of Pergamum to Rome; the province of Asia is formed in 129 BC (extra-biblical)'} },
+  { id:'e3', k:-29, yr:{zh:'公元前29年',en:'29 BC'}, stop:'pergamum',
+    t:{zh:'别迦摩为罗马女神与奥古斯都建庙，亚细亚行省皇帝崇拜由此开始（经外史料）',en:'Pergamum builds a temple to Roma and Augustus, the start of the provincial imperial cult in Asia (extra-biblical)'} },
+  { id:'e4', k:17, yr:{zh:'公元17年',en:'AD 17'}, stop:'sardis',
+    t:{zh:'亚细亚十二城在一夜之间被地震震毁，撒狄最重，非拉铁非也在其中（塔西佗《编年史》2.47，经外史料）',en:'An earthquake wrecks twelve cities of Asia in one night, Sardis worst of all and Philadelphia among them (Tacitus, Annals 2.47, extra-biblical)'} },
+  { id:'e5', k:26, yr:{zh:'公元26年',en:'AD 26'}, stop:'smyrna',
+    t:{zh:'士每拿获准为提比留建庙（塔西佗《编年史》4.55–56，经外史料）',en:'Smyrna wins the right to build a temple to Tiberius (Tacitus, Annals 4.55–56, extra-biblical)'} },
+  { id:'e6', k:52, yr:{zh:'约公元52–55年',en:'c. AD 52–55'}, stop:'ephesus',
+    t:{zh:'保罗在以弗所传道两年多，福音传遍亚细亚 [[Act 19:8-10]]；以巴弗把福音带到吕卡斯河谷 [[Col 1:7]]；[[Col 4:12-13]]',en:'Paul preaches in Ephesus more than two years and the word spreads through Asia [[Act 19:8-10]]; Epaphras brings the gospel to the Lycus valley [[Col 1:7]]; [[Col 4:12-13]]'} },
+  { id:'e7', k:57, yr:{zh:'约公元57年',en:'c. AD 57'}, stop:'ephesus',
+    t:{zh:'保罗在米利都向以弗所长老告别 [[Act 20:17-38]]',en:'Paul’s farewell to the Ephesian elders at Miletus [[Act 20:17-38]]'} },
+  { id:'e8', k:60, yr:{zh:'公元60年',en:'AD 60'}, stop:'laodicea',
+    t:{zh:'老底嘉被地震震毁，未受罗马援助，自力重建（塔西佗《编年史》14.27，经外史料）',en:'Laodicea is destroyed by an earthquake and rebuilds without Roman aid (Tacitus, Annals 14.27, extra-biblical)'} },
+  { id:'e9', k:61, yr:{zh:'约公元60–62年',en:'c. AD 60–62'}, stop:'laodicea',
+    t:{zh:'保罗写歌罗西书，嘱咐与老底嘉交换书信 [[Col 4:15-16]]',en:'Paul writes Colossians and asks that it be exchanged with Laodicea [[Col 4:15-16]]'} },
+  { id:'e10', k:64, yr:{zh:'公元64年',en:'AD 64'}, stop:null,
+    t:{zh:'罗马大火后尼禄迫害基督徒（塔西佗《编年史》15.44，经外史料）',en:'After the fire of Rome, Nero persecutes the Christians (Tacitus, Annals 15.44, extra-biblical)'} },
+  { id:'e11', k:70, yr:{zh:'公元70年',en:'AD 70'}, stop:null,
+    t:{zh:'耶路撒冷与圣殿被罗马摧毁；参 [[Mat 24:1-2]]',en:'Rome destroys Jerusalem and the temple; cf. [[Mat 24:1-2]]'} },
+  { id:'e12', k:89, yr:{zh:'约公元89/90年',en:'c. AD 89/90'}, stop:'ephesus',
+    t:{zh:'以弗所的弗拉维皇帝神庙建成，城获皇帝崇拜“庙守城”称号（经外史料）',en:'The Temple of the Flavian emperors at Ephesus is completed and the city becomes an imperial temple-keeper (extra-biblical)'} },
+  { id:'e13', k:95, yr:{zh:'约公元95年',en:'c. AD 95'}, stop:'patmos',
+    t:{zh:'约翰在拔摩岛领受启示 [[Rev 1:9-11]]；年代据爱任纽《驳异端》5.30.3（经外史料）',en:'John receives the Revelation on Patmos [[Rev 1:9-11]]; dated by Irenaeus, Against Heresies 5.30.3 (extra-biblical)'} },
+  { id:'e14', k:96, yr:{zh:'公元96年',en:'AD 96'}, stop:'ephesus',
+    t:{zh:'多米田死；传统说约翰从拔摩回到以弗所（优西比乌《教会史》3.20、3.23，经外史料）',en:'Domitian dies; tradition says John returns from Patmos to Ephesus (Eusebius, Church History 3.20, 3.23, extra-biblical)'} },
+  { id:'e15', k:110, yr:{zh:'约公元110年',en:'c. AD 110'}, stop:'smyrna',
+    t:{zh:'伊格那丢押往罗马途中写信给以弗所、马格尼西亚、特拉勒斯、非拉铁非、士每拿诸教会及坡旅甲（经外史料）',en:'On his way to Rome Ignatius writes to the churches of Ephesus, Magnesia, Tralles, Philadelphia and Smyrna, and to Polycarp (extra-biblical)'} },
+  { id:'e16', k:112, yr:{zh:'约公元112年',en:'c. AD 112'}, stop:null,
+    t:{zh:'邻省庇推尼总督小普林尼写信请示图拉真如何审理基督徒（《书信集》10.96，经外史料）',en:'Pliny the Younger, governor of neighbouring Bithynia, asks Trajan how to try Christians (Letters 10.96, extra-biblical)'} },
+  { id:'e17', k:155, yr:{zh:'约公元155/156年',en:'c. AD 155/156'}, stop:'smyrna',
+    t:{zh:'坡旅甲在士每拿殉道（《坡旅甲殉道记》，经外史料）；参“务要至死忠心” [[Rev 2:10]]',en:'Polycarp is martyred at Smyrna (Martyrdom of Polycarp, extra-biblical); cf. faithful until death [[Rev 2:10]]'} }
+];
+
+/* =========================================================================
+   NOTES
+   ========================================================================= */
+const NOTES = [
+  { t:{zh:'七封信的共同结构',en:'The Shared Pattern of the Letters'},
+    b:{zh:'<p>七封信都依同一格式写成：</p><ul><li>写信给某教会的使者；</li><li>基督的自称，大多取自第1章的异象；</li><li>“我知道你的行为”；</li><li>称赞与责备（士每拿、非拉铁非没有责备，老底嘉没有称赞）；</li><li>劝勉与警告；</li><li>“圣灵向众教会所说的话，凡有耳的，就应当听”；</li><li>给得胜者的应许，多在启示录末两章应验。</li></ul><p>前三封信先说“凡有耳的”，后说应许；后四封信次序颠倒 [[Rev 2:7]]；[[Rev 2:29]]。</p>',
+       en:'<p>All seven letters follow one pattern:</p><ul><li>address to the angel of the church;</li><li>Christ’s self-title, mostly drawn from the vision of chapter 1;</li><li>I know your works;</li><li>commendation and rebuke (Smyrna and Philadelphia receive no rebuke, Laodicea no commendation);</li><li>exhortation and warning;</li><li>he who has an ear, let him hear what the Spirit says to the churches;</li><li>a promise to the overcomer, mostly fulfilled in the last two chapters.</li></ul><p>In the first three letters the call to hear precedes the promise; in the last four it follows [[Rev 2:7]]; [[Rev 2:29]].</p>'} },
+  { t:{zh:'书信的次序与传递路线',en:'The Order of the Letters and the Circuit'},
+    b:{zh:'<p>七城的次序 [[Rev 1:11]] 正好构成一条环形路线：从拔摩渡海到最近的大港以弗所，北上士每拿、别迦摩，再折向东南，经赫尔穆斯河谷到推雅推喇、撒狄、非拉铁非，最后到老底嘉，再顺迈安德河谷回到以弗所。拉姆齐（1904）认为这是送信人沿罗马大道巡回的路线；七城也都是各自地区的交通中心。下表是地图上示意道路的长度：</p>',
+       en:'<p>The order of the cities [[Rev 1:11]] traces a loop: across the sea from Patmos to Ephesus, the nearest great port; north to Smyrna and Pergamum; then south-east through the Hermus valley to Thyatira, Sardis and Philadelphia; on to Laodicea; and back down the Maeander valley to Ephesus. Ramsay (1904) read it as a courier’s circuit along the Roman roads, each city being a hub for its district. The table gives the length of the schematic roads on the map:</p>'},
+    distances:true },
+  { t:{zh:'启示录的成书年代',en:'The Date of Revelation'},
+    b:{zh:'<ul><li><b>晚期说（约公元95年）</b>：爱任纽说异象见于多米田在位末年（《驳异端》5.30.3），亚历山大的革利免与优西比乌也说约翰从拔摩回到以弗所。教会状况似乎也指向较晚的年代，如以弗所已“离弃起初的爱心”，老底嘉在公元60年地震后已重建富足。本图采用此说。</li><li><b>早期说（约公元68–69年）</b>：有人依据 [[Rev 11:1-2]] 似乎假定圣殿仍在，以及 [[Rev 17:10]] 的“五位已经倾倒”推算，主张写于尼禄死后、耶路撒冷陷落以前。</li></ul>',
+       en:'<ul><li><b>Late date (c. AD 95)</b>: Irenaeus places the vision near the end of Domitian’s reign (Against Heresies 5.30.3), and Clement of Alexandria and Eusebius have John return from Patmos to Ephesus. The churches’ condition seems to fit a later date: Ephesus has left its first love, and Laodicea has rebuilt in wealth after the earthquake of AD 60. This atlas follows the late date.</li><li><b>Early date (c. AD 68–69)</b>: some argue from [[Rev 11:1-2]], which seems to assume the temple still stands, and from the five kings who have fallen in [[Rev 17:10]], for a date after Nero and before the fall of Jerusalem.</li></ul>'} },
+  { t:{zh:'几种读法',en:'Ways of Reading the Letters'},
+    b:{zh:'<ul><li><b>历史处境</b>：先听这七封信对第一世纪亚细亚七个真实教会说了什么。本图以此为起点。</li><li><b>普世适用</b>：七个教会代表各时代教会都可能出现的光景；每封信都以“圣灵向众教会所说的话”结束，表示信是写给所有教会的 [[Rev 2:7]]。</li><li><b>教会历史分期</b>：有人把七个教会读成教会史上相继的七个时期。德席尔瓦不赞同此说，理由是它忽略了今天多数教会的处境，更像士每拿与别迦摩。</li></ul>',
+       en:'<ul><li><b>Historical setting</b>: first hear what the letters said to seven real churches in 1st-century Asia. This atlas starts here.</li><li><b>Universal application</b>: the seven churches stand for conditions found in churches of every age; each letter ends with what the Spirit says to the churches, addressing all of them [[Rev 2:7]].</li><li><b>Ages of church history</b>: some read the seven churches as seven successive periods. David deSilva rejects this, since it overlooks the majority of today’s churches, whose situation is more like Smyrna’s or Pergamum’s.</li></ul>'} },
+  { t:{zh:'巴兰、耶洗别与尼哥拉一党',en:'Balaam, Jezebel and the Nicolaitans'},
+    b:{zh:'<p>别迦摩的“巴兰的教训”与推雅推喇的“耶洗别”，罪名相同：吃祭偶像之物、行奸淫 [[Rev 2:14]]；[[Rev 2:20]]。尼哥拉一党出现在以弗所与别迦摩 [[Rev 2:6]]；[[Rev 2:15]]，多数学者认为三者指同一类妥协：参与城中的祭偶像宴席与相关的淫乱。爱任纽认为尼哥拉党源于 [[Act 6:5]] 的尼哥拉（《驳异端》1.26.3），此说未必可靠。</p>',
+       en:'<p>The teaching of Balaam at Pergamum and Jezebel at Thyatira carry the same charge: eating food sacrificed to idols and sexual immorality [[Rev 2:14]]; [[Rev 2:20]]. The Nicolaitans appear at Ephesus and Pergamum [[Rev 2:6]]; [[Rev 2:15]]. Most scholars take all three as one kind of compromise: joining the city’s idol feasts and the immorality around them. Irenaeus traced the Nicolaitans to the Nicolas of [[Act 6:5]] (Against Heresies 1.26.3), which is uncertain.</p>'} },
+  { t:{zh:'地图依据',en:'Basis of the Map'},
+    b:{zh:'<p>底图：哥白尼数字高程模型（GLO-30）提供地形与山体阴影；自然地球 1:10m 数据提供海岸线、湖泊与主要河流，次要河流为示意补绘。</p><p>以弗所与米利都一带的古代海岸线依淤积研究示意补绘：第一世纪时以弗所港直通凯斯特河口，米利都仍临拉特米亚湾。亚细亚省界与罗马大道均为示意，只画主要干线。</p>',
+       en:'<p>Base map: Copernicus DEM (GLO-30) for relief and hillshade; Natural Earth 1:10m for coastline, lakes and major rivers, with minor rivers sketched in.</p><p>The 1st-century shoreline near Ephesus and Miletus is sketched from silting studies: the harbour of Ephesus still opened on the Cayster estuary, and Miletus still stood on the Latmian Gulf. The provincial boundary and Roman roads are schematic, showing main routes only.</p>'} },
+  { t:{zh:'资料来源与体例',en:'Sources and Conventions'},
+    b:{zh:'<p>中文人名、地名按和合本；经文悬停显示和合本，点击在微读圣经打开。英文界面的经文悬停显示 LSB 译本；英文正文为转述，不直接引用译本。</p><p>主要参考：拉姆齐《致亚细亚七教会的书信》（1904）；赫默《七教会书信的地方背景》（1986）；马克·威尔逊《圣经中的土耳其》；德席尔瓦的相关论述。古典史料：希罗多德、波利比乌斯、斯特拉波、塔西佗、狄奥、老普林尼；教父：爱任纽、优西比乌、伊格那丢书信、《坡旅甲殉道记》。另参考思想者影业出品的七教会纪录片（上下两集）。</p>',
+       en:'<p>English references show the Legacy Standard Bible on hover via Logos Reftagger; English text paraphrases rather than quotes a translation. Chinese references show the Chinese Union Version and open in WD Bible.</p><p>Main references: W. M. Ramsay, The Letters to the Seven Churches of Asia (1904); C. J. Hemer, The Letters to the Seven Churches of Asia in Their Local Setting (1986); Mark Wilson, Biblical Turkey; David deSilva’s related writings. Classical sources: Herodotus, Polybius, Strabo, Tacitus, Dio Cassius, Pliny the Elder; early church: Irenaeus, Eusebius, the letters of Ignatius, the Martyrdom of Polycarp. Also consulted: the two-part documentary on the seven churches from Thinking Man Films.</p>'} }
+];
+
+  </script>
+  <script>
+(function () {
+  'use strict';
+
+  /* =========================================================================
+     1. STATE & HELPERS
+     ========================================================================= */
+  const state = {
+    lang: 'en', stop: 0, tab: 'stops', sel: { type: 'stop', id: 'patmos' }, field: 'title',
+    layers: { province: true, roads: true, sites: true, places: true },
+    relief: false, autoTimer: null, sidebar: true,
+    legendOpen: window.innerWidth >= 768, neStatus: 'loading'
+  };
+
+  let map = null, demLayer = null, provRenderer = null;
+  const groups = {};
+  const churchMarkers = new Map(), siteMarkers = new Map();
+  const neLayers = {};
+  const isZh = () => state.lang === 'zh';
+  const T = (o) => (o == null ? '' : (typeof o === 'string' ? o : (o[state.lang] ?? '')));
+  const stopIdx = (id) => STOPS.findIndex(s => s.id === id);
+  const stopById = (id) => STOPS.find(s => s.id === id);
+  const curStop = () => STOPS[state.stop];
+  const findSite = (key) => { const [sid, id] = key.split(':'); const s = stopById(sid); return s ? { stop: s, site: (s.sites || []).find(x => x.id === id) } : null; };
+  const ll = (pts) => pts.map(p => [p[1], p[0]]);          // [lon,lat] → [lat,lon]
+
+  function haversine(a, b) {
+    const R = 6371, toR = Math.PI / 180;
+    const dLat = (b[0] - a[0]) * toR, dLon = (b[1] - a[1]) * toR;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * toR) * Math.cos(b[0] * toR) * Math.sin(dLon / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  const pathKm = (pts) => pts.reduce((acc, p, i) => i ? acc + haversine(pts[i - 1], p) : 0, 0);
+
+  /* =========================================================================
+     2. SCRIPTURE REFERENCES
+        中文：和合本 — page tooltip (getBible "cus"), click opens 微读圣经
+        English：LSB — plain reference text tagged by Logos Reftagger
+     ========================================================================= */
+  // key: [微读书卷代码, 中文简称, English abbreviation, single-chapter flag]
+  const BOOKS = {
+    Gen:['gen','创','Gen'], Exo:['exo','出','Exod'], Num:['num','民','Num'], Deu:['deu','申','Deut'],
+    '1Ki':['1ki','王上','1 Kgs'], '2Ki':['2ki','王下','2 Kgs'], Psa:['psa','诗','Ps'], Pro:['pro','箴','Prov'],
+    Isa:['isa','赛','Isa'], Eze:['ezk','结','Ezek'], Dan:['dan','但','Dan'], Zec:['zec','亚','Zech'],
+    Mat:['mat','太','Matt'], Mar:['mrk','可','Mark'], Luk:['luk','路','Luke'], Joh:['jhn','约','John'],
+    Act:['act','徒','Acts'], Rom:['rom','罗','Rom'], '1Co':['1co','林前','1 Cor'], Eph:['eph','弗','Eph'],
+    Php:['php','腓','Phil'], Col:['col','西','Col'], '1Th':['1th','帖前','1 Thess'], '1Ti':['1ti','提前','1 Tim'],
+    '2Ti':['2ti','提后','2 Tim'], Phm:['phm','门','Phlm',1], Heb:['heb','来','Heb'], '1Pe':['1pe','彼前','1 Pet'],
+    '1Jo':['1jn','约壹','1 John'], Jud:['jud','犹','Jude',1], Rev:['rev','启','Rev']
+  };
+  const GB_NR = { Gen:1, Exo:2, Num:4, Deu:5, '1Ki':11, '2Ki':12, Psa:19, Pro:20, Isa:23, Eze:26, Dan:27, Zec:38,
+    Mat:40, Mar:41, Luk:42, Joh:43, Act:44, Rom:45, '1Co':46, Eph:49, Php:50, Col:51, '1Th':52, '1Ti':54, '2Ti':55,
+    Phm:57, Heb:58, '1Pe':60, '1Jo':62, Jud:65, Rev:66 };
+
+  function parseRefs(str) {
+    const out = [];
+    const pieces = str.split(/([;,])/);
+    let book = null, chap = null, lastVerse = false, sep = null;
+    for (const raw of pieces) {
+      if (raw === ';' || raw === ',') { sep = raw; continue; }
+      let piece = raw.trim();
+      if (!piece) continue;
+      let showBook = false;
+      const m = piece.match(/^([1-3]?[A-Z][a-z]{1,3})\s+(.+)$/);
+      if (m && BOOKS[m[1]]) { book = m[1]; piece = m[2]; showBook = true; lastVerse = false; }
+      if (!book) continue;
+      const single = BOOKS[book][3] === 1;
+      const [a, b] = piece.split(/[-–]/).map(s => s && s.trim());
+      let sc, sv = null, ec = null, ev = null, cont = false;
+      if (a.includes(':')) { [sc, sv] = a.split(':'); chap = sc; }
+      else if (single) { sc = '1'; sv = a; chap = '1'; cont = !showBook; }
+      else if (lastVerse && sep === ',') { sc = chap; sv = a; cont = true; }
+      else { sc = a; chap = a; }
+      if (b) {
+        if (b.includes(':')) { [ec, ev] = b.split(':'); }
+        else if (sv != null) { ev = b; }
+        else { ec = b; }
+      }
+      lastVerse = sv != null;
+      out.push({ book, sc, sv, ec, ev, cont, showBook, sep: out.length ? sep : null });
+      sep = null;
+    }
+    return out;
+  }
+
+  function refLabel(r, withChap) {
+    const single = BOOKS[r.book][3] === 1;
+    let s;
+    if (r.sv != null) {
+      s = (withChap && !single ? `${r.sc}:` : '') + r.sv;
+      if (r.ev != null) s += (r.ec && r.ec !== r.sc) ? `–${r.ec}:${r.ev}` : `–${r.ev}`;
+    } else s = r.sc + (r.ec ? `–${r.ec}` : '');
+    return s;
+  }
+
+  /* Plain-text reference for labels (no link) */
+  function refPlain(str) {
+    return parseRefs(str).map(r => {
+      const B = BOOKS[r.book];
+      const sep = r.sep === ';' ? (isZh() ? '；' : '; ') : (r.sep === ',' ? (isZh() ? '，' : ', ') : '');
+      let lab = refLabel(r, !r.cont);
+      if (!isZh() && B[3] === 1 && !r.cont) lab = '1:' + lab;
+      return sep + (r.showBook ? (isZh() ? B[1] : B[2]) + ' ' : '') + lab;
+    }).join('');
+  }
+
+  function refHTML(str) {
+    const refs = parseRefs(str);
+    if (isZh()) {
+      return refs.map(r => {
+        const B = BOOKS[r.book];
+        const sepTxt = r.sep === ';' ? '；' : (r.sep === ',' ? '，' : '');
+        const label = (r.showBook ? B[1] + ' ' : '') + refLabel(r, !r.cont);
+        const full = B[1] + ' ' + refLabel(r, true);
+        const href = `https://wd.bible/bible/verse/${B[0]}.${r.sc}.${(r.sv || '1').replace(/[^0-9]/g, '') || 1}.cunps`;
+        return `${sepTxt}<a class="sc-zh" href="${href}" target="_blank" rel="noopener noreferrer" data-b="${GB_NR[r.book]}" data-sc="${r.sc}" data-sv="${r.sv ?? ''}" data-ec="${r.ec ?? ''}" data-ev="${r.ev ?? ''}" data-full="${full}">${label}</a>`;
+      }).join('');
+    }
+    const txt = refs.map(r => {
+      const B = BOOKS[r.book], single = B[3] === 1;
+      const sepTxt = r.sep === ';' ? '; ' : (r.sep === ',' ? ', ' : '');
+      let lab = refLabel(r, !r.cont).replace(/–/g, '-');
+      if (single && !r.cont) lab = '1:' + lab;
+      return sepTxt + (r.showBook ? B[2] + ' ' : '') + lab;
+    }).join('');
+    return `<span class="sc-en">${txt}</span>`;
+  }
+  const rich = (s) => (s || '').replace(/\[\[(.+?)\]\]/g, (_, r) => refHTML(r));
+  const stripRefs = (s) => (s || '').replace(/\s*\[\[(.+?)\]\]/g, (_, r) => ' ' + refPlain(r));
+
+  /* ---------- 和合本 tooltip (hover on desktop; tap on touch — second tap opens 微读圣经) ---------- */
+  const CUV_CACHE = new Map();
+  const cleanZh = (t) => (t || '').replace(/\s+/g, ' ').replace(/([\u3000-\u303f\u4e00-\u9fff\uff00-\uffef“”‘’])\s+(?=[\u3000-\u303f\u4e00-\u9fff\uff00-\uffef“”‘’])/g, '$1').trim();
+  function cuvChapter(b, c) {
+    const key = `${b}/${c}`;
+    if (!CUV_CACHE.has(key)) {
+      CUV_CACHE.set(key, fetch(`https://api.getbible.net/v2/cus/${b}/${c}.json`)
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(j => (j.verses || []).map(v => ({ c: Number(v.chapter || c), v: Number(v.verse), t: cleanZh(v.text) })))
+        .catch(e => { CUV_CACHE.delete(key); throw e; }));
+    }
+    return CUV_CACHE.get(key);
+  }
+  async function cuvPassage(d, limit = 14) {
+    const b = d.b, sc = +d.sc, sv = d.sv ? +d.sv : null, ec = d.ec ? +d.ec : null, ev = d.ev ? +d.ev : null;
+    const out = []; let truncated = false;
+    if (sv == null) {
+      const vs = await cuvChapter(b, sc);
+      vs.slice(0, 8).forEach(x => out.push(x));
+      return { out, truncated: vs.length > 8 || !!ec, chapters: ec ? `${sc}–${ec}` : null };
+    }
+    const lastC = ec || sc;
+    for (let c = sc; c <= lastC && out.length < limit; c++) {
+      const vs = await cuvChapter(b, c);
+      vs.forEach(x => {
+        const from = c === sc ? sv : 1;
+        const to = c === lastC ? (ev ?? (ec ? 999 : sv)) : 999;
+        if (x.v >= from && x.v <= to) { if (out.length < limit) out.push(x); else truncated = true; }
+      });
+    }
+    return { out, truncated, multi: lastC !== sc };
+  }
+
+  const tipEl = document.createElement('div');
+  tipEl.id = 'zh-tip'; tipEl.setAttribute('role', 'tooltip');
+  document.body.appendChild(tipEl);
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  let tipFor = null, hideTimer = null;
+
+  function placeTip(a) {
+    const r = a.getBoundingClientRect(), w = Math.min(360, window.innerWidth - 16);
+    tipEl.style.width = w + 'px';
+    tipEl.style.left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8) + 'px';
+    const h = tipEl.offsetHeight, below = r.bottom + 8, above = r.top - h - 8;
+    tipEl.style.top = (below + h < window.innerHeight - 8 || above < 8 ? below : above) + 'px';
+  }
+  async function showTip(a) {
+    clearTimeout(hideTimer);
+    tipFor = a;
+    const d = a.dataset;
+    tipEl.innerHTML = `<div class="zt-head"><span>${d.full}</span><span class="zt-ver">和合本</span></div><div class="zt-body"><span class="zt-muted">经文载入中…</span></div>
+      <div class="zt-foot">${isTouch ? '再点一次，在微读圣经打开' : '点击在微读圣经阅读上下文'}</div>`;
+    tipEl.classList.add('visible'); placeTip(a);
+    try {
+      const p = await cuvPassage(d);
+      if (tipFor !== a) return;
+      const showNum = p.out.length > 1 || d.sv === '';
+      let html = p.out.map(x => `<span class="zt-v">${showNum ? `<sup>${p.multi ? x.c + ':' : ''}${x.v}</sup>` : ''}${x.t}</span>`).join('');
+      if (p.truncated) html += `<span class="zt-muted">……${p.chapters ? `（第 ${p.chapters} 章）` : ''}</span>`;
+      tipEl.querySelector('.zt-body').innerHTML = html || '<span class="zt-muted">未找到经文</span>';
+    } catch (e) {
+      if (tipFor === a) tipEl.querySelector('.zt-body').innerHTML = '<span class="zt-muted">经文暂时无法载入（需联网）。点击在微读圣经阅读。</span>';
+    }
+    if (tipFor === a) placeTip(a);
+  }
+  function hideTip() { tipEl.classList.remove('visible'); tipFor = null; }
+
+  if (!isTouch) {
+    document.addEventListener('mouseover', (e) => {
+      const a = e.target.closest && e.target.closest('a.sc-zh');
+      if (a && a !== tipFor) showTip(a);
+      else if (a || (e.target.closest && e.target.closest('#zh-tip'))) clearTimeout(hideTimer);
+    });
+    document.addEventListener('mouseout', (e) => {
+      const a = e.target.closest && (e.target.closest('a.sc-zh') || e.target.closest('#zh-tip'));
+      if (a) { clearTimeout(hideTimer); hideTimer = setTimeout(hideTip, 220); }
+    });
+    document.addEventListener('scroll', (e) => { if (!tipEl.contains(e.target)) hideTip(); }, true);
+  } else {
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest && e.target.closest('a.sc-zh');
+      if (a) {
+        if (tipFor === a && tipEl.classList.contains('visible')) return;
+        e.preventDefault(); e.stopPropagation(); showTip(a); return;
+      }
+      if (!tipEl.contains(e.target)) hideTip();
+    }, true);
+  }
+
+  /* English: Logos Reftagger (LSB) */
+  window.refTagger = { settings: {
+    bibleVersion: 'LSB', socialSharing: [], tooltipStyle: 'light', roundCorners: true,
+    noSearchClassNames: ['sc-zh', 'no-rt', 'leaflet-container'],
+    customStyle: { heading: { backgroundColor: '#efe5cf', color: '#2b2520' }, body: { color: '#2b2520' } }
+  } };
+  (function () { const g = document.createElement('script'); g.src = 'https://api.reftagger.com/v2/RefTagger.js'; g.async = true; document.body.appendChild(g); })();
+  function retag(el) {
+    if (isZh() || !el) return;
+    const run = () => { try { if (window.refTagger && typeof window.refTagger.tag === 'function') window.refTagger.tag(el); } catch (e) {} };
+    run(); setTimeout(run, 600);
+  }
+  async function fillCuvQuote(el) {
+    const q = el.querySelector('blockquote[data-b]'); if (!q) return;
+    try {
+      const p = await cuvPassage(q.dataset, 6);
+      if (p.out.length && el.contains(q)) q.textContent = '“' + p.out.map(x => x.t).join('') + '”';
+    } catch (e) { /* keep stored text */ }
+  }
+
+  /* =========================================================================
+     3. MAP — Copernicus DEM (GLO-30) relief + Natural Earth 1:10m
+     ========================================================================= */
+  const COLOR_STOPS = [
+    [-450, 204, 214, 190], [-150, 220, 226, 202], [0, 240, 231, 208], [200, 242, 232, 207],
+    [500, 229, 211, 174], [900, 213, 187, 143], [1400, 195, 162, 119], [2200, 179, 144, 106], [3200, 227, 217, 204]
+  ];
+  function hypso(h) {
+    if (h <= COLOR_STOPS[0][0]) return COLOR_STOPS[0].slice(1);
+    const last = COLOR_STOPS[COLOR_STOPS.length - 1];
+    if (h >= last[0]) return last.slice(1);
+    for (let i = 0; i < COLOR_STOPS.length - 1; i++) {
+      const a = COLOR_STOPS[i], b = COLOR_STOPS[i + 1];
+      if (h >= a[0] && h <= b[0]) {
+        const t = (h - a[0]) / (b[0] - a[0]);
+        return [a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, a[3] + (b[3] - a[3]) * t];
+      }
+    }
+    return [240, 231, 208];
+  }
+
+  function createDEMLayer() {
+    const Layer = L.GridLayer.extend({
+      createTile: function (coords, done) {
+        const size = 256, tile = document.createElement('canvas');
+        tile.width = size; tile.height = size;
+        const ctx = tile.getContext('2d', { willReadFrequently: true });
+        ctx.fillStyle = '#f0e7d0'; ctx.fillRect(0, 0, size, size);
+        const urls = [
+          `https://tiles.mapterhorn.com/${coords.z}/${coords.x}/${coords.y}.webp`,
+          `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${coords.z}/${coords.x}/${coords.y}.png`
+        ];
+        const render = (img) => {
+          try {
+            const off = document.createElement('canvas'); off.width = size; off.height = size;
+            const octx = off.getContext('2d', { willReadFrequently: true });
+            octx.drawImage(img, 0, 0, size, size);
+            const src = octx.getImageData(0, 0, size, size).data;
+            const elev = new Float32Array(size * size);
+            for (let i = 0, p = 0; i < elev.length; i++, p += 4) elev[i] = (src[p] * 256 + src[p + 1] + src[p + 2] / 256) - 32768;
+            const n = Math.PI - (2 * Math.PI * (coords.y + 0.5)) / Math.pow(2, coords.z);
+            const latRad = Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
+            const mpp = (156543.03392 * Math.cos(latRad)) / Math.pow(2, coords.z);
+            const zF = (state.relief ? 4.4 : 2.3) / Math.max(mpp, 1);
+            const alt = 45 * Math.PI / 180, az = 315 * Math.PI / 180, sA = Math.sin(alt), cA = Math.cos(alt);
+            const k0 = state.relief ? 0.58 : 0.36;
+            const outImg = ctx.createImageData(size, size), out = outImg.data;
+            for (let y = 0; y < size; y++) {
+              const ym = y > 0 ? y - 1 : 0, yp = y < size - 1 ? y + 1 : size - 1;
+              for (let x = 0; x < size; x++) {
+                const xm = x > 0 ? x - 1 : 0, xp = x < size - 1 ? x + 1 : size - 1, idx = y * size + x;
+                const dzdx = ((elev[y * size + xp] - elev[y * size + xm]) * 0.5) * zF;
+                const dzdy = ((elev[yp * size + x] - elev[ym * size + x]) * 0.5) * zF;
+                const slope = Math.atan(Math.sqrt(dzdx * dzdx + dzdy * dzdy)), aspect = Math.atan2(dzdy, -dzdx);
+                let sh = sA * Math.cos(slope) + cA * Math.sin(slope) * Math.cos(az - aspect);
+                sh = Math.max(0, Math.min(1, sh));
+                const d = (sh - 0.707) * 1.45;
+                const [r0, g0, b0] = hypso(elev[idx]);
+                let r, g, b;
+                if (d < 0) { const k = Math.min(1, -d * k0); r = r0 * (1 - k) + 92 * k; g = g0 * (1 - k) + 75 * k; b = b0 * (1 - k) + 55 * k; }
+                else { const k = Math.min(1, d * k0 * 0.65); r = r0 * (1 - k) + 255 * k; g = g0 * (1 - k) + 250 * k; b = b0 * (1 - k) + 240 * k; }
+                const p = idx * 4; out[p] = r; out[p + 1] = g; out[p + 2] = b; out[p + 3] = 255;
+              }
+            }
+            ctx.putImageData(outImg, 0, 0);
+          } catch (e) { /* keep parchment */ }
+          done(null, tile);
+        };
+        const load = (i) => {
+          if (i >= urls.length) { done(null, tile); return; }
+          const img = new Image(); img.crossOrigin = 'anonymous';
+          img.onload = () => render(img); img.onerror = () => load(i + 1); img.src = urls[i];
+        };
+        load(0);
+        return tile;
+      }
+    });
+    return new Layer({ maxNativeZoom: 12, maxZoom: 14, tileSize: 256 });
+  }
+
+  function filterNE(geo) {
+    const minLon = 5, maxLon = 42, minLat = 27, maxLat = 47;
+    const hit = (coords) => {
+      const st = [coords];
+      while (st.length) {
+        const c = st.pop();
+        if (typeof c[0] === 'number') { if (c[0] >= minLon && c[0] <= maxLon && c[1] >= minLat && c[1] <= maxLat) return true; }
+        else for (let i = 0; i < c.length; i++) st.push(c[i]);
+      }
+      return false;
+    };
+    return { type: 'FeatureCollection', features: (geo.features || []).filter(f => f.geometry && hit(f.geometry.coordinates)) };
+  }
+  async function fetchNE(file) {
+    const urls = [
+      `https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/${file}`,
+      `https://cdn.jsdelivr.net/gh/nvkelso/natural-earth-vector@master/geojson/${file}`
+    ];
+    for (const u of urls) { try { const r = await fetch(u); if (r.ok) return await r.json(); } catch (e) {} }
+    return null;
+  }
+  async function loadNE() {
+    const dot = document.getElementById('dot-ne');
+    try {
+      const [ocean, coast, lakes, rivers] = await Promise.all([
+        fetchNE('ne_10m_ocean.geojson'), fetchNE('ne_10m_coastline.geojson'),
+        fetchNE('ne_10m_lakes.geojson'), fetchNE('ne_10m_rivers_lake_centerlines.geojson')
+      ]);
+      let n = 0;
+      if (ocean) { neLayers.ocean.clearLayers(); neLayers.ocean.addData(ocean); n++; }
+      if (coast) { neLayers.coast.addData(filterNE(coast)); n++; }
+      if (lakes) { neLayers.lakes.addData(filterNE(lakes)); n++; }
+      if (rivers) { neLayers.rivers.addData(filterNE(rivers)); n++; }
+      state.neStatus = n ? 'ready' : 'fallback';
+      dot.className = `w-2 h-2 rounded-full ${n ? 'bg-emerald-600' : 'bg-amber-600'} shrink-0`;
+    } catch (e) {
+      state.neStatus = 'fallback';
+      dot.className = 'w-2 h-2 rounded-full bg-amber-600 shrink-0';
+    }
+    updateStatusUI();
+  }
+
+  function updateStatusUI() {
+    const d = document.getElementById('text-dem'); if (d) d.textContent = isZh() ? '哥白尼高程（GLO-30）' : 'Copernicus DEM (GLO-30)';
+    const el = document.getElementById('text-ne'); if (!el) return;
+    const M = {
+      loading: isZh() ? '自然地球 1:10m 加载中…' : 'Loading Natural Earth 1:10m…',
+      ready: isZh() ? '自然地球 1:10m 已就绪' : 'Natural Earth 1:10m ready',
+      fallback: isZh() ? '自然地球未能加载，使用简化海岸线' : 'Natural Earth unavailable; simplified coast shown',
+      libError: isZh() ? '地图库未能加载，请刷新' : 'Map library failed to load; refresh the page',
+      initError: isZh() ? '地图初始化失败' : 'Map failed to start'
+    };
+    el.textContent = M[state.neStatus] || M.loading;
+  }
+
+  function interpolate(pts, steps = 8) {
+    if (pts.length < 3) return pts;
+    const out = [];
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p0 = pts[Math.max(0, i - 1)], p1 = pts[i], p2 = pts[i + 1], p3 = pts[Math.min(pts.length - 1, i + 2)];
+      for (let s = 0; s < steps; s++) {
+        const t = s / steps, t2 = t * t, t3 = t2 * t;
+        out.push([0, 1].map(k => 0.5 * ((2 * p1[k]) + (-p0[k] + p2[k]) * t + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2 + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3)));
+      }
+    }
+    out.push(pts[pts.length - 1]);
+    return out;
+  }
+
+  function initMap() {
+    if (typeof L === 'undefined') { state.neStatus = 'libError'; document.getElementById('dot-dem').className = 'w-2 h-2 rounded-full bg-red-600 shrink-0'; updateStatusUI(); return; }
+    try {
+      map = L.map('map-container', {
+        center: [38.4, 27.8], zoom: 8, minZoom: 4, maxZoom: 14,
+        maxBounds: [[26.5, 4.5], [47.5, 42.5]], maxBoundsViscosity: 0.85,
+        zoomControl: false, attributionControl: false, zoomSnap: 0.25
+      });
+      const pane = (name, z, events) => { map.createPane(name); map.getPane(name).style.zIndex = z; if (!events) map.getPane(name).style.pointerEvents = 'none'; };
+      pane('provPane', 300); pane('neWaterPane', 350); pane('ancientPane', 360); pane('roadsPane', 450); pane('arrowsPane', 470);
+      pane('labelPane', 480); pane('placePane', 560); pane('sitePane', 600, true); pane('churchPane', 620, true); pane('selPane', 650);
+
+      demLayer = createDEMLayer().addTo(map);
+
+      provRenderer = L.svg({ pane: 'provPane', padding: 0.6 }); provRenderer.addTo(map);
+      groups.province = L.layerGroup().addTo(map);
+
+      const neR = L.canvas({ pane: 'neWaterPane', padding: 0.5 });
+      neLayers.ocean = L.geoJSON(FALLBACK_OCEAN, { renderer: neR, pane: 'neWaterPane', interactive: false, style: { fillColor: '#bed7e5', fillOpacity: 1, stroke: false } }).addTo(map);
+      neLayers.coast = L.geoJSON(null, { renderer: neR, pane: 'neWaterPane', interactive: false, style: { color: '#5e8397', weight: 1.2, opacity: 0.9 } }).addTo(map);
+      neLayers.lakes = L.geoJSON(null, { renderer: neR, pane: 'neWaterPane', interactive: false, style: { fillColor: '#a8cde0', fillOpacity: 1, color: '#4d7d96', weight: 1 } }).addTo(map);
+      neLayers.rivers = L.geoJSON(null, { renderer: neR, pane: 'neWaterPane', interactive: false, style: { color: '#4d7d96', weight: 1.6, opacity: 0.9, lineCap: 'round', lineJoin: 'round' } }).addTo(map);
+      EXTRA_RIVERS.forEach(r => L.polyline(ll(r.pts), { renderer: neR, pane: 'neWaterPane', interactive: false, color: '#4d7d96', weight: 1.4, opacity: 0.9, lineCap: 'round' }).addTo(map));
+
+      const ancR = L.svg({ pane: 'ancientPane', padding: 0.5 }); ancR.addTo(map);
+      ANCIENT_WATER.forEach(w => L.polygon(ll(w.pts), { renderer: ancR, pane: 'ancientPane', interactive: false, fillColor: '#bed7e5', fillOpacity: 0.92, color: '#2f6178', weight: 1.1, dashArray: '3 3', opacity: 0.85 }).addTo(map));
+
+      groups.roads = L.layerGroup().addTo(map);
+      groups.places = L.layerGroup().addTo(map);
+      groups.sites = L.layerGroup().addTo(map);
+      groups.churches = L.layerGroup().addTo(map);
+      groups.sel = L.layerGroup().addTo(map);
+
+      L.control.scale({ position: 'bottomleft', maxWidth: 130, imperial: false }).addTo(map);
+      addStaticLabels(); addPlaces(); renderProvince(); addChurches(); addSites();
+
+      map.on('zoomend', updateZoomClasses);
+      updateZoomClasses();
+      window.addEventListener('resize', () => map && map.invalidateSize());
+      loadNE();
+    } catch (err) {
+      console.error(err);
+      state.neStatus = 'initError'; updateStatusUI();
+    }
+  }
+
+  function updateZoomClasses() {
+    const z = map.getZoom(), c = document.getElementById('map-container');
+    c.classList.toggle('zl-a', z < 6); c.classList.toggle('zl-b', z < 7.5); c.classList.toggle('zl-c', z < 9);
+    c.classList.toggle('zl-d', z < 10.75); c.classList.toggle('zl-e', z < 9.5);
+  }
+
+  const bil = (zh, en) => `<span class="only-zh">${zh}</span><span class="only-en">${en}</span>`;
+
+  function addStaticLabels() {
+    LABELS.forEach(([lat, lon, zh, en, sz, kind]) => L.marker([lat, lon], { pane: 'labelPane', interactive: false, icon: L.divIcon({
+      className: kind === 'water' ? 'geo-label-water' : 'geo-label-region', iconSize: [0, 0],
+      html: `<div style="transform:translate(-50%,-50%);font-size:${sz}px">${bil(zh, en)}</div>` }) }).addTo(map));
+    EXTRA_RIVERS.forEach(r => {
+      const p = r.pts[Math.floor(r.pts.length / 2)];
+      L.marker([p[1], p[0]], { pane: 'labelPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
+        html: `<div class="geo-label-river" style="transform:translate(-50%,-130%)">${bil(r.zh, r.en)}</div>` }) }).addTo(map);
+    });
+  }
+
+  function addPlaces() {
+    PLACES.forEach(([id, zh, en, lat, lon, tier]) => {
+      L.marker([lat, lon], { pane: 'placePane', interactive: false, icon: L.divIcon({ className: '', iconSize: [8, 8], iconAnchor: [4, 4],
+        html: `<div class="place-wrap pt-${tier}"><div class="place-dot"></div><div class="place-lbl t${tier}">${bil(zh, en)}</div></div>` }) }).addTo(groups.places);
+    });
+  }
+
+  function renderProvince() {
+    if (!map) return;
+    groups.province.clearLayers();
+    if (!state.layers.province) return;
+    L.polygon(ll(PROVINCE_ASIA), { renderer: provRenderer, pane: 'provPane', interactive: false, color: '#6B2D5C', weight: 2, opacity: 0.7,
+      dashArray: '10 6', fillColor: '#6B2D5C', fillOpacity: 0.06, lineJoin: 'round' }).addTo(groups.province);
+    L.marker([39.55, 29.55], { pane: 'labelPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
+      html: `<div class="prov-label" style="transform:translate(-50%,-50%)">${bil('亚 细 亚 省', 'PROVINCE OF ASIA')}</div>` }) }).addTo(groups.province);
+  }
+
+  /* ---------- Roads & circuit ---------- */
+  function routeArrows(pts, color) {
+    const arr = [];
+    if (pts.length < 3) return arr;
+    [0.35, 0.7].forEach(fr => {
+      const i = Math.max(1, Math.min(pts.length - 2, Math.floor(fr * (pts.length - 1))));
+      const a = pts[i - 1], b = pts[i + 1];
+      const ang = -Math.atan2(b[0] - a[0], (b[1] - a[1]) * Math.cos(pts[i][0] * Math.PI / 180)) * 180 / Math.PI;
+      arr.push(L.marker(pts[i], { pane: 'arrowsPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [16, 16], iconAnchor: [8, 8],
+        html: `<svg width="16" height="16" viewBox="-10 -10 20 20" style="transform:rotate(${ang.toFixed(1)}deg);display:block;overflow:visible"><polygon points="7,0 -5,-5.5 -2.5,0 -5,5.5" fill="${color}" stroke="#faf6ec" stroke-width="1.6" stroke-linejoin="round"/></svg>` }) }));
+    });
+    return arr;
+  }
+  const activeSegment = () => (state.stop >= 1 ? CIRCUIT[state.stop - 1] : null);
+
+  function renderRoads() {
+    if (!map) return;
+    groups.roads.clearLayers();
+    if (!state.layers.roads) return;
+    const act = activeSegment();
+    Object.entries(ROADS).forEach(([key, r]) => {
+      const pts = interpolate(r.pts, 6);
+      const inCircuit = CIRCUIT.includes(key), on = key === act;
+      if (r.sea) {
+        L.polyline(pts, { pane: 'roadsPane', interactive: false, color: on ? '#8A6A1A' : '#2f6178', weight: on ? 3.4 : 2.2, opacity: 0.9, dashArray: '2 7', lineCap: 'round' }).addTo(groups.roads);
+      } else if (inCircuit) {
+        L.polyline(pts, { pane: 'roadsPane', interactive: false, color: '#faf6ec', weight: on ? 8 : 5, opacity: 0.8, lineCap: 'round', lineJoin: 'round' }).addTo(groups.roads);
+        L.polyline(pts, { pane: 'roadsPane', interactive: false, color: on ? '#8A6A1A' : '#a8894a', weight: on ? 4.2 : 2.4, opacity: on ? 1 : 0.85, lineCap: 'round', lineJoin: 'round' }).addTo(groups.roads);
+      } else {
+        L.polyline(pts, { pane: 'roadsPane', interactive: false, color: '#7a6955', weight: 1.5, opacity: 0.7, dashArray: '5 5', lineCap: 'round' }).addTo(groups.roads);
+      }
+      if (on) {
+        routeArrows(pts, '#8A6A1A').forEach(m => m.addTo(groups.roads));
+        const km = Math.round(pathKm(r.pts) / 5) * 5;
+        const mid = pts[Math.floor(pts.length / 2)];
+        L.marker(mid, { pane: 'arrowsPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
+          html: `<div class="dist-tag">${isZh() ? (r.sea ? `海路约 ${km} 公里` : `约 ${km} 公里`) : (r.sea ? `c. ${km} km by sea` : `c. ${km} km`)}</div>` }) }).addTo(groups.roads);
+      }
+    });
+  }
+
+  /* ---------- Churches ---------- */
+  function addChurches() {
+    STOPS.forEach((s, i) => {
+      const m = L.marker([s.lat, s.lon], { pane: 'churchPane', keyboard: false, icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12],
+        html: `<div class="ch-pin ${s.n ? '' : 'prologue'}" data-stop="${s.id}"><div class="ch-pulse"></div><div class="ch-dot">${s.n ? '' : '✦'}</div>
+          <div class="ch-name">${bil(s.zh, s.en)}<small>${bil(refPlainFixed(s.ref, 'zh'), refPlainFixed(s.ref, 'en'))}</small></div></div>` }) });
+      m.on('click', () => { stopAuto(); select({ type: 'stop', id: s.id }, true); });
+      m.addTo(groups.churches);
+      churchMarkers.set(s.id, m);
+    });
+  }
+  function refPlainFixed(ref, lang) { const keep = state.lang; state.lang = lang; const out = refPlain(ref); state.lang = keep; return out; }
+
+  function syncChurchHighlight() {
+    churchMarkers.forEach((m, id) => {
+      const el = m.getElement && m.getElement(); const pin = el && el.querySelector('.ch-pin');
+      if (!pin) return;
+      const on = curStop().id === id;
+      pin.classList.toggle('is-active', on); m.setZIndexOffset(on ? 800 : 0);
+    });
+  }
+
+  /* ---------- Archaeological sites ---------- */
+  function addSites() {
+    groups.sites.clearLayers(); siteMarkers.clear();
+    STOPS.forEach(s => (s.sites || []).forEach(x => {
+      const key = `${s.id}:${x.id}`;
+      const m = L.marker([x.lat, x.lon], { pane: 'sitePane', keyboard: false, icon: L.divIcon({ className: '', iconSize: [12, 12], iconAnchor: [6, 6],
+        html: `<div class="site-pin" data-site="${key}"><div class="site-dia"></div><div class="site-lbl">${bil(x.zh, x.en)}</div></div>` }) });
+      m.on('click', () => { stopAuto(); select({ type: 'site', id: key }, true); });
+      m.addTo(groups.sites);
+      siteMarkers.set(key, m);
+    }));
+  }
+  function syncSiteHighlight() {
+    siteMarkers.forEach((m, key) => {
+      const el = m.getElement && m.getElement(); const pin = el && el.querySelector('.site-pin');
+      if (pin) pin.classList.toggle('is-active', state.sel.type === 'site' && state.sel.id === key);
+    });
+  }
+
+  /* =========================================================================
+     4. SELECTION
+     ========================================================================= */
+  function fly(target, zoom) {
+    if (!map) return;
+    const mobile = window.innerWidth < 640;
+    if (Array.isArray(target[0])) map.flyToBounds(target, { duration: 0.9, padding: mobile ? [10, 10] : [30, 30] });
+    else map.flyTo(target, Math.max(5, zoom - (mobile ? 0.75 : 0)), { duration: 0.9 });
+  }
+  const CIRCUIT_VIEW = [[37.15, 26.35], [39.35, 29.45]];
+  const EMPIRE_VIEW = [[30.8, 11.5], [43.2, 37.0]];
+
+  function setStop(i) {
+    state.stop = i;
+    renderRoads(); syncChurchHighlight(); renderLegend(); renderStopBar();
+    const s = curStop();
+    document.getElementById('step-counter').textContent = s.n ? (isZh() ? `第 ${s.n} 封 / 7` : `Letter ${s.n} / 7`) : (isZh() ? '序幕' : 'Prologue');
+  }
+
+  function select(sel, doFly) {
+    state.sel = sel;
+    groups.sel && groups.sel.clearLayers();
+    if (sel.type === 'stop') {
+      setStop(stopIdx(sel.id));
+      const s = curStop();
+      if (doFly) fly([s.lat, s.lon], s.zoom - 1);
+    } else if (sel.type === 'site') {
+      const f = findSite(sel.id);
+      setStop(stopIdx(f.stop.id));
+      if (map) L.marker([f.site.lat, f.site.lon], { pane: 'selPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0],
+        html: `<div class="site-callout"><div class="box">${T(f.site)}</div></div>` }) }).addTo(groups.sel);
+      if (doFly) fly([f.site.lat, f.site.lon], Math.min(13.5, f.stop.zoom + 1));
+    } else if (sel.type === 'event') {
+      const ev = EVENTS.find(e => e.id === sel.id);
+      if (ev.stop) { setStop(stopIdx(ev.stop)); if (doFly) { const s = curStop(); fly([s.lat, s.lon], 9); } }
+      else { renderLegend(); if (doFly) fly(EMPIRE_VIEW); }
+    }
+    syncSiteHighlight();
+    renderDetail(); renderList(true);
+  }
+
+  /* =========================================================================
+     5. RENDERING
+     ========================================================================= */
+  const partBadge = (s) => s.n ? `<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#6a4b10]">${isZh() ? `第 ${s.n} 封信` : `Letter ${s.n}`}</span>`
+    : `<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#6a4b10]">${isZh() ? '序幕' : 'Prologue'}</span>`;
+
+  function renderCartouche() {
+    const s = curStop();
+    document.getElementById('cart-eyebrow').textContent = (s.n ? (isZh() ? `第 ${s.n} 封信` : `Letter ${s.n}`) : (isZh() ? '序幕' : 'Prologue')) + '　' + refPlain(s.ref);
+    document.getElementById('cart-title').innerHTML = `${T(s)} <span class="font-greek font-normal text-[12px] text-[#5c4a35]">${s.gr}</span>`;
+    document.getElementById('cart-sub').textContent = T(s.modern);
+  }
+
+  function renderLegend() {
+    renderCartouche();
+    const row = (sw, txt) => `<div class="flex items-center gap-1.5 text-[11px]">${sw}<span>${txt}</span></div>`;
+    const line = (style) => `<span class="inline-block w-5 shrink-0" style="${style}"></span>`;
+    const zh = isZh();
+    const items = [
+      row(`<span class="inline-flex w-4 h-4 rounded-full shrink-0 items-center justify-center text-[8px] font-bold" style="background:#c9a034;border:1.5px solid #faf6ec;box-shadow:0 0 0 1px #5c4512"></span>`, zh ? '七教会' : 'The seven churches'),
+      row(line('border-top:3px solid #8A6A1A'), zh ? '书信传递路线（罗马大道，示意）' : 'Circuit of the letters (Roman roads, schematic)'),
+      row(line('border-top:2.5px dotted #2f6178'), zh ? '拔摩至以弗所的海路' : 'Sea route, Patmos to Ephesus'),
+      row(line('border-top:1.5px dashed #7a6955'), zh ? '其他罗马道路（示意）' : 'Other Roman roads (schematic)'),
+      row(`<span class="inline-block w-4 h-3 rounded-[2px] shrink-0" style="background:#6B2D5C12;border:1.5px dashed #6B2D5C"></span>`, zh ? '罗马亚细亚省（示意）' : 'Roman province of Asia (schematic)'),
+      row(`<span class="inline-block w-4 h-3 rounded-[2px] shrink-0" style="background:#bed7e5;border:1.2px dashed #2f6178"></span>`, zh ? '第一世纪海岸线（示意，今已淤积成陆）' : '1st-century shoreline (schematic, now silted)'),
+      row(`<span class="inline-block w-2.5 h-2.5 shrink-0 ml-[3px] mr-[3px]" style="transform:rotate(45deg);background:#2F6F73;border:1.2px solid #faf6ec;box-shadow:0 0 0 .8px #1d4548"></span>`, zh ? '考古遗址（放大后显示）' : 'Archaeological site (shown when zoomed in)')
+    ];
+    document.getElementById('legend-items').innerHTML = items.join('');
+  }
+
+  function renderStopBar() {
+    document.getElementById('stop-bar').innerHTML = STOPS.map((s, i) => {
+      const on = i === state.stop, pc = '#A8801A';
+      return `<button onclick="window._stop('${s.id}')" class="flex items-center gap-1.5 px-2 py-1 rounded-md border text-left whitespace-nowrap transition-colors ${on ? 'bg-[#2b2520] text-[#faf6ec] border-[#2b2520]' : 'bg-[#faf6ec]/75 border-[#c8b89c] text-[#2b2520] hover:bg-[#faf6ec]'}" style="box-shadow: inset 0 -3px 0 ${pc}" aria-pressed="${on}">
+        <span class="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${on ? 'bg-[#c9a227] text-[#2b2008]' : 'bg-[#e9dec6] text-[#6a4b10]'}">${s.n ? '<i class="block w-2 h-2 rounded-full" style="background:#A8801A"></i>' : '✦'}</span>
+        <span class="flex flex-col leading-tight"><span class="text-[11.5px] font-bold">${T(s)}</span><span class="text-[9.5px] ${on ? 'text-[#e9dec6]' : 'text-[#6a5b49]'}">${refPlain(s.ref)}</span></span></button>`;
+    }).join('');
+    const active = document.querySelector('#stop-bar [aria-pressed="true"]');
+    if (active) active.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+  }
+
+  const TABS = [
+    ['stops', '七城', 'Cities'], ['compare', '书信对照', 'Compare'], ['sites', '遗址', 'Sites'],
+    ['timeline', '年表', 'Timeline'], ['notes', '注释', 'Notes']
+  ];
+  function renderTabs() {
+    document.getElementById('tabs').innerHTML = TABS.map(([k, zh, en]) =>
+      `<button role="tab" aria-selected="${state.tab === k}" onclick="window._tab('${k}')" class="tab-btn ${state.tab === k ? 'is-active' : ''} px-2.5 py-1 rounded-md border border-[#cbbba0] bg-[#faf6ec] text-[11.5px] font-semibold whitespace-nowrap hover:bg-[#efe5cf]">${isZh() ? zh : en}</button>`).join('');
+    document.getElementById('detail-panel').style.display = state.tab === 'notes' ? 'none' : '';
+  }
+
+  const body = (zhCls = 'text-[12.5px] leading-relaxed', enCls = 'font-serif-atlas text-[14px] leading-snug') => isZh() ? zhCls : enCls;
+  const stopChip = (id) => { const s = stopById(id); return `<button onclick="window._stop('${id}')" class="text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#f3ebd8] hover:bg-[#e9dec6] text-[#5c4a35]">${s.n ? '' : '✦ '}${T(s)}</button>`; };
+  const secHead = (zh, en) => `<div class="text-[11px] font-bold text-[#5c4a35] mb-1 mt-0.5">${isZh() ? zh : en}</div>`;
+
+  function keyVerse(s) {
+    const r = parseRefs(s.quote.ref)[0];
+    return isZh()
+      ? `<figure class="border-l-2 border-[#A8801A] pl-2.5 py-2 pr-2.5 bg-[#f5efe0] rounded-r mb-2.5">
+          <blockquote class="font-kai text-[14px] leading-relaxed text-[#2b2520]" data-b="${GB_NR[r.book]}" data-sc="${r.sc}" data-sv="${r.sv ?? ''}" data-ec="${r.ec ?? ''}" data-ev="${r.ev ?? ''}">“${s.quote.zh}”</blockquote>
+          <figcaption class="text-right text-[11px] text-[#6a5b49] font-serif-atlas mt-1">—— ${refHTML(s.quote.ref)}</figcaption></figure>`
+      : `<figure class="border-l-2 border-[#A8801A] pl-2.5 py-1.5 pr-2.5 bg-[#f5efe0] rounded-r mb-2.5">
+          <span class="font-serif-atlas text-[14px] text-[#2b2520]"><b>Key verse:</b> ${refHTML(s.quote.ref)}</span></figure>`;
+  }
+
+  function renderDetail() {
+    const el = document.getElementById('detail-panel');
+    const sel = state.sel;
+    let html = '';
+    if (sel.type === 'stop') {
+      const s = curStop(), i = state.stop;
+      const prev = STOPS[i - 1], next = STOPS[i + 1];
+      html = `
+        <div class="flex items-center justify-between gap-2 mb-1">${partBadge(s)}<span class="text-[11.5px] font-medium">${refHTML(s.ref)}</span></div>
+        <div class="flex items-baseline flex-wrap gap-x-2 mb-0.5">
+          <h2 class="font-serif-atlas font-bold text-xl leading-snug text-[#2b2520]">${T(s)}</h2>
+          <span class="font-greek text-[14px] text-[#5c4a35]">${s.gr}</span>
+        </div>
+        <div class="text-[11.5px] text-[#6a5b49] mb-2">${T(s.modern)}</div>
+        ${s.summary ? `<p class="${body()} text-[#2b2520] mb-2.5">${rich(T(s.summary))}</p>` : ''}
+        ${s.letter ? `<dl class="kv mb-2.5">${LETTER_FIELDS.map(([k, zh, en]) => {
+            const f = s.letter[k];
+            return `<dt>${isZh() ? zh : en}</dt><dd class="${f.none ? 'none' : ''}">${rich(T(f))}</dd>`;
+          }).join('')}</dl>` : ''}
+        ${keyVerse(s)}
+        ${secHead(s.n ? '城市背景' : '背景', s.n ? 'The city' : 'Background')}
+        <ul class="basis ${body('text-[12px] leading-relaxed', 'font-serif-atlas text-[13.5px] leading-snug')} text-[#2b2520] mb-2.5">${s.bg.map(b => `<li>${rich(T(b))}</li>`).join('')}</ul>
+        ${(s.sites || []).length ? `${secHead('遗址', 'Sites')}<div class="flex flex-wrap gap-1 mb-2.5">${s.sites.map(x => `<button onclick="window._site('${s.id}:${x.id}')" class="text-[11px] px-1.5 py-0.5 rounded border border-[#a9c7c8] bg-[#eef5f3] hover:bg-[#dcebe8] text-[#1d4548]">◆ ${T(x)}</button>`).join('')}</div>` : ''}
+        <div class="text-[11.5px] text-[#5c4a35] mb-2.5">${isZh() ? '相关经文：' : 'See also: '}${refHTML(s.cross)}</div>
+        <div class="flex items-center justify-end gap-1">
+          ${prev ? `<button onclick="window._stop('${prev.id}')" class="text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#faf6ec] hover:bg-[#efe5cf]">◀ ${T(prev)}</button>` : ''}
+          ${next ? `<button onclick="window._stop('${next.id}')" class="text-[10.5px] px-1.5 py-0.5 rounded border border-[#c8b89c] bg-[#faf6ec] hover:bg-[#efe5cf]">${T(next)} ▶</button>` : ''}
+        </div>`;
+    } else if (sel.type === 'site') {
+      const f = findSite(sel.id);
+      html = `
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#dcebe8] text-[#1d4548]">${isZh() ? '考古遗址' : 'Archaeological site'}</span>${stopChip(f.stop.id)}</div>
+        <h2 class="font-serif-atlas font-bold text-lg text-[#2b2520] leading-snug mb-1.5">◆ ${T(f.site)}</h2>
+        <p class="${body()} text-[#2b2520] mb-2.5">${rich(T(f.site.d))}</p>
+        <div class="flex flex-wrap gap-1">${f.stop.sites.filter(x => x.id !== f.site.id).map(x => `<button onclick="window._site('${f.stop.id}:${x.id}')" class="text-[11px] px-1.5 py-0.5 rounded border border-[#a9c7c8] bg-[#eef5f3] hover:bg-[#dcebe8] text-[#1d4548]">◆ ${T(x)}</button>`).join('')}</div>`;
+    } else if (sel.type === 'event') {
+      const ev = EVENTS.find(e => e.id === sel.id);
+      html = `
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#5c4a35]">${isZh() ? '年表' : 'Timeline'}</span>
+          <span class="text-[12px] font-bold text-[#6a4b10]">${T(ev.yr)}</span></div>
+        <p class="${body('text-[13px] leading-relaxed', 'font-serif-atlas text-[15px] leading-snug')} text-[#2b2520] mb-2.5">${rich(T(ev.t))}</p>
+        ${ev.stop ? stopChip(ev.stop) : ''}`;
+    }
+    el.innerHTML = html;
+    el.scrollTop = 0;
+    hideTip();
+    if (sel.type === 'stop' && isZh()) fillCuvQuote(el);
+    retag(el);
+  }
+
+  /* ---------- Lists ---------- */
+  const rowCls = (on) => `no-rt w-full text-left px-2.5 py-1.5 rounded-lg border transition-colors flex items-start gap-2 ${on ? 'bg-[#fcf9f2] border-[#8b7b65] shadow-sm' : 'bg-[#faf6ec]/75 border-transparent hover:bg-[#efe6d2]'}`;
+  const groupHead = (txt, color) => `<div class="pt-2 pb-0.5 px-1 text-[11px] font-bold" style="color:${color}">${txt}</div>`;
+  const numDot = (s) => `<span class="w-5 h-5 mt-0.5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0" style="background:#c9a034;color:#2b2008">${s.n ? '' : '✦'}</span>`;
+
+  function distanceTable() {
+    const names = ['patmos', 'ephesus', 'smyrna', 'pergamum', 'thyatira', 'sardis', 'philadelphia', 'laodicea', 'ephesus'];
+    let total = 0;
+    const rows = CIRCUIT.map((k, i) => {
+      const km = pathKm(ROADS[k].pts); total += km;
+      const a = stopById(names[i]), b = stopById(names[i + 1]);
+      return `<tr class="border-b border-[#e0d4bc]"><td class="px-1.5 py-1">${T(a)} → ${T(b)}${ROADS[k].sea ? (isZh() ? '（海路）' : ' (by sea)') : ''}</td><td class="px-1.5 py-1 text-right whitespace-nowrap">${Math.round(km / 5) * 5}</td></tr>`;
+    }).join('');
+    return `<div class="overflow-x-auto mt-1.5"><table class="w-full text-[11.5px] border-collapse"><thead><tr class="bg-[#4A4A4A] text-white">
+      <th class="text-left px-1.5 py-1 font-semibold">${isZh() ? '路段' : 'Leg'}</th><th class="text-right px-1.5 py-1 font-semibold">${isZh() ? '约（公里）' : 'c. km'}</th></tr></thead>
+      <tbody>${rows}<tr class="font-bold"><td class="px-1.5 py-1">${isZh() ? '全程' : 'Total'}</td><td class="px-1.5 py-1 text-right">${Math.round(total / 10) * 10}</td></tr></tbody></table></div>`;
+  }
+
+  function renderList(keepScroll) {
+    const c = document.getElementById('list-container');
+    const sel = state.sel;
+    let html = '';
+    if (state.tab === 'stops') {
+      html = STOPS.map((s, i) => {
+        const on = sel.type === 'stop' && state.stop === i;
+        const sub = s.letter ? T(s.letter.title).replace(/[；;]\s*(参|cf\.).*$/, '').replace(/\s*\[\[.*?\]\]/g, '') : T(s.title);
+        return `<button id="row-stop-${s.id}" onclick="window._stop('${s.id}')" class="${rowCls(on)} mb-1" style="box-shadow: inset 3px 0 0 #A8801A">
+          ${numDot(s)}
+          <span class="min-w-0 flex-1"><span class="flex items-baseline justify-between gap-1"><span class="text-[13px] font-bold text-[#2b2520]">${T(s)}</span><span class="text-[10.5px] text-[#6a5b49] shrink-0">${refPlain(s.ref)}</span></span>
+          <span class="block ${body('text-[11px]', 'font-serif-atlas text-[12.5px]')} text-[#6a5b49] leading-snug">${sub}</span></span></button>`;
+      }).join('');
+    } else if (state.tab === 'compare') {
+      html = `<div class="flex flex-wrap gap-1 px-1 pb-1.5">${LETTER_FIELDS.map(([k, zh, en]) =>
+        `<button onclick="window._field('${k}')" class="px-2 py-0.5 rounded-full border text-[11px] font-semibold ${state.field === k ? 'bg-[#2b2520] text-[#faf6ec] border-[#2b2520]' : 'bg-[#faf6ec] border-[#cbbba0] hover:bg-[#efe5cf]'}">${isZh() ? zh : en}</button>`).join('')}</div>`;
+      html += STOPS.filter(s => s.letter).map(s => {
+        const f = s.letter[state.field], on = sel.type === 'stop' && curStop().id === s.id;
+        return `<div class="mb-1 px-2.5 py-1.5 rounded-lg border ${on ? 'bg-[#fcf9f2] border-[#8b7b65]' : 'bg-[#faf6ec]/75 border-transparent'}" style="box-shadow: inset 3px 0 0 #A8801A">
+          <button onclick="window._stop('${s.id}')" class="no-rt flex items-center gap-1.5 mb-0.5 hover:underline">${numDot(s)}<span class="text-[12.5px] font-bold">${T(s)}</span><span class="text-[10.5px] text-[#6a5b49]">${refPlain(s.ref)}</span></button>
+          <div class="${body('text-[12px] leading-relaxed', 'font-serif-atlas text-[13.5px] leading-snug')} ${f.none ? 'italic text-[#8b7b65]' : 'text-[#2b2520]'}">${rich(T(f))}</div></div>`;
+      }).join('');
+    } else if (state.tab === 'sites') {
+      STOPS.forEach(s => {
+        if (!(s.sites || []).length) return;
+        html += groupHead(`${s.n ? '' : '✦ '}${T(s)}`, '#1d4548');
+        s.sites.forEach(x => {
+          const key = `${s.id}:${x.id}`, on = sel.type === 'site' && sel.id === key;
+          html += `<button id="row-site-${s.id}-${x.id}" onclick="window._site('${key}')" class="${rowCls(on)} mb-0.5">
+            <i class="inline-block w-2.5 h-2.5 mt-1 shrink-0" style="transform:rotate(45deg);background:${on ? '#c9a227' : '#2F6F73'}"></i>
+            <span class="min-w-0 flex-1"><span class="block text-[12.5px] font-bold text-[#2b2520]">${T(x)}</span>
+            <span class="block ${body('text-[11px]', 'font-serif-atlas text-[12.5px]')} text-[#6a5b49] leading-snug">${stripRefs(T(x.d))}</span></span></button>`;
+        });
+      });
+    } else if (state.tab === 'timeline') {
+      html = `<div class="relative pl-3"><div class="absolute left-[18px] top-1 bottom-1 w-px bg-[#c8b89c]"></div>` + EVENTS.map(ev => {
+        const on = sel.type === 'event' && sel.id === ev.id, s = ev.stop ? stopById(ev.stop) : null;
+        return `<button id="row-event-${ev.id}" onclick="window._event('${ev.id}')" class="${rowCls(on)} mb-1 relative">
+          <i class="inline-block w-2.5 h-2.5 mt-1 rounded-full shrink-0 border-2 border-[#faf6ec]" style="background:${ev.k >= 95 && ev.k <= 96 ? '#c9a227' : (s ? '#8A6A1A' : '#7a6955')};box-shadow:0 0 0 1px #8b7b65"></i>
+          <span class="min-w-0 flex-1"><span class="flex items-baseline justify-between gap-1"><span class="text-[11.5px] font-bold text-[#6a4b10]">${T(ev.yr)}</span>${s ? `<span class="text-[10.5px] text-[#6a5b49] shrink-0">${s.n ? '' : '✦ '}${T(s)}</span>` : ''}</span>
+          <span class="block ${body('text-[11.5px]', 'font-serif-atlas text-[13px]')} text-[#2b2520] leading-snug">${stripRefs(T(ev.t))}</span></span></button>`;
+      }).join('') + `</div>`;
+    } else if (state.tab === 'notes') {
+      html = NOTES.map((n, i) => `
+        <article class="mb-2 p-3 rounded-lg bg-[#fcf9f2] border border-[#e0d4bc]">
+          <h3 class="font-serif-atlas font-bold text-[15px] text-[#2b2520] mb-1.5 flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[#8A6A1A] text-white text-[10px] font-bold inline-flex items-center justify-center shrink-0">${i + 1}</span>${T(n.t)}</h3>
+          <div class="note-body text-[#2b2520]">${rich(T(n.b))}</div>
+          ${n.distances ? distanceTable() : ''}
+        </article>`).join('');
+    }
+    const prevScroll = c.scrollTop;
+    c.innerHTML = html;
+    retag(c);
+    if (keepScroll) c.scrollTop = prevScroll;
+    const activeId = sel.type === 'stop' ? `row-stop-${curStop().id}` : sel.type === 'site' ? `row-site-${sel.id.replace(':', '-')}` : `row-event-${sel.id}`;
+    const row = document.getElementById(activeId);
+    if (row) {
+      const cr = c.getBoundingClientRect(), rr = row.getBoundingClientRect();
+      if (rr.top < cr.top || rr.bottom > cr.bottom) c.scrollTo({ top: Math.max(0, rr.top - cr.top + c.scrollTop - cr.height / 3), behavior: 'smooth' });
+    }
+  }
+
+  /* =========================================================================
+     6. GLOBAL UI
+     ========================================================================= */
+  function updateButtons() {
+    const zh = isZh();
+    document.getElementById('btn-autoplay').textContent = state.autoTimer ? (zh ? '⏸ 暂停' : '⏸ Pause') : (zh ? '▶ 依次巡回' : '▶ Tour');
+    const rb = document.getElementById('btn-relief');
+    rb.textContent = state.relief ? (zh ? '标准地形' : 'Standard') : (zh ? '立体增强' : 'Relief +');
+    rb.classList.toggle('bg-[#2b2520]', state.relief); rb.classList.toggle('text-[#faf6ec]', state.relief);
+    rb.classList.toggle('bg-[#faf6ec]', !state.relief); rb.classList.toggle('text-[#2b2520]', !state.relief);
+    document.getElementById('sidebar-toggle-text').textContent = state.sidebar ? (zh ? '隐藏研经栏' : 'Hide study') : (zh ? '显示研经栏' : 'Show study');
+    const tips = {
+      'btn-zoom-in': zh ? '放大' : 'Zoom in', 'btn-zoom-out': zh ? '缩小' : 'Zoom out', 'btn-zoom-reset': zh ? '回到本城' : 'Back to this city',
+      'btn-lang-toggle': zh ? '切换语言' : 'Switch language', 'btn-sidebar': zh ? '显示或隐藏研经栏' : 'Show or hide the study panel',
+      'btn-legend': zh ? '展开或收起图例' : 'Show or hide the legend'
+    };
+    Object.entries(tips).forEach(([id, t]) => { const b = document.getElementById(id); if (b) { b.title = t; b.setAttribute('aria-label', t); } });
+  }
+
+  function applyLanguage() {
+    const zh = isZh();
+    document.documentElement.lang = zh ? 'zh-CN' : 'en';
+    document.body.classList.toggle('lang-zh', zh); document.body.classList.toggle('lang-en', !zh);
+    document.title = zh ? '启示录七教会地图' : 'The Seven Churches of Revelation · An Atlas';
+    const on = ['bg-[#2b2520]', 'text-[#faf6ec]'], off = ['text-[#3b3228]'];
+    const pz = document.getElementById('lang-pill-zh'), pe = document.getElementById('lang-pill-en');
+    (zh ? pz : pe).classList.add(...on); (zh ? pz : pe).classList.remove(...off);
+    (zh ? pe : pz).classList.remove(...on); (zh ? pe : pz).classList.add(...off);
+    hideTip(); setStop(state.stop);
+    if (state.sel.type === 'site' && groups.sel) { groups.sel.clearLayers(); const f = findSite(state.sel.id);
+      L.marker([f.site.lat, f.site.lon], { pane: 'selPane', interactive: false, icon: L.divIcon({ className: '', iconSize: [0, 0], html: `<div class="site-callout"><div class="box">${T(f.site)}</div></div>` }) }).addTo(groups.sel); }
+    updateButtons(); updateStatusUI(); renderTabs(); renderDetail(); renderList(true); syncLegend();
+  }
+
+  function stopAuto() { if (state.autoTimer) { clearInterval(state.autoTimer); state.autoTimer = null; updateButtons(); } }
+  function syncLegend() {
+    document.getElementById('legend-content').style.display = state.legendOpen ? '' : 'none';
+    document.getElementById('legend-arrow').style.transform = state.legendOpen ? '' : 'rotate(-90deg)';
+  }
+  function setPresetUI(name) {
+    document.querySelectorAll('.preset-btn').forEach(b => { b.classList.remove('bg-[#2b2520]', 'text-[#faf6ec]'); b.classList.add('text-[#3b3228]'); });
+    const b = document.getElementById(`btn-preset-${name}`); if (b) { b.classList.add('bg-[#2b2520]', 'text-[#faf6ec]'); b.classList.remove('text-[#3b3228]'); }
+  }
+
+  window._stop = (id) => { stopAuto(); setPresetUI('stop'); select({ type: 'stop', id }, true); };
+  window._site = (key) => { stopAuto(); setPresetUI('stop'); select({ type: 'site', id: key }, true); };
+  window._event = (id) => { stopAuto(); select({ type: 'event', id }, true); };
+  window._tab = (t) => { state.tab = t; renderTabs(); renderList(false); };
+  window._field = (f) => { state.field = f; renderList(true); };
+  window.toggleLanguage = () => { state.lang = isZh() ? 'en' : 'zh'; applyLanguage(); };
+  window.toggleRelief = () => { state.relief = !state.relief; updateButtons(); if (demLayer) demLayer.redraw(); };
+  window.mapZoom = (d) => { stopAuto(); if (map) map.setZoom(map.getZoom() + d); };
+  window.applyPreset = (name) => {
+    stopAuto(); setPresetUI(name); if (!map) return;
+    if (name === 'stop') { const s = curStop(); fly([s.lat, s.lon], s.zoom - 1); }
+    else if (name === 'circuit') fly(CIRCUIT_VIEW);
+    else fly(EMPIRE_VIEW);
+  };
+  window.setLayer = (k, v) => {
+    state.layers[k] = v;
+    if (k === 'province') renderProvince();
+    if (k === 'roads') renderRoads();
+    if (k === 'sites' && map) { if (v) groups.sites.addTo(map); else map.removeLayer(groups.sites); }
+    if (k === 'places') document.getElementById('map-container').classList.toggle('hide-places', !v);
+  };
+  window.toggleLegend = () => { state.legendOpen = !state.legendOpen; syncLegend(); };
+  window.toggleSidebar = () => {
+    state.sidebar = !state.sidebar;
+    const sb = document.getElementById('study-sidebar'), mp = document.getElementById('map-pane');
+    sb.classList.toggle('hidden', !state.sidebar); sb.classList.toggle('hidden-sidebar', !state.sidebar);
+    mp.classList.toggle('expanded-map', !state.sidebar);
+    updateButtons(); setTimeout(() => map && map.invalidateSize(), 120);
+  };
+  window.stepStop = (d) => {
+    stopAuto();
+    let n = state.stop + d; if (n < 0) n = STOPS.length - 1; if (n >= STOPS.length) n = 0;
+    setPresetUI('stop'); select({ type: 'stop', id: STOPS[n].id }, true);
+  };
+  window.toggleAutoPlay = () => {
+    if (state.autoTimer) { stopAuto(); return; }
+    setPresetUI('stop');
+    select({ type: 'stop', id: curStop().id }, true);
+    state.autoTimer = setInterval(() => select({ type: 'stop', id: STOPS[(state.stop + 1) % STOPS.length].id }, true), 7000);
+    updateButtons();
+  };
+  document.addEventListener('keydown', (e) => {
+    if (e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') window.stepStop(1);
+    if (e.key === 'ArrowLeft') window.stepStop(-1);
+  });
+
+  /* =========================================================================
+     7. START
+     ========================================================================= */
+  initMap();
+  if (map) map.fitBounds(CIRCUIT_VIEW, { padding: [20, 20] });
+  applyLanguage();
+  select({ type: 'stop', id: 'patmos' }, false);
+  setTimeout(() => map && map.invalidateSize(), 250);
+})();
+
+  </script>
+</body>
+</html>
