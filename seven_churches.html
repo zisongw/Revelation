@@ -126,7 +126,7 @@
     .atlas-scroll::-webkit-scrollbar-track { background: rgba(139,123,101,0.08); }
     .atlas-scroll::-webkit-scrollbar-thumb { background: rgba(139,123,101,0.35); border-radius: 9999px; }
 
-    /* Scripture citations — 中文和合本 (page tooltip) · English LSB (Logos Reftagger) */
+    /* Scripture citations — Chinese CUV (page tooltip) · English LSB (Logos Reftagger) */
     a.sc-zh { color: #6a3d12; text-decoration: none; border-bottom: 1px dotted rgba(106,61,18,0.55); white-space: nowrap; cursor: pointer; }
     a.sc-zh:hover { color: #9b2226; border-bottom-style: solid; background: rgba(201,162,39,0.12); border-radius: 2px; }
     .sc-en { white-space: normal; }
@@ -184,7 +184,7 @@
       <div class="truncate min-w-0">
         <div class="flex items-baseline gap-2">
           <h1 class="font-serif-atlas font-bold text-sm sm:text-lg text-[#2b2520] truncate">
-            <span class="only-zh">启示录七教会：地图与书信</span>
+            <span class="only-zh">启示录七教会：历史地图</span>
             <span class="only-en">The Seven Churches of Revelation: An Atlas</span>
           </h1>
           <span class="hidden md:inline-block text-[10.5px] font-medium px-2 py-0.5 rounded-full bg-[#e9dec6] text-[#5c4a35] border border-[#c7b698]">
@@ -336,7 +336,7 @@ const EXTRA_RIVERS = [
   { zh:'帕克托洛斯河', en:'Pactolus', pts:[[28.06,38.38],[28.045,38.44],[28.035,38.49],[28.03,38.55]] }
 ];
 
-/* Places: [id, zh, en, lat, lon, tier]  tier 1 always · 2 at zoom ≥ 7 · 3 at zoom ≥ 9 */
+/* Places: [id, zh, en, lat, lon, tier]  tier 1 always · 2 at zoom >= 7 · 3 at zoom >= 9 */
 const PLACES = [
   ['miletus','米利都','Miletus',37.530,27.278,2],
   ['priene','普里耶涅','Priene',37.659,27.298,3],
@@ -396,7 +396,7 @@ const FALLBACK_OCEAN = { type:'FeatureCollection', features:[
 
 /* =========================================================================
    STOPS — Patmos + the seven churches in the order of Rev 1:11.
-   Background items marked 经外史料 / extra-biblical, or 解释 / interpretation.
+   Background items marked extra-biblical or interpretation.
    ========================================================================= */
 const LETTER_FIELDS = [
   ['title',   '基督的自称', 'Christ’s self-title'],
@@ -777,7 +777,7 @@ const NOTES = [
   const stopById = (id) => STOPS.find(s => s.id === id);
   const curStop = () => STOPS[state.stop];
   const findSite = (key) => { const [sid, id] = key.split(':'); const s = stopById(sid); return s ? { stop: s, site: (s.sites || []).find(x => x.id === id) } : null; };
-  const ll = (pts) => pts.map(p => [p[1], p[0]]);          // [lon,lat] → [lat,lon]
+  const ll = (pts) => pts.map(p => [p[1], p[0]]);          // [lon,lat] -> [lat,lon]
 
   function haversine(a, b) {
     const R = 6371, toR = Math.PI / 180;
@@ -789,10 +789,10 @@ const NOTES = [
 
   /* =========================================================================
      2. SCRIPTURE REFERENCES
-        中文：和合本 — page tooltip (getBible "cus"), click opens 微读圣经
-        English：LSB — plain reference text tagged by Logos Reftagger
+        Chinese: CUV — page tooltip (getBible "cus"), click opens WD Bible
+        English: LSB — plain reference text tagged by Logos Reftagger
      ========================================================================= */
-  // key: [微读书卷代码, 中文简称, English abbreviation, single-chapter flag]
+  // key: [WD Bible book code, Chinese abbr, English abbr, single-chapter flag]
   const BOOKS = {
     Gen:['gen','创','Gen'], Exo:['exo','出','Exod'], Num:['num','民','Num'], Deu:['deu','申','Deut'],
     '1Ki':['1ki','王上','1 Kgs'], '2Ki':['2ki','王下','2 Kgs'], Psa:['psa','诗','Ps'], Pro:['pro','箴','Prov'],
@@ -883,7 +883,7 @@ const NOTES = [
   const rich = (s) => (s || '').replace(/\[\[(.+?)\]\]/g, (_, r) => refHTML(r));
   const stripRefs = (s) => (s || '').replace(/\s*\[\[(.+?)\]\]/g, (_, r) => ' ' + refPlain(r));
 
-  /* ---------- 和合本 tooltip (hover on desktop; tap on touch — second tap opens 微读圣经) ---------- */
+  /* ---------- CUV tooltip (hover on desktop; tap on touch — second tap opens WD Bible) ---------- */
   const CUV_CACHE = new Map();
   const cleanZh = (t) => (t || '').replace(/\s+/g, ' ').replace(/([\u3000-\u303f\u4e00-\u9fff\uff00-\uffef“”‘’])\s+(?=[\u3000-\u303f\u4e00-\u9fff\uff00-\uffef“”‘’])/g, '$1').trim();
   function cuvChapter(b, c) {
@@ -1354,7 +1354,7 @@ const NOTES = [
 
   function renderCartouche() {
     const s = curStop();
-    document.getElementById('cart-eyebrow').textContent = (s.n ? (isZh() ? `第 ${s.n} 封信` : `Letter ${s.n}`) : (isZh() ? '序幕' : 'Prologue')) + '　' + refPlain(s.ref);
+    document.getElementById('cart-eyebrow').textContent = (s.n ? (isZh() ? `第 ${s.n} 封信` : `Letter ${s.n}`) : (isZh() ? '序幕' : 'Prologue')) + ' ' + refPlain(s.ref);
     document.getElementById('cart-title').innerHTML = `${T(s)} <span class="font-greek font-normal text-[12px] text-[#5c4a35]">${s.gr}</span>`;
     document.getElementById('cart-sub').textContent = T(s.modern);
   }
@@ -1611,7 +1611,7 @@ const NOTES = [
     const zh = isZh();
     document.documentElement.lang = zh ? 'zh-CN' : 'en';
     document.body.classList.toggle('lang-zh', zh); document.body.classList.toggle('lang-en', !zh);
-    document.title = zh ? '启示录七教会地图' : 'The Seven Churches of Revelation · An Atlas';
+    document.title = zh ? '启示录七教会：历史地图' : 'The Seven Churches of Revelation · An Atlas';
     const on = ['bg-[#2b2520]', 'text-[#faf6ec]'], off = ['text-[#3b3228]'];
     const pz = document.getElementById('lang-pill-zh'), pe = document.getElementById('lang-pill-en');
     (zh ? pz : pe).classList.add(...on); (zh ? pz : pe).classList.remove(...off);
